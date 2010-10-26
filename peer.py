@@ -3,6 +3,7 @@
 import sys
 import os
 import pygame
+import string
 from pygame.locals import *
 from pygame.color import THECOLORS
 
@@ -151,9 +152,9 @@ def settin(screen):
 	font = pygame.font.Font(None, 60)
 	selected = (255,255, 0)
 	unselected = (255,255, 255)
-	menu1 = 'Setting 1'
-	menu2 = 'Setting 2'
-	menu3 = 'Setting 3'
+	menu1 = 'SET IP'
+	menu2 = 'SET Port'
+	menu3 = 'SET Game Name'
 	menu4 = 'Back'
 	newGame = font.render(menu1, True, selected, (159, 182, 205))
 	joinGame = font.render(menu2, True, unselected, (159, 182, 205))
@@ -208,8 +209,22 @@ def settin(screen):
 					else:
 						selec = selec + 1
 				elif (e.key == K_RETURN):
-					if selec == 3:
+					if selec == 0:
+						IP = prompt(screen, "IP: ")
+						print IP
+					elif selec == 1:
+						PORT = prompt(screen, "Port: ")
+						print PORT
+					elif selec == 2:
+						GAMENAME = prompt(screen, "Game Name: ")
+						print GAMENAME
+					elif selec == 3:
 						return
+					screen.fill((159, 180,200))	
+					screen.blit(newGame,newGameR)	
+					screen.blit(joinGame,joinGameR)		
+					screen.blit(settings,settingsR)	
+					screen.blit(quit,quitR)
 				if tmp == 0:
 					newGame = font.render(menu1, True, unselected, (159, 182, 205))
 					screen.blit(newGame,newGameR)
@@ -237,6 +252,40 @@ def settin(screen):
 					screen.blit(quit,quitR)
 				pygame.display.update()	
 
+
+def prompt(screen, question):
+	pygame.font.init()
+	currData = []
+	pygame.display.update()	
+	drawPrompt(screen, question + " " + string.join(currData, ""))
+	while True:
+		keystroke = getKeystroke()
+		if keystroke == K_RETURN:
+			break
+		elif keystroke == K_BACKSPACE:
+			currData = currData[0:(len(currData)-1)]
+			drawPrompt(screen, question + " " + string.join(currData, ""))
+		elif keystroke < 128:
+			currData.append(chr(keystroke))
+			drawPrompt(screen, question + " " + string.join(currData, ""))
+	return string.join(currData, "")
+
+def getKeystroke():
+	while True:
+		event = pygame.event.poll()
+		if (event.type == KEYDOWN):			
+			return event.key
+
+
+def drawPrompt(screen, message):
+	screen.fill((159, 180,200))
+	font = pygame.font.Font(None, 60)
+	settings = font.render(message, True, (255,255, 255), (159, 182, 205))
+	settingsR = settings.get_rect()
+	settingsR.centerx = screen.get_rect().centerx
+	settingsR.centery = screen.get_rect().centery - 60
+	screen.blit(settings,settingsR)
+	pygame.display.update()
 
 if __name__ == "__main__":
 	main()
