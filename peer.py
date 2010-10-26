@@ -208,11 +208,8 @@ def settin(screen):
 					else:
 						selec = selec + 1
 				elif (e.key == K_RETURN):
-					if selec == 2:
-						settin()
-						print "settings"
-					else:
-						return selec
+					if selec == 3:
+						return
 				if tmp == 0:
 					newGame = font.render(menu1, True, unselected, (159, 182, 205))
 					screen.blit(newGame,newGameR)
