@@ -9,7 +9,10 @@ def recv_header(s):
 	fin = 1
 	try:
 		# Try to recieve the type byte
-		data=s.recv(2)
+		data = s.recv(2)
+
+		if data == "":
+			return fin, type
 
 		fin = int(ord(data[0]))
 		type = int(ord(data[1]))
@@ -27,20 +30,21 @@ class packager():
 
 	def pack_input(self):
 		pass
-	def unpack_input(s):
+	def unpack_input(self,s):
 		pass
 
 	def pack_disconnect(self):
 		pass
-	def unpack_disconnect(s):
+	def unpack_disconnect(self,s):
 		pass
 
 	def pack_ping(self):
-		self.send_queue.put(struct.pack(">c",chr(0)))
-	def unpack_ping(s):
+		self.send_queue.put(struct.pack(">2c",chr(self.fin),chr(0)))
+	def unpack_ping(self,s):
 		#TODO: in order to calculate the ping accurately as soon as this is rx'd
 		#      we need to send a pong back
-		self.recv_queue.put(turn, 0)
+		print "got ping"
+		self.recv_queue.put(self.fin, 0)
 
 	def pack_chat(self,data):
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(3),len(data),data))
@@ -50,12 +54,12 @@ class packager():
 
 	def pack_name(self,data):
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(5),len(data),data))
-	def unpack_name(s):
+	def unpack_name(self,s):
 		self.recv_queue.put(self.turn, 5, self.unpack_string(s))
 
 	def pack_error(self,data):
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(4),len(data),data))
-	def unpack_error(s):
+	def unpack_error(self,s):
 		self.revc_queue.put(self.turn, 4, self.unpack_string(s))
 
 	def unpack_string(self,s):

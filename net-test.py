@@ -13,10 +13,11 @@ def client():
 	n = NC.client_thread("localhost",8888)
 	n.connect()
 	c = C.console(n)
+	c.setDaemon(True)
 	c.start()
 
 	# Dummy main event loop for client
-	while 1:
+	while n.connected:
 		              # Pack/queue all player commands (NET:Provide methods to pack and queue)
 		n.send()      # Send player commands           (NET:Provide method to send all packets)
 		#n.recv()     # Recv oponent commands          (NET:Provide method to recv all packets)

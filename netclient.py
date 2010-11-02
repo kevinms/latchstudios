@@ -67,3 +67,5 @@ class client_thread(threading.Thread,packager):
 	def disconnect(self):
 		self.pack_disconnect()
 		self.send()
+		self.s.close()
+		self.connected = False
