@@ -1,5 +1,4 @@
 import threading
-import Queue
 import sys
 
 class console(threading.Thread):
@@ -16,6 +15,12 @@ class console(threading.Thread):
 	def parse(self,s):
 		if self.check(s,'say'):
 			self.n.chat(s[4:])
+		elif self.check(s,'ping'):
+			self.n.ping()
+		elif self.check(s,'disconnect'):
+			self.n.disconnect()
+		elif self.check(s,'name'):
+			self.n.name(s[5:])
 
 	def check(self,s,token):
 		return s[:len(token)] == token

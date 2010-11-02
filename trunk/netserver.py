@@ -15,6 +15,7 @@ class server_thread(threading.Thread,packager):
 
 	def run(self):
 		self.l = listen_thread(self.port,self.slots,self.client_list,self.lock)
+		self.l.setDaemon(True)
 		self.l.start()
 		
 		while True:
