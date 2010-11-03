@@ -6,10 +6,11 @@ from net import *
 class client_thread(threading.Thread,packager):
 	lock = threading.Lock()
 	peerid = 0;
-	name = ''
+	_name = "player"  # apparently 'name' is already an instance method name of all classes....
 	connected = False
 	ping = False
 	rtt = 0
+	match = 1
 
 	def __init__(self,host,port):
 		threading.Thread.__init__(self)
@@ -34,15 +35,20 @@ class client_thread(threading.Thread,packager):
 			else:
 				# O(1) type lookup
 				#TODO: need to add a try statement incase there is no map entry aka bad type
-				self.unpack_map[type](self.s)
+				self.unpack_map[type](self,self.s)
 
 	def send(self):
+		# The client has nothing to send so tell the server that :D
+		if self.send_queue.empty():
+			self.pack_nop()
+
 		while not self.send_queue.empty():
 			self.s.sendall(self.send_queue.get())
 
 	def connect(self):
 		try:
 			self.s.connect((self.host,self.port))
+			self.s.sendall(self.pack_string(self._name))
 			self.connected = True;
 			print 'hello world'
 		except socket.error, e:
