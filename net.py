@@ -44,9 +44,10 @@ class packager():
 		#TODO: in order to calculate the ping accurately as soon as this is rx'd
 		#      we need to send a pong back
 		print "got ping"
-		self.recv_queue.put(self.fin, 0)
+		self.recv_queue.put(self.turn, 0)
 
 	def pack_chat(self,data):
+		print data, "::", len(data)
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(3),len(data),data))
 	def unpack_chat(self,s):
 		print "chat message:"
@@ -60,11 +61,25 @@ class packager():
 	def pack_error(self,data):
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(4),len(data),data))
 	def unpack_error(self,s):
-		self.revc_queue.put(self.turn, 4, self.unpack_string(s))
+		self.recv_queue.put(self.turn, 4, self.unpack_string(s))
 
+	def pack_nop(self):
+		self.send_queue.put(struct.pack(">2c",chr(self.fin),chr(6)))
+	def unpack_nop(self,data):
+		self.recv_queue.put(self.turn, 0)
+
+	def pack_string(self,data):
+		return struct.pack(">h"+str(len(data))+"s",len(data),data)
 	def unpack_string(self,s):
-		size = struct.unpack(">h",s.recv(2))[0]
+		data = s.recv(2)
+		if data == "" or len(data) != 2:
+			return None
+		size = struct.unpack(">h",data)[0]
+		print size
 		data = s.recv(size)
+		if data == "" or len(data) != size:
+			return None
+		print data
 		d = struct.unpack(str(size)+"s",data)[0]
 		print d
 		return d
@@ -75,5 +90,6 @@ class packager():
 		2 : unpack_input,
 		3 : unpack_chat,
 		4 : unpack_error,
-		5 : unpack_name
+		5 : unpack_name,
+		6 : unpack_nop
 	}
