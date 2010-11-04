@@ -230,7 +230,7 @@ def settin(screen, settingData):
 				elif (e.key == K_RETURN):
 					if selec == 0:
 						IP = prompt(screen, "IP: ")
-						settingData[0] = int(IP)
+						settingData[0] = str(IP)
 						print settingData
 					elif selec == 1:
 						PORT = prompt(screen, "Port: ")
