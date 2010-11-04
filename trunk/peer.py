@@ -4,6 +4,7 @@ import sys
 import os
 import pygame
 import string
+import net as N
 from pygame.locals import *
 from pygame.color import THECOLORS
 
@@ -12,15 +13,16 @@ def main():
 	windowSize = 640,480
 	pygame.init()
 	screen = pygame.display.set_mode(windowSize,0,8)
+	settingData = parseSettings()
 	pygame.display.set_caption('Made by: Latch Studios')
 	screen.fill((159, 180,200))
-	action = mainMenu(screen)
+	action = mainMenu(screen, settingData)
 	if action == 0 :
 		newGame()
 	elif action == 1:
 		connectGame()
 	elif action == 2:
-		settings()
+		settin()
 	else:
 		print "Exiting"
 		exit()
@@ -51,8 +53,24 @@ def connectGame():
 def settin():
 	print "Opening Settings"
 
+def parseSettings():
+	try:
+		f = open("settings.conf", 'r')
+		confData = f.readlines();
+		for i in range(len(confData)):
+			confData[i] = confData[i].strip("\n")
+	except:
+		print "Error: Settings file cannot be found"
+		confData = [0,0,"Default"]
+	return confData
 
-def mainMenu(screen):
+def writeConf(Data):
+	f = open("settings.conf", 'w')
+	for i in range(len(Data)):
+		f.write(str(Data[i])+"\n")
+
+
+def mainMenu(screen, settingData):
 	
 	selec = 0
 	font = pygame.font.Font(None, 60)
@@ -111,7 +129,8 @@ def mainMenu(screen):
 				elif (e.key == K_RETURN):
 					if selec == 2:
 						print "settings"
-						settin(screen)
+						settin(screen, settingData)
+						writeConf(settingData)
 						screen.fill((159, 180,200))	
 						screen.blit(newGame,newGameR)	
 						screen.blit(joinGame,joinGameR)		
@@ -146,7 +165,7 @@ def mainMenu(screen):
 					screen.blit(quit,quitR)
 				pygame.display.update()	
 
-def settin(screen):
+def settin(screen, settingData):
 	
 	selec = 0
 	font = pygame.font.Font(None, 60)
@@ -211,13 +230,16 @@ def settin(screen):
 				elif (e.key == K_RETURN):
 					if selec == 0:
 						IP = prompt(screen, "IP: ")
-						print IP
+						settingData[0] = int(IP)
+						print settingData
 					elif selec == 1:
 						PORT = prompt(screen, "Port: ")
-						print PORT
+						settingData[1] = int(PORT)
+						print settingData
 					elif selec == 2:
 						GAMENAME = prompt(screen, "Game Name: ")
-						print GAMENAME
+						settingData[2] = str(GAMENAME)
+						print settingData
 					elif selec == 3:
 						return
 					screen.fill((159, 180,200))	
