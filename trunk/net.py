@@ -22,7 +22,7 @@ def recv_header(s):
 
 # Handles packaging and unpackaging data for network packets
 # ping, disconnect, input, chat, error
-class packager():
+class packager:
 	send_queue = Queue.Queue()
 	recv_queue = Queue.Queue()
 	turn = 0
@@ -44,29 +44,29 @@ class packager():
 		#TODO: in order to calculate the ping accurately as soon as this is rx'd
 		#      we need to send a pong back
 		print "got ping"
-		self.recv_queue.put(self.turn, 0)
+		self.recv_queue.put((self.turn, 0))
 
 	def pack_chat(self,data):
 		print data, "::", len(data)
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(3),len(data),data))
 	def unpack_chat(self,s):
 		print "chat message:"
-		self.recv_queue.put(self.turn, 3, self.unpack_string(s))
+		self.recv_queue.put((self.turn, 3, self.unpack_string(s)))
 
 	def pack_name(self,data):
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(5),len(data),data))
 	def unpack_name(self,s):
-		self.recv_queue.put(self.turn, 5, self.unpack_string(s))
+		self.recv_queue.put((self.turn, 5, self.unpack_string(s)))
 
 	def pack_error(self,data):
 		self.send_queue.put(struct.pack(">2c"+"h"+str(len(data))+"s",chr(self.fin),chr(4),len(data),data))
 	def unpack_error(self,s):
-		self.recv_queue.put(self.turn, 4, self.unpack_string(s))
+		self.recv_queue.put((self.turn, 4, self.unpack_string(s)))
 
 	def pack_nop(self):
 		self.send_queue.put(struct.pack(">2c",chr(self.fin),chr(6)))
 	def unpack_nop(self,data):
-		self.recv_queue.put(self.turn, 0)
+		self.recv_queue.put((self.turn, 0))
 
 	def pack_string(self,data):
 		return struct.pack(">h"+str(len(data))+"s",len(data),data)

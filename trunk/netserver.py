@@ -5,7 +5,7 @@ import errno
 import copy
 from net import *
 
-class client_info():
+class client_info:
 	_name = ''
 	fin = 1
 	ping = -1
