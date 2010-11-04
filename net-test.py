@@ -10,7 +10,7 @@ import time
 
 def client():
 	# Initialize components
-	n = NC.client_thread("localhost",8888)
+	n = NC.client_thread(sys.argv[2],8888)
 	n.connect()
 	c = C.console(n)
 	c.setDaemon(True)
