@@ -18,7 +18,7 @@ def main():
 	screen.fill((159, 180,200))
 	action = mainMenu(screen, settingData)
 	if action == 0 :
-		newGame()
+		nGame(screen)
 	elif action == 1:
 		connectGame()
 	elif action == 2:
@@ -26,26 +26,67 @@ def main():
 	else:
 		print "Exiting"
 		exit()
-	screen.fill((159, 180,200))
-
+	screen.fill((200, 180,200))
+        dx = 5
+	dy = 5
+	velocity = 1
+	TargetX = 0
+	TargetY = 0
 
 
 	pygame.display.update()
 	done = False
 	while not done:
+		player = pygame.image.load("sprite.gif").convert()
+		screen.fill((200, 180,200))
+		screen.blit(player, (dx,dy))
+		pygame.display.update()
 		#event handling
 		events = pygame.event.get()
 		for e in events:
 			if(e.type == QUIT):
 				done = True
 				break
+			elif(e.type == pygame.KEYDOWN):
+				if (e.key == K_UP):
+					print "Key up"
+					dy = dy - 10
+					
+					
+				elif (e.key == K_DOWN):
+					print "Key down"
+					dy = dy + 10
+
+				elif (e.key == K_RIGHT):
+					print "Key right"
+					dx = dx + 10
+				elif (e.key == K_LEFT):
+					print "Key Left"
+					dx = dx - 10
+
+				else:
+					pass
+			elif(e.type == pygame.MOUSEBUTTONDOWN):
+				print "MOUSE DOWN"
+				mouse_position = list(e.pos)
+				TargetX = e.pos[0]
+				TargetY = e.pos[1]
 			else:
 				pass
 
 	print "Exiting"
 
-def newGame():
+def nGame(screen):
 	print "Starting New Game"
+	pygame.display.set_caption('New Game')
+
+
+
+
+	print "Done"
+
+
+	
 
 def connectGame():
 	print "Connecting To Game"
