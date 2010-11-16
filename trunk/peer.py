@@ -6,6 +6,9 @@ import pygame
 import string
 import net
 import gui
+
+import troop
+
 from vec import *
 import netserver as NS
 from pygame.locals import *
@@ -18,8 +21,10 @@ def main():
 	screen = pygame.display.set_mode(windowSize,0,8)
 	settingData = parseSettings()
 	pygame.display.set_caption('Made by: Latch Studios')
+	troopList = []
 	screen.fill((159, 180,200))
 	action = mainMenu(screen, settingData)
+
 	if action == 0 :
 		node = nGame(screen, settingData)
 	elif action == 1:
@@ -33,6 +38,7 @@ def main():
 	
 
 	screen.fill((200, 180,200))
+
         dx = screen.get_rect().centerx
 	dy = screen.get_rect().centery
 	velocity = .5
@@ -40,6 +46,8 @@ def main():
 	ty = dy
 	directionX = 0
 	directionY = 0
+
+	troopList.append(troop.Troop(0,0))
 
 
 	pygame.display.update()
@@ -58,39 +66,52 @@ def main():
 			elif(e.type == pygame.KEYDOWN):
 				if (e.key == K_UP):
 					print "Key up"
-					dy = dy - velocity
+					for tro in troopList:
+						if tro.isSelected:
+							tro.locationY = tro.locationY - tro.speed
 					
 					
 				elif (e.key == K_DOWN):
 					print "Key down"
-					dy = dy + velocity
+					for tro in troopList:
+						if tro.isSelected:
+							tro.locationY = tro.locationY + tro.speed
 
 				elif (e.key == K_RIGHT):
 					print "Key right"
-					dx = dx + velocity
+					for tro in troopList:
+						if tro.isSelected:
+							tro.locationX = tro.locationX + tro.speed
 				elif (e.key == K_LEFT):
 					print "Key Left"
-					dx = dx - velocity
+					for tro in troopList:
+						if tro.isSelected:
+							tro.locationX = tro.locationX - tro.speed
 
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
-				mouse_position = list(e.pos)
-				tx = e.pos[0]
-				ty = e.pos[1]
+				for tro in troopList:
+					if tro.isSelected:
+						mouse_position = list(e.pos)
+						tro.moveToTargetX = e.pos[0]
+						tro.moveToTargetY = e.pos[1]
 				
 			else:
 				pass
 
 		#Update Units loop goes here ((once we have a unit class
+		for tro in troopList:
+			unitDirect = unitdir(tx, ty, dx, dy, velocity)
+			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
+			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
+			screen.blit(player, (tro.locationX,tro.locationY))
 		
-		unitDirect = unitdir(tx, ty, dx, dy, velocity)
 		#print unitDirect[0]
 		#print unitDirect[1]
-		dx = dx + (velocity * unitDirect[0])
-		dy = dy + (velocity * unitDirect[1])
 
-		screen.blit(player, (dx,dy))
+
+		gui.drawPanels(-1)
 		gui.refresh(screen)
 
 	print "Exiting"
