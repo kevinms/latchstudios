@@ -21,11 +21,11 @@ def client():
 		if n.match:       # This loop will run at a pre determined rate (eg. 10 Hz)
 			              # Pack/queue all player commands (NET:Provide methods to pack and queue)
 			n.send()      # Send player commands           (NET:Provide method to send all packets)
-			#n.recv()     # Recv oponent commands          (NET:Provide method to recv all packets)
 			              # Process all commands           (NET:Provide access to all the commands)
 			              # Process metrics                (NET:Provide access to simplified metrics)
 			              # Progess turn number            (NET:Handle internally I think)
-			time.sleep(1) # Dummy frame render time
+			#time.sleep(1) # Dummy frame render time
+			n.recv()     # Recv oponent commands          (NET:Provide method to recv all packets)
 		else:
 			pass
 
