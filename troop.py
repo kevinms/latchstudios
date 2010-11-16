@@ -14,6 +14,10 @@ class Troop(unit.Unit):
 		self.locationY = positionY
 		self.rotation = 0
 		self.speed = .5
+
+
+		self.moveToTargetX = self.locationX
+		self.moveToTargetY = self.locationY	
 		
 		#Offensive
 		self.attackRate = 0.8

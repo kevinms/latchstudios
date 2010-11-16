@@ -6,8 +6,8 @@ import pygame
 import math
 
 class Unit:
-	moveToTargetX = 50
-	moveToTargetY = 50
+	moveToTargetX = -1
+	moveToTargetY = -1
 	selected = False
 	maxHealth = 100
 	#mySprite = pygame.imasige.load("error.gif").convert()
