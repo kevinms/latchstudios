@@ -11,7 +11,7 @@ class Unit:
 		self.killCount = 0
 		self.rank = 0
 		self.unitType = -1
-		self.isSelected = False
+		self.selected = False
 		#Movement
 		self.speed = 1
 		
@@ -25,7 +25,9 @@ class Unit:
 		self.rotation = 0 #TODO: Math to calculate what rotation it will have after move		
 		self.locationX = locX
 		self.locationY = locY
-		
+	def isSelected():
+		return self.selected
+	
 
 '''
 
