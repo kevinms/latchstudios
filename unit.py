@@ -10,7 +10,6 @@ class Unit:
 	moveToTargetY = -1
 	selected = False
 	maxHealth = 100
-	mySprite = -1
 	#mySprite = pygame.image.load("error.gif").convert()
 
 	def __init__(self, spawnLocX, spawnLocY):
@@ -29,7 +28,6 @@ class Unit:
 
 	def position(self):
 		return self.locationX , self.locationY, self.rotation
-		
 
 	def setPosition(locX, locY):
 		self.rotation = 0 #TODO: Math to calculate what rotation it will have after move		
