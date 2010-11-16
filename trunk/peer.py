@@ -26,27 +26,30 @@ def main():
 	else:
 		print "Exiting"
 		exit()
+
+	
+
 	screen.fill((200, 180,200))
-        dx = 5
-	dy = 5
+        dx = screen.get_rect().centerx
+	dy = screen.get_rect().centery
 	velocity = 1
-	TargetX = 0
-	TargetY = 0
+	tX = 0
+	tY = 0
 
 
 	pygame.display.update()
 	done = False
 	while not done:
-		player = pygame.image.load("sprite.gif").convert()
+		player = pygame.image.load("sprite3.gif").convert()
 		screen.fill((200, 180,200))
-		screen.blit(player, (dx,dy))
-		pygame.display.update()
-		#event handling
+		#event loop
 		events = pygame.event.get()
 		for e in events:
+			#quit
 			if(e.type == QUIT):
 				done = True
 				break
+			#key recognition branch
 			elif(e.type == pygame.KEYDOWN):
 				if (e.key == K_UP):
 					print "Key up"
@@ -67,12 +70,17 @@ def main():
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
-				print "MOUSE DOWN"
 				mouse_position = list(e.pos)
-				TargetX = e.pos[0]
-				TargetY = e.pos[1]
+				tX = e.pos[0]
+				tY = e.pos[1]
+				
 			else:
 				pass
+
+		#Update Units loop goes here ((once we have a unit class
+		
+		screen.blit(player, (dx,dy))
+		pygame.display.update()
 
 	print "Exiting"
 
