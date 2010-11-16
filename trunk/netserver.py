@@ -71,7 +71,7 @@ class server_thread(threading.Thread,packager):
 			#print "type = " + str(data[2])
 
 			if data[2] == 2:
-				self.pack_input(info)
+				self.pack_minput(info,data[3])
 			elif data[2] == 1:
 				self.pack_disconnect(info)
 			elif data[2] == 0:

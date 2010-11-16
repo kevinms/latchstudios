@@ -78,8 +78,9 @@ class client_thread(threading.Thread,packager):
 			self.pack_ping(self.info)
 			ping = True
 
-	def input(self):
-		pass
+	def minput(self,input_type,x,y):
+		if self.connected:
+			self.pack_minput(self.info,(chr(input_type),x,y))
 
 	def disconnect(self):
 		self.pack_disconnect(self.info)
