@@ -1,11 +1,12 @@
 
 import pygame
 import unit
+import math
 
 class Troop(unit.Unit):
 	def __init__(self, positionX, positionY):
 
-		self.mySprite = pygame.image.load("sprite3.gif").convert() 
+		self.mySprite = pygame.image.load("arrow.gif").convert() 
 		
 		self.unitType = 1		
 		self.locationX = positionX
@@ -25,3 +26,15 @@ class Troop(unit.Unit):
 
 		#Defensive
 		self.damageResistance = 10
+
+
+	def setRotation(self, unitDirect):
+		if(unitDirect[1] != 0 and unitDirect[0] != 0):
+			run = unitDirect[0]
+			rise = unitDirect[1]
+			temp = math.tan(rise/run)
+			temp = math.degrees(temp)
+			self.rotation = math.fabs(temp);
+			print self.rotation
+			pygame.transform.rotate(self.mySprite, 10)
+		
