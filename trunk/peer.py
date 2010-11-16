@@ -100,7 +100,7 @@ def main():
 				print e.button
 				if (e.button == 1):
 					for tro in troopList:
-						
+						pass
 				elif (e.button == 3):
 					for tro in troopList:
 						if tro.isSelected():
