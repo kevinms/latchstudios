@@ -40,17 +40,23 @@ def recv_header(s):
 	return cid, fin, type
 
 # Handles packaging and unpackaging data for network packets
-# ping, disconnect, input, chat, error
+# ping, disconnect, minput, chat, error
 class packager:
 	send_queue = Queue.Queue()
 	recv_queue = Queue.Queue()
 	step = 0
 	fin = 1
 
-	def pack_input(self):
-		pass
-	def unpack_input(self,c):
-		pass
+	def pack_minput(self,data):
+		self.send_queue.put(struct.pack(">h2cc2i",c.cid,chr(self.fin),chr(2),data[0],data[1],data[2]))
+	def unpack_minput(self,c):
+		self.recv_queue.put((c.cid, self.step, 2))
+		data = c.s.recv(9)
+		if data == "" or len(data) != 9:
+			print "didn't recieve all the data"
+			return
+		input_type, x, y = struct.unpack(">c2i",data)
+		self.recv_queue.put((c.cid, self.step, 2, (input_type,x,y)))
 
 	def pack_disconnect(self):
 		pass
@@ -108,7 +114,7 @@ class packager:
 	unpack_map = {
 		0 : unpack_ping,
 		1 : unpack_disconnect,
-		2 : unpack_input,
+		2 : unpack_minput,
 		3 : unpack_chat,
 		4 : unpack_error,
 		5 : unpack_name,
