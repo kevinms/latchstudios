@@ -5,19 +5,20 @@ import errno
 import copy
 from net import *
 
-class client_info:
-	_name = ''
-	fin = 1
-	ping = -1
-	def __init__(self,s):
-		self.s = s
-		self._name = "pughar"
-
 def find_client(client_list,conn):
 	i = 0
 
 	while i < len(client_list):
 		if client_list[i].s == conn:
+			return client_list[i]
+		i += 1
+	return None
+
+def find_client_by_id(client_list,cid):
+	i = 0
+
+	while i < len(client_list):
+		if client_list[i].cid == cid:
 			return client_list[i]
 		i += 1
 	return None
@@ -31,6 +32,7 @@ class server_thread(threading.Thread,packager):
 		threading.Thread.__init__(self)
 		self.port = port
 		self.slots = slots
+		self.turn = 0
 
 	def run(self):
 		self.l = listen_thread(self.port,self.slots,self.client_list,self.power_lock,self.lock)
@@ -41,13 +43,50 @@ class server_thread(threading.Thread,packager):
 		self.power_lock.acquire()
 
 		while True:
+			# Keep the server from eating up CPU cycles
 			if not self.client_list:
 				self.power_lock.release()
 				self.l.acquire_lock()
 				self.power_lock.acquire()
+
 			self.recv()
-			#self.process
+			self.step += 1
+			self.process()
 			self.send()
+
+	# Process all the data and get ready to send to the clients
+	def process(self):
+		while not self.recv_queue.empty():
+			data = self.recv_queue.get()
+			print "process " + str(data[0]) + str(data[1]) + str(data[2])
+			if data[2] == 0:  # ping
+				print "not sending out ping"
+				continue;
+
+			info = find_client_by_id(self.client_list,data[0])
+			#print "type = " + str(data[2])
+
+			if data[2] == 2:
+				self.pack_input(info)
+			elif data[2] == 1:
+				self.pack_disconnect(info)
+			elif data[2] == 0:
+				self.pack_ping(info)
+			elif data[2] == 3:
+				self.pack_chat(info,data[3])
+			elif data[2] == 5:
+				self.pack_name(info,data[3])
+			elif data[2] == 4:
+				self.pack_error(info,data[3])
+			elif data[2] == 6:
+				print "processing nop"
+				self.pack_nop(info)
+
+			#packed_data = self.send_queue.queue.popleft()
+			#print "str(len(packed_data)) = " + str(len(packed_data))
+			#part = struct.pack(">h",data[0])
+			#whole = struct.pack(str(len(part))+"s"+str(len(packed_data))+"s",part,packed_data)
+			#self.send_queue.put(struct.pack(">"+str(len(packed_data))+"sh",packed_data,data[0]))
 
 	# Send info to all clients to sync one turn
 	def send(self):
@@ -55,6 +94,17 @@ class server_thread(threading.Thread,packager):
 			data = self.send_queue.get()
 			for client in self.client_list:
 				try:
+					'''
+					print "data================="
+					print "datalen = " + str(len(data))
+					print int(ord(data[0]))
+					print int(ord(data[1]))
+					print int(ord(data[2]))
+					print int(ord(data[3]))
+					print int(ord(data[4]))
+					print int(ord(data[5]))
+					'''
+
 					client.s.sendall(data)
 				except socket.error, e:
 					print "Detected remote disconnect"
@@ -78,7 +128,7 @@ class server_thread(threading.Thread,packager):
 					fd_set.remove(s)
 
 	def parse(self,c):
-		fin, type = recv_header(c.s)
+		cid, fin, type = recv_header(c.s)
 		c.fin = fin
 		c.type = type
 
@@ -93,7 +143,7 @@ class server_thread(threading.Thread,packager):
 		else:
 			# O(1) type lookup
 			#TODO: need to add a try statement incase there is no map entry aka bad type
-			self.unpack_map[type](self,c.s)
+			self.unpack_map[type](self,c)
 
 	def ping(self):
 		for client in self.client_list:
@@ -107,6 +157,8 @@ class server_thread(threading.Thread,packager):
 # Thread to accept TCP connections from any client
 class listen_thread(threading.Thread,packager):
 	host = ''
+	next_client_id = 2
+
 	def __init__(self,port,slots,client_list,power_lock,lock):
 		threading.Thread.__init__(self)
 		self.port = port
@@ -127,8 +179,10 @@ class listen_thread(threading.Thread,packager):
 			c.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
 			if len(self.client_list) < self.slots:
 				print addr
-				info = client_info(c)
-				info._name = self.unpack_string(info.s)
+				info = client_info(c,self.next_client_id)
+				info.s.sendall(struct.pack(">h",info.cid))
+				self.next_client_id += 1
+				info._name = self.unpack_string(info)
 				if info._name == None:
 					continue
 				self.lock.acquire()
