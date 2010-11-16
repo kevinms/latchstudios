@@ -28,6 +28,14 @@ class Unit:
 	def position(self):
 		return self.locationX , self.locationY, self.rotation
 
+	def setRotation(self, unitDirect):
+		print unitDirect[0] , " ", unitDirect[1]
+		temp = math.tan(unitDirect[0]/unitDirect[1])
+		temp = math.degrees(temp)
+		self.rotation = temp;
+		
+		
+
 	def setPosition(locX, locY):
 		self.rotation = 0 #TODO: Math to calculate what rotation it will have after move		
 		self.locationX = locX
@@ -41,6 +49,9 @@ class Unit:
 
 	def deselectMe(self):
 		self.selected = False
+		
+	def setSelected(self):
+		#TODO
 
 	def getMoveToTargetX(self):
 		return self.moveToTargetX
