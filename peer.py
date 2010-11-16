@@ -6,13 +6,13 @@ import pygame
 import string
 import net
 import gui
-import math
+from math import *
 
 import troop
 import speedster
 import building
 
-from vec import *
+import vec
 import netserver as NS
 from pygame.locals import *
 from pygame.color import THECOLORS
@@ -101,7 +101,11 @@ def main():
 				print e.button
 				if (e.button == 1):
 					for tro in troopList:
-						print math.fabs(vec.length(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY()))
+						dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
+						if fabs(dist[0])< 10 or fabs(dist[1]) < 10:
+							tro.selected = True
+						else:
+							tro.selected = False
 				elif (e.button == 3):
 					for tro in troopList:
 						if tro.isSelected():
@@ -115,8 +119,8 @@ def main():
 
 		#Update Units loop goes here ((once we have a unit class
 		for tro in troopList:
-			unitDirect = unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-			tro.setRotation(unitDirect)
+			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+			#tro.setRotation(unitDirect)
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
 			screen.blit(tro.mySprite, (tro.locationX,tro.locationY))
