@@ -5,8 +5,9 @@ import sys
 import time
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
-#logging.basicConfig()
+# Enable/Disable Debug prints
+#logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig()
 
 # Run server: python net-test.py 0
 # Run client: python net-test.py 1
