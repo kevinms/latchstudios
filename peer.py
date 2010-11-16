@@ -9,6 +9,7 @@ import gui
 
 import troop
 import speedster
+import building
 
 from vec import *
 import netserver as NS
@@ -97,11 +98,15 @@ def main():
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
 				print e.button
-				for tro in troopList:
-					if tro.isSelected():
-						mouse_position = list(e.pos)
-						tro.moveToTargetX = e.pos[0]
-						tro.moveToTargetY = e.pos[1]
+				if (e.button == 1):
+					for tro in troopList:
+						
+				elif (e.button == 3):
+					for tro in troopList:
+						if tro.isSelected():
+							mouse_position = list(e.pos)
+							tro.moveToTargetX = e.pos[0]
+							tro.moveToTargetY = e.pos[1]
 						
 				
 			else:
@@ -110,6 +115,7 @@ def main():
 		#Update Units loop goes here ((once we have a unit class
 		for tro in troopList:
 			unitDirect = unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+			tro.setRotation(unitDirect)
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
 			screen.blit(tro.mySprite, (tro.locationX,tro.locationY))
