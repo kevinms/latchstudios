@@ -28,7 +28,7 @@ class client_thread(threading.Thread,packager):
 		while not fin:
 			cid, fin, type = recv_header(self.s)
 
-			logging.debug("\tcid = " + str(cid) + ", fin = " + str(fin) + ", type = ", str(type))
+			logging.debug("\tcid = " + str(cid) + ", fin = " + str(fin) + ", type = " + str(type))
 			# Client disconnected so remove from the list
 			if type == -1:
 				print "Disconnected from server"
