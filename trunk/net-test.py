@@ -3,6 +3,10 @@ import netserver as NS
 import console as C
 import sys
 import time
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig()
 
 # Run server: python net-test.py 0
 # Run client: python net-test.py 1
