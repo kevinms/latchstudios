@@ -6,6 +6,7 @@ import pygame
 import string
 import net
 import gui
+import math
 
 import troop
 import speedster
@@ -100,7 +101,7 @@ def main():
 				print e.button
 				if (e.button == 1):
 					for tro in troopList:
-						pass
+						print math.fabs(vec.length(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY()))
 				elif (e.button == 3):
 					for tro in troopList:
 						if tro.isSelected():
