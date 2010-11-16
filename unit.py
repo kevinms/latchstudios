@@ -2,11 +2,13 @@
 #1 troop
 #2 support
 
-
 class Unit:
 	moveToTargetX = -1
 	moveToTargetY = -1
 	selected = False
+	maxHealth = 100
+	mySprite = pygame.image.load("error.gif").convert()
+
 	def __init__(self, spawnLocX, spawnLocY):
 		#Initialization of basic stats
 		self.maxHealth = 100
