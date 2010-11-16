@@ -36,7 +36,7 @@ class Unit:
 		self.selected = False
 
 	def getMoveToTargetX(self):
-		return self.moveToTargetX
+		return moveToTargetX
 
 	def getMoveToTargetY(self):
 		return self.moveToTargetY
