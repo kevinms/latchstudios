@@ -77,7 +77,7 @@ class server_thread(threading.Thread,packager):
 			elif data[2] == 0:
 				self.pack_ping(info)
 			elif data[2] == 3:
-				print "packing it now"
+				logging.debug("packing it now")
 				self.pack_chat(info,data[3])
 			elif data[2] == 5:
 				self.pack_name(info,data[3])
@@ -98,11 +98,11 @@ class server_thread(threading.Thread,packager):
 			self.fin = 1
 		
 			packed_data = self.send_queue.queue.popleft()
-			print "len(packed_data)=" + str(len(packed_data))
+			logging.debug("len(packed_data)=" + str(len(packed_data)))
 			part = struct.unpack(">hcc",packed_data[0:4])
 			updated_part = struct.pack(">hcc",part[0],chr(self.fin),part[2])
 			
-			print "len(packed_data)=" + str(len(packed_data))
+			logging.debug("len(packed_data)=" + str(len(packed_data)))
 	
 			# the header length
 			if len(packed_data) == 4:
@@ -113,30 +113,20 @@ class server_thread(threading.Thread,packager):
 
 	# Send info to all clients to sync one turn
 	def send(self):
-		print "Sending all data:"
+		logging.debug("Sending all data:")
 		while not self.send_queue.empty():
 			data = self.send_queue.get()
-			print "\tGetting data to send:"
+			logging.debug("\tGetting data to send:")
 			for client in self.client_list:
 				try:
-					print "\t\tTrying to print data"
+					logging.debug("\t\tTrying to print data")
 					l = len(data)
-					print l
-					print "\t\t" + str(int(ord(data[0])))
-					print "\t\t" + str(int(ord(data[1])))
-					print "\t\t" + str(int(ord(data[2])))
-					print "\t\t" + str(int(ord(data[3])))
-					'''
-					print "data================="
-					print "datalen = " + str(len(data))
-					print int(ord(data[0]))
-					print int(ord(data[1]))
-					print int(ord(data[2]))
-					print int(ord(data[3]))
-					print int(ord(data[4]))
-					print int(ord(data[5]))
-					'''
-
+					logging.debug(str(l))
+					logging.debug("\t\t" + str(int(ord(data[0]))))
+					logging.debug("\t\t" + str(int(ord(data[1]))))
+					logging.debug("\t\t" + str(int(ord(data[2]))))
+					logging.debug("\t\t" + str(int(ord(data[3]))))
+					
 					client.s.sendall(data)
 				except socket.error, e:
 					print "Detected remote disconnect"

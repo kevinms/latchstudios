@@ -24,18 +24,11 @@ class client_thread(threading.Thread,packager):
 
 	def recv(self):
 		fin = 0
-		print "Recieving data while not fin:"
+		logging.debug("Recieving data while not fin:")
 		while not fin:
-			'''
-			if self.tron > 0:
-				d = self.s.recv(2)
-				print "SIZE=" + str(len(d))
-			self.tron += 1
-			'''
-
 			cid, fin, type = recv_header(self.s)
 
-			print "\tcid = " + str(cid) + ", fin = " + str(fin) + ", type = ", str(type)
+			logging.debug("\tcid = " + str(cid) + ", fin = " + str(fin) + ", type = ", str(type))
 			# Client disconnected so remove from the list
 			if type == -1:
 				print "Disconnected from server"
