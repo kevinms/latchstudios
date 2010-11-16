@@ -2,31 +2,36 @@ import pygame
 
 def drawPanels(selectedUnit):
     size = 108,480
-    font = pygame.font.Font(None, 14)
+    font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
     gameWindow = pygame.display.get_surface()
-    rightPanel = pygame.Surface((108, 455))
-    topPanel = pygame.Surface((680, 25))
-    rightPanel.fill((0,0,0))
-    topPanel.fill((0,0,0))
-    #rightPanel = pygame.Rect(532, 25, 108, 455)
-    #topPanel = pygame.Rect(0, 0, 640, 25)
-    unit = font.render("Unit", 0, (255,255,255))
-    power = font.render("Power", 0, (255,255,255))
-    cash = font.render("Cash", 0, (255,255,255))
-    logo = font.render("Latch Studios", 0, (255,255,255))
-    textpos = unit.get_rect()
-    textpos.centerx = topPanel.get_rect().centerx
-    topPanel.blit(unit, (80, 0))
-    topPanel.blit(power, (240, 0))
-    topPanel.blit(cash, (400, 0))
-    topPanel.blit(logo, (560, 0))
-    rightPanel.blit(unit, (54, 60))
-    rightPanel.blit(power, (54, 180))
-    rightPanel.blit(cash, (54, 300))
-    rightPanel.blit(logo, (54, 420))
-    gameWindow.blit(rightPanel,(532, 25))
-    gameWindow.blit(topPanel,(0,0))
-    pygame.display.flip()
+
+    if selectedUnit < 0:
+        rightPanel = pygame.Surface((120, 455))
+        topPanel = pygame.Surface((680, 36))
+        rightPanel.fill((0,0,0))
+        topPanel.fill((0,0,0))
+        gameWindow.blit(rightPanel,(520, 36))
+        gameWindow.blit(topPanel,(0,0))
+    
+        # TOP PANEL INFO BAR #
+        gameWindow.blit(font.render('Unit', 0, (255,255,255)), (80,0))
+        gameWindow.blit(font.render('Power', 0, (255,255,255)), (240, 0))
+        gameWindow.blit(font.render('Cash', 0, (255,255,255)), (400, 0))
+        gameWindow.blit(font.render('Latch Studios',0, (255,255,255)), (545, 0))
+        gameWindow.blit(font.render('0/10', 0, (0,255,0)), (80,18))
+        gameWindow.blit(font.render('0/200', 0, (0,255,0)), (240, 18))
+        gameWindow.blit(font.render('$0', 0, (0,255,0)), (406, 18))
+    
+        # SIDE PANEL INFO BAR #
+        base = pygame.image.load('base.jpg')
+        barracks = pygame.image.load('barracks.jpg')
+        base.set_clip((0,0), (90,90))
+        barracks.set_clip((0,0), (90,90))
+        gameWindow.blit(font.render('Build a Base',0, (255,255,255)), (525, 60))
+        gameWindow.blit(base, (525, 100))
+        gameWindow.blit(font.render('Build a Barracks',0, (255,255,255)), (525, 240))
+        gameWindow.blit(barracks, (525, 280))
+        pygame.display.update()
 '''
     # -- BUILDING -- #
     if (selectedUnit == 0):
