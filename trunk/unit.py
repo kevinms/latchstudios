@@ -21,7 +21,7 @@ class Unit:
 	def position(self):
 		return self.locationX , self.locationY, self.rotation
 
-	def setPosition(locX, locY)
+	def setPosition(locX, locY):
 		self.rotation = 0 #TODO: Math to calculate what rotation it will have after move		
 		self.locationX = locX
 		self.locationY = locY
