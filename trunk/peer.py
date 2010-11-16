@@ -44,7 +44,7 @@ def main():
 
 	screen.fill((200, 180,200))
 
-        playerList.append(player.Player())
+        playerList.append(player.Player(123))
 	
 	done = False
 	while not done:
@@ -103,7 +103,7 @@ def main():
 							else:
 								tro.setSelectVal(False)
 				elif (e.button == 3):
-					n.minput(1, e.pos[0], e.pos[1])
+					n.minput(3, e.pos[0], e.pos[1])
 					for person in playerList:
 						for tro in person.troops:
 							if tro.isSelected():
@@ -117,7 +117,8 @@ def main():
 				pass
 
 
-
+		
+		
 
 
 
@@ -136,6 +137,8 @@ def main():
 
 		gui.drawPanels(-1)
 		n.send()
+
+		n.recv()
 		gui.refresh(screen)
 
 	print "Exiting"
@@ -155,7 +158,7 @@ def nGame(screen, settingData):
 def connectGame(screen, settingData):
 	print "Starting New Game"
 	print settingData[1]
-	n = NC.client_thread(settingData[0],int(settingData[1])
+	n = NC.client_thread(settingData[0],int(settingData[1]))
 	n.connect()
 
 	pygame.display.set_caption('New Game')
