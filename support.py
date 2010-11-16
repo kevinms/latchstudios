@@ -10,6 +10,8 @@ class Support(unit.Unit):
 		self.rotation = 0
 		self.speed = 10
 		
+		self.supportActionAtX = -1
+		self.supportActionAtY = -1
 
 		self.hugDiameter = 10  #(units inside the 'hug' diameter will have the benefits the support gives)
 		self.healRate = 3
