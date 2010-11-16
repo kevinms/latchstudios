@@ -1,7 +1,10 @@
+import pygame
 import unit
 
 class Support(unit.Unit):
 	def __init__(self, positionX, positionY):
+
+		self.mySprite = pygame.image.load("support.gif").convert() 
 
 		self.unitType = 2
 		
