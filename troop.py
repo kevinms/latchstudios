@@ -5,8 +5,11 @@ import math
 
 class Troop(unit.Unit):
 	def __init__(self, positionX, positionY):
-
+		
 		self.mySprite = pygame.image.load("arrow.gif").convert() 
+		
+		mySprite = self.mySprite
+		self.baseImage = self.mySprite
 		
 		self.unitType = 1		
 		self.locationX = positionX
@@ -36,5 +39,5 @@ class Troop(unit.Unit):
 			temp = math.degrees(temp)
 			self.rotation = math.fabs(temp);
 			print self.rotation
-			pygame.transform.rotate(self.mySprite, 10)
+			self.mySprite = pygame.transform.rotate(self.baseImage, self.rotation)
 		
