@@ -1,6 +1,6 @@
-'0 building
-'1 troop
-'2 support
+#0 building
+#1 troop
+#2 support
 
 
 class Unit:
