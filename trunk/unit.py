@@ -4,6 +4,9 @@
 
 
 class Unit:
+	moveToTargetX = -1
+	moveToTargetY = -1
+	selected = False
 	def __init__(self, spawnLocX, spawnLocY):
 		#Initialization of basic stats
 		self.maxHealth = 100
@@ -36,7 +39,7 @@ class Unit:
 		self.selected = False
 
 	def getMoveToTargetX(self):
-		return moveToTargetX
+		return self.moveToTargetX
 
 	def getMoveToTargetY(self):
 		return self.moveToTargetY
