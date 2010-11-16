@@ -34,7 +34,7 @@ class client_thread(threading.Thread,packager):
 
 			cid, fin, type = recv_header(self.s)
 
-			print "cid = " + str(cid) + ", fin = " + str(fin) + ", type = ", str(type)
+			#print "cid = " + str(cid) + ", fin = " + str(fin) + ", type = ", str(type)
 			# Client disconnected so remove from the list
 			if type == -1:
 				print "Disconnected from server"
@@ -67,7 +67,7 @@ class client_thread(threading.Thread,packager):
 			self.info.cid = struct.unpack(">h",data)[0]
 
 			self.connected = True;
-			print 'hello world'
+			print 'connected'
 		except socket.error, e:
 			print 'could not connect to server'
 

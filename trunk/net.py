@@ -61,7 +61,7 @@ class packager:
 	def unpack_ping(self,c):
 		#TODO: in order to calculate the ping accurately as soon as this is rx'd
 		#      we need to send a pong back
-		print "got ping"
+		#print "got ping"
 		self.recv_queue.put((c.cid, self.step, 0))
 
 	def pack_chat(self,c,data):
@@ -83,10 +83,10 @@ class packager:
 
 	def pack_nop(self,c):
 		self.send_queue.put(struct.pack(">h2c",c.cid,chr(self.fin),chr(6)))
-		print "packing a nop with fin=" + str(self.fin)
+		#print "packing a nop with fin=" + str(self.fin)
 	def unpack_nop(self,c):
 		self.recv_queue.put((c.cid, self.step, 6))
-		print "got a nop"
+		#print "got a nop"
 
 	def pack_string(self,data):
 		return struct.pack(">h"+str(len(data))+"s",len(data),data)
@@ -95,11 +95,11 @@ class packager:
 		if data == "" or len(data) != 2:
 			return None
 		size = struct.unpack(">h",data)[0]
-		print "size1 = " + str(size)
+		#print "size1 = " + str(size)
 		data = c.s.recv(size)
 		if data == "" or len(data) != size:
 			return None
-		print "unpack_string = " + data
+		#print "unpack_string = " + data
 		d = struct.unpack(str(size)+"s",data)[0]
 		print d
 		return d
