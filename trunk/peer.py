@@ -6,6 +6,7 @@ import pygame
 import string
 import net
 import gui
+import player
 from math import *
 
 import troop
@@ -14,6 +15,7 @@ import building
 
 import vec
 import netserver as NS
+import netclient as NC
 from pygame.locals import *
 from pygame.color import THECOLORS
 
@@ -24,14 +26,14 @@ def main():
 	screen = pygame.display.set_mode(windowSize,0,8)
 	settingData = parseSettings()
 	pygame.display.set_caption('Made by: Latch Studios')
-	troopList = []
+	playerList = []
 	screen.fill((159, 180,200))
 	action = mainMenu(screen, settingData)
 
 	if action == 0 :
-		node = nGame(screen, settingData)
+		n = nGame(screen, settingData)
 	elif action == 1:
-		connectGame()
+		n = connectGame(screen, settingData)
 	elif action == 2:
 		settin()
 	else:
@@ -42,24 +44,12 @@ def main():
 
 	screen.fill((200, 180,200))
 
-        dx = screen.get_rect().centerx
-	dy = screen.get_rect().centery
-	velocity = .5
-	tx = dx
-	ty = dy
-	directionX = 0
-	directionY = 0
-
-	troopList.append(speedster.Speedster(50,50))
-	troopList.append(troop.Troop(100,100))
+        playerList.append(player.Player())
 	
-
-
-	pygame.display.update()
 	done = False
 	while not done:
-		#player = pygame.image.load("sprite3.gif").convert()
 		screen.fill((200, 180,200))
+
 		#event loop
 		events = pygame.event.get()
 		for e in events:
@@ -74,7 +64,7 @@ def main():
 					#for tro in troopList:
 					#	if tro.isSelected():
 					#		tro.locationY = tro.getLocationY() - tro.getSpeed()
-					troopList.append(troop.Troop(100,100))
+					#troopList.append(troop.Troop(100,100))
 					
 					
 				elif (e.key == K_DOWN):
@@ -82,59 +72,70 @@ def main():
 					#for tro in troopList:
 					#	if tro.isSelected():
 					#		tro.locationY = tro.getLocationY() + tro.getSpeed()
-					troopList.append(speedster.Speedster(50,50))
+					#troopList.append(speedster.Speedster(50,50))
 
 				elif (e.key == K_RIGHT):
 					print "Key right"
-					for tro in troopList:
-						if tro.isSelected():
-							tro.locationX = tro.getLocationX() + tro.getSpeed()
+					#for tro in troopList:
+					#	if tro.isSelected():
+					#		tro.locationX = tro.getLocationX() + tro.getSpeed()
 				elif (e.key == K_LEFT):
 					print "Key Left"
-					for tro in troopList:
-						if tro.isSelected():
-							tro.locationX = tro.getLocationX() - tro.getSpeed()
+					#for tro in troopList:
+					#	if tro.isSelected():
+					#		tro.locationX = tro.getLocationX() - tro.getSpeed()
 
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
 				#print e.button
 				if (e.button == 1):
-					for tro in troopList:
-						tro.setSelectVal(False)
-					for tro in troopList:
-						dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
-						print dist
-						if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
-							tro.setSelectVal(True)
-							break
-						else:
+					n.minput(1, e.pos[0], e.pos[1])
+					for person in playerList:
+						for tro in person.troops:
 							tro.setSelectVal(False)
+						for tro in person.troops:
+							dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
+							print dist
+							if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
+								tro.setSelectVal(True)
+								break
+							else:
+								tro.setSelectVal(False)
 				elif (e.button == 3):
-					for tro in troopList:
-						if tro.isSelected():
-							mouse_position = list(e.pos)
-							tro.moveToTargetX = e.pos[0]
-							tro.moveToTargetY = e.pos[1]
+					n.minput(1, e.pos[0], e.pos[1])
+					for person in playerList:
+						for tro in person.troops:
+							if tro.isSelected():
+								mouse_position = list(e.pos)
+								tro.moveToTargetX = e.pos[0]
+								tro.moveToTargetY = e.pos[1]
 						
 				
 			else:
 
 				pass
 
+
+
+
+
+
 		#Update Units loop goes here ((once we have a unit class
-		for tro in troopList:
-			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-			tro.setRotation(unitDirect)
-			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
-			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
-			screen.blit(tro.mySprite, (tro.locationX,tro.locationY))
+		for person in playerList:
+			for tro in person.troops:
+				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+				tro.setRotation(unitDirect)
+				tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
+				tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
+				screen.blit(tro.mySprite, (tro.locationX,tro.locationY))
 		
 		#print unitDirect[0]
 		#print unitDirect[1]
 
 
 		gui.drawPanels(-1)
+		n.send()
 		gui.refresh(screen)
 
 	print "Exiting"
@@ -151,13 +152,16 @@ def nGame(screen, settingData):
 	return n;
 	
 
-def connectGame():
-	print "Connecting To Game"
-	gui.drawPanels(-1)
-	gui.refresh(screen)
-	
-	while True:
-		pass
+def connectGame(screen, settingData):
+	print "Starting New Game"
+	print settingData[1]
+	n = NC.client_thread(settingData[0],int(settingData[1])
+	n.connect()
+
+	pygame.display.set_caption('New Game')
+
+	print "Done"
+	return n;
 
 def settin():
 	print "Opening Settings"
