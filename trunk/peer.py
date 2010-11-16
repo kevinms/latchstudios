@@ -104,7 +104,8 @@ def main():
 						tro.setSelectVal(False)
 					for tro in troopList:
 						dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
-						if fabs(dist[0])< tro.size or fabs(dist[1]) < tro.size:
+						print dist
+						if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
 							tro.setSelectVal(True)
 							break
 						else:
