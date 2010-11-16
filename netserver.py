@@ -58,7 +58,7 @@ class server_thread(threading.Thread,packager):
 	def process(self):
 		while not self.recv_queue.empty():
 			data = self.recv_queue.get()
-			print "process " + str(data[0]) + str(data[1]) + str(data[2])
+			print "process " + str(data[0]) + " " + str(data[1]) + " " + str(data[2])
 			if data[2] == 0:  # ping
 				print "not sending out ping"
 				continue;
@@ -79,7 +79,7 @@ class server_thread(threading.Thread,packager):
 			elif data[2] == 4:
 				self.pack_error(info,data[3])
 			elif data[2] == 6:
-				print "processing nop"
+				#print "processing nop"
 				self.pack_nop(info)
 
 			#packed_data = self.send_queue.queue.popleft()
