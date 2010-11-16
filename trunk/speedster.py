@@ -15,7 +15,10 @@ class Speedster(troop.Troop):
 		self.locationY = positionY
 		self.rotation = 0
 		self.speed = 1.4
-		
+
+		self.moveToTargetX = self.locationX
+		self.moveToTargetY = self.locationY		
+
 		#Offensive
 		self.attackRate = 0.2
 		self.attackRange = 8
