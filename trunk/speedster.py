@@ -5,11 +5,13 @@ import troop
 class Speedster(troop.Troop):
 	def __init__(self, positionX, positionY):
 
+		self.mySprite = pygame.image.load("sprite2.gif").convert() 
+
 		self.unitType = 4
 		self.locationX = positionX
 		self.locationY = positionY
 		self.rotation = 0
-		self.speed = 50
+		self.speed = 1.4
 		
 		#Offensive
 		self.attackRate = 0.2
