@@ -1,3 +1,8 @@
+'0 building
+'1 troop
+'2 support
+
+
 class Unit:
 	def __init__(self, spawnLocX, spawnLocY):
 		#Initialization of basic stats
