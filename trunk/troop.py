@@ -7,10 +7,7 @@ class Troop(unit.Unit):
 	def __init__(self, positionX, positionY):
 		
 		self.mySprite = pygame.image.load("arrow.gif").convert() 
-		
-		mySprite = self.mySprite
-		self.baseImage = self.mySprite
-		
+		self.baseSprite = self.mySprite
 		self.unitType = 1		
 		self.locationX = positionX
 		self.locationY = positionY
@@ -29,15 +26,22 @@ class Troop(unit.Unit):
 
 		#Defensive
 		self.damageResistance = 10
-
-
+	
 	def setRotation(self, unitDirect):
 		if(unitDirect[1] != 0 and unitDirect[0] != 0):
 			run = unitDirect[0]
 			rise = unitDirect[1]
-			temp = math.tan(rise/run)
+			temp = math.atan(rise/run)
 			temp = math.degrees(temp)
-			self.rotation = math.fabs(temp);
-			print self.rotation
-			self.mySprite = pygame.transform.rotate(self.baseImage, self.rotation)
-		
+			rotation = 0-temp
+			if(run < 0):
+				rotation = 180-temp
+			print "Setting rotation: ", rotation
+			self.mySprite = pygame.transform.rotate(self.baseSprite, rotation)
+	
+	def setSelectVal(self, val):
+		self.selected = val
+		if val:
+			self.mySprite = pygame.image.load("arrows.gif").convert()
+		else:
+			self.mySprite = pygame.image.load("arrow.gif").convert() 	  				 	 	 	   	 	  	   		  	 
