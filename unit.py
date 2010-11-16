@@ -3,6 +3,7 @@
 #2 support
 
 import pygame
+import math
 
 class Unit:
 	moveToTargetX = -1
@@ -29,10 +30,14 @@ class Unit:
 		return self.locationX , self.locationY, self.rotation
 
 	def setRotation(self, unitDirect):
-		print unitDirect[0] , " ", unitDirect[1]
-		temp = math.tan(unitDirect[0]/unitDirect[1])
-		temp = math.degrees(temp)
-		self.rotation = temp;
+		if(unitDirect[1] != 0 and unitDirect[0] != 0):
+			run = unitDirect[0]
+			rise = unitDirect[1]
+			temp = math.tan(rise/run)
+			temp = math.degrees(temp)
+			self.rotation = math.fabs(temp);
+			print self.rotation
+			pygame.transform.rotate(self.mySprite, self.rotation)
 		
 		
 
