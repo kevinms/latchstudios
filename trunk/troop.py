@@ -41,7 +41,6 @@ class Troop(unit.Unit):
 			rotation = 0-temp
 			if(run < 0):
 				rotation = 180-temp
-			print "Setting rotation: ", rotation
 			self.mySprite = pygame.transform.rotate(self.baseSprite, rotation)
 	
 	def setSelectVal(self, val):
