@@ -4,9 +4,11 @@ import pygame
 import troop
 
 class Speedster(troop.Troop):
+	size = 20
 	def __init__(self, positionX, positionY):
+		self.mySprite = pygame.image.load("sprite4.gif") 
+		self.baseSprite = self.mySprite
 
-		self.mySprite = pygame.image.load("sprite2.gif").convert() 
 
 		self.unitType = 4
 		self.locationX = positionX
@@ -26,3 +28,12 @@ class Speedster(troop.Troop):
 
 		#Defensive
 		self.damageResistance = 1
+
+	def setSelectVal(self, val):
+		self.selected = val
+		if val:
+			self.mySprite = pygame.image.load("sprite4s.gif").convert()
+			self.baseSprite = self.mySprite
+		else:
+			self.mySprite = pygame.image.load("sprite4.gif").convert()
+			self.baseSprite = self.mySprite	

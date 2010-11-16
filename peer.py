@@ -52,8 +52,6 @@ def main():
 
 	troopList.append(speedster.Speedster(50,50))
 	troopList.append(troop.Troop(100,100))
-	troopList[0].selected = True
-	troopList[1].selected = True
 	
 
 
@@ -73,16 +71,18 @@ def main():
 			elif(e.type == pygame.KEYDOWN):
 				if (e.key == K_UP):
 					print "Key up"
-					for tro in troopList:
-						if tro.isSelected():
-							tro.locationY = tro.getLocationY() - tro.getSpeed()
+					#for tro in troopList:
+					#	if tro.isSelected():
+					#		tro.locationY = tro.getLocationY() - tro.getSpeed()
+					troopList.append(troop.Troop(100,100))
 					
 					
 				elif (e.key == K_DOWN):
 					print "Key down"
-					for tro in troopList:
-						if tro.isSelected():
-							tro.locationY = tro.getLocationY() + tro.getSpeed()
+					#for tro in troopList:
+					#	if tro.isSelected():
+					#		tro.locationY = tro.getLocationY() + tro.getSpeed()
+					troopList.append(speedster.Speedster(50,50))
 
 				elif (e.key == K_RIGHT):
 					print "Key right"
@@ -101,9 +101,12 @@ def main():
 				print e.button
 				if (e.button == 1):
 					for tro in troopList:
+						tro.setSelectVal(False)
+					for tro in troopList:
 						dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
-						if fabs(dist[0])< 10 or fabs(dist[1]) < 10:
+						if fabs(dist[0])< tro.size or fabs(dist[1]) < tro.size:
 							tro.setSelectVal(True)
+							break
 						else:
 							tro.setSelectVal(False)
 				elif (e.button == 3):
@@ -121,7 +124,7 @@ def main():
 		#Update Units loop goes here ((once we have a unit class
 		for tro in troopList:
 			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-			#tro.setRotation(unitDirect)
+			tro.setRotation(unitDirect)
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
 			screen.blit(tro.mySprite, (tro.locationX,tro.locationY))
