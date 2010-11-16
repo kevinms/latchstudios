@@ -1,5 +1,6 @@
-import unit
+
 import pygame
+import unit
 
 class Troop(unit.Unit):
 	def __init__(self, positionX, positionY):
