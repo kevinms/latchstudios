@@ -1,0 +1,25 @@
+#This is a test subclass for troop, a test for having different types of troops
+
+import troop
+
+class Speedster(troop.Troop):
+	def __init__(self, positionX, positionY):
+
+		self.unitType = 4
+		self.locationX = positionX
+		self.locationY = positionY
+		self.rotation = 0
+		self.speed = 50
+		
+		#Offensive
+		self.attackRate = 0.2
+		self.attackRange = 8
+		self.attackDamage = 3
+		self.attackExplosionSize = 3
+		self.attackChanceOfCriticalHit = 0.3
+
+		self.attackAtX = -1
+		self.attackAtY = -1
+
+		#Defensive
+		self.damageResistance = 1
