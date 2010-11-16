@@ -4,7 +4,8 @@ import sys
 import os
 import pygame
 import string
-import net as N
+import net
+import netserver as NS
 from pygame.locals import *
 from pygame.color import THECOLORS
 
@@ -18,7 +19,7 @@ def main():
 	screen.fill((159, 180,200))
 	action = mainMenu(screen, settingData)
 	if action == 0 :
-		nGame(screen)
+		node = nGame(screen, settingData)
 	elif action == 1:
 		connectGame()
 	elif action == 2:
@@ -71,8 +72,8 @@ def main():
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
 				mouse_position = list(e.pos)
-				tX = e.pos[0]
-				tY = e.pos[1]
+				dx = e.pos[0]
+				dy = e.pos[1]
 				
 			else:
 				pass
@@ -84,14 +85,15 @@ def main():
 
 	print "Exiting"
 
-def nGame(screen):
+def nGame(screen, settingData):
 	print "Starting New Game"
+	print settingData[1]
+	n = NS.server_thread(int(settingData[1]),3)
+	n.start()
 	pygame.display.set_caption('New Game')
 
-
-
-
 	print "Done"
+	return n;
 
 
 	
