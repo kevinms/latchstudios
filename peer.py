@@ -103,9 +103,9 @@ def main():
 					for tro in troopList:
 						dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
 						if fabs(dist[0])< 10 or fabs(dist[1]) < 10:
-							tro.selected = True
+							tro.setSelectVal(True)
 						else:
-							tro.selected = False
+							tro.setSelectVal(False)
 				elif (e.button == 3):
 					for tro in troopList:
 						if tro.isSelected():
