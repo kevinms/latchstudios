@@ -52,6 +52,7 @@ class Unit:
 		
 	def setSelected(self):
 		#TODO
+		i=0
 
 	def getMoveToTargetX(self):
 		return self.moveToTargetX
