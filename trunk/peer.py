@@ -98,7 +98,7 @@ def main():
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
-				print e.button
+				#print e.button
 				if (e.button == 1):
 					for tro in troopList:
 						tro.setSelectVal(False)
