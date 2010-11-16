@@ -2,6 +2,7 @@ import threading
 import socket
 import errno
 from net import *
+import logging
 
 class client_thread(threading.Thread,packager):
 	lock = threading.Lock()
@@ -23,7 +24,7 @@ class client_thread(threading.Thread,packager):
 
 	def recv(self):
 		fin = 0
-
+		print "Recieving data while not fin:"
 		while not fin:
 			'''
 			if self.tron > 0:
@@ -34,7 +35,7 @@ class client_thread(threading.Thread,packager):
 
 			cid, fin, type = recv_header(self.s)
 
-			#print "cid = " + str(cid) + ", fin = " + str(fin) + ", type = ", str(type)
+			print "\tcid = " + str(cid) + ", fin = " + str(fin) + ", type = ", str(type)
 			# Client disconnected so remove from the list
 			if type == -1:
 				print "Disconnected from server"

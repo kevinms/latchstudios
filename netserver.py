@@ -4,6 +4,7 @@ import select
 import errno
 import copy
 from net import *
+import logging
 
 def find_client(client_list,conn):
 	i = 0
@@ -42,6 +43,8 @@ class server_thread(threading.Thread,packager):
 		self.l.acquire_lock()
 		self.power_lock.acquire()
 
+		logging.debug('===============================')
+
 		while True:
 			# Keep the server from eating up CPU cycles
 			if not self.client_list:
@@ -56,9 +59,10 @@ class server_thread(threading.Thread,packager):
 
 	# Process all the data and get ready to send to the clients
 	def process(self):
+		self.fin = 0
 		while not self.recv_queue.empty():
 			data = self.recv_queue.get()
-			print "process " + str(data[0]) + " " + str(data[1]) + " " + str(data[2])
+			#print "process " + str(data[0]) + " " + str(data[1]) + " " + str(data[2])
 			if data[2] == 0:  # ping
 				print "not sending out ping"
 				continue;
@@ -73,6 +77,7 @@ class server_thread(threading.Thread,packager):
 			elif data[2] == 0:
 				self.pack_ping(info)
 			elif data[2] == 3:
+				print "packing it now"
 				self.pack_chat(info,data[3])
 			elif data[2] == 5:
 				self.pack_name(info,data[3])
@@ -88,12 +93,39 @@ class server_thread(threading.Thread,packager):
 			#whole = struct.pack(str(len(part))+"s"+str(len(packed_data))+"s",part,packed_data)
 			#self.send_queue.put(struct.pack(">"+str(len(packed_data))+"sh",packed_data,data[0]))
 
+		if not self.send_queue.empty():
+			# now we need to change the fin bit of the last one to 1
+			self.fin = 1
+		
+			packed_data = self.send_queue.queue.popleft()
+			print "len(packed_data)=" + str(len(packed_data))
+			part = struct.unpack(">hcc",packed_data[0:4])
+			updated_part = struct.pack(">hcc",part[0],chr(self.fin),part[2])
+			
+			print "len(packed_data)=" + str(len(packed_data))
+	
+			# the header length
+			if len(packed_data) == 4:
+				self.send_queue.put(updated_part)
+			else:
+				whole = struct.pack(str(len(updated_part))+"s"+str(len(packed_data)-4)+"s",updated_part,packed_data[4:len(packed_data)])
+				self.send_queue.put(whole)
+
 	# Send info to all clients to sync one turn
 	def send(self):
+		print "Sending all data:"
 		while not self.send_queue.empty():
 			data = self.send_queue.get()
+			print "\tGetting data to send:"
 			for client in self.client_list:
 				try:
+					print "\t\tTrying to print data"
+					l = len(data)
+					print l
+					print "\t\t" + str(int(ord(data[0])))
+					print "\t\t" + str(int(ord(data[1])))
+					print "\t\t" + str(int(ord(data[2])))
+					print "\t\t" + str(int(ord(data[3])))
 					'''
 					print "data================="
 					print "datalen = " + str(len(data))

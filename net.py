@@ -2,6 +2,7 @@ import socket
 import errno
 import struct
 import Queue
+import logging
 
 class client_info:
 	_name = ''
