@@ -10,11 +10,11 @@ class Unit:
 		self.currHealth = self.maxHealth
 		self.killCount = 0
 		self.rank = 0
-
+		self.unitType = -1
+		self.isSelected = False
 		#Movement
 		self.speed = 1
-
-
+		
 	def position(self):
 		return self.locationX , self.locationY, self.rotation
 
@@ -25,15 +25,7 @@ class Unit:
 		
 
 '''
-		'Offensive
-		self.attackRate
-		self.attackRange
-		self.attackDamage
-		self.attackExplosionSize
-		self.attackChanceOfCriticalHit
 
-		'Defensive
-		self.damageResistance
 
 		if unitType == 'troop':
 			'troop

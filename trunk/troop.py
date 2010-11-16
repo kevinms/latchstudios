@@ -3,8 +3,7 @@ import unit
 class Troop(unit.Unit):
 	def __init__(self, positionX, positionY):
 
-		self.unitType = 1
-		
+		self.unitType = 1		
 		self.locationX = positionX
 		self.locationY = positionY
 		self.rotation = 0
