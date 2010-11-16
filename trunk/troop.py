@@ -16,5 +16,8 @@ class Troop(unit.Unit):
 		self.attackExplosionSize = 15
 		self.attackChanceOfCriticalHit = 0.05
 
+		self.attackAtX = -1
+		self.attackAtY = -1
+
 		#Defensive
 		self.damageResistance = 10
