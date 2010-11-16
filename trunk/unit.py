@@ -35,3 +35,19 @@ class Unit:
 	def deselectMe(self):
 		self.selected = False
 
+	def getMoveToTargetX(self):
+		return self.moveToTargetX
+
+	def getMoveToTargetY(self):
+		return self.moveToTargetY
+
+	def getLocationX(self):
+		return self.locationX
+
+	def getLocationY(self):
+		return self.locationY
+
+	def getSpeed(self):
+		return self.speed
+
+
