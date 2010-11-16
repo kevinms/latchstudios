@@ -2,6 +2,8 @@
 #1 troop
 #2 support
 
+import pygame
+
 class Unit:
 	moveToTargetX = -1
 	moveToTargetY = -1
