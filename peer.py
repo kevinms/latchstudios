@@ -5,6 +5,8 @@ import os
 import pygame
 import string
 import net
+import gui
+from vec import *
 import netserver as NS
 from pygame.locals import *
 from pygame.color import THECOLORS
@@ -33,9 +35,11 @@ def main():
 	screen.fill((200, 180,200))
         dx = screen.get_rect().centerx
 	dy = screen.get_rect().centery
-	velocity = 1
-	tX = 0
-	tY = 0
+	velocity = .5
+	tx = dx
+	ty = dy
+	directionX = 0
+	directionY = 0
 
 
 	pygame.display.update()
@@ -54,42 +58,49 @@ def main():
 			elif(e.type == pygame.KEYDOWN):
 				if (e.key == K_UP):
 					print "Key up"
-					dy = dy - 10
+					dy = dy - velocity
 					
 					
 				elif (e.key == K_DOWN):
 					print "Key down"
-					dy = dy + 10
+					dy = dy + velocity
 
 				elif (e.key == K_RIGHT):
 					print "Key right"
-					dx = dx + 10
+					dx = dx + velocity
 				elif (e.key == K_LEFT):
 					print "Key Left"
-					dx = dx - 10
+					dx = dx - velocity
 
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
 				mouse_position = list(e.pos)
-				dx = e.pos[0]
-				dy = e.pos[1]
+				tx = e.pos[0]
+				ty = e.pos[1]
 				
 			else:
 				pass
 
 		#Update Units loop goes here ((once we have a unit class
 		
+		unitDirect = unitdir(tx, ty, dx, dy, velocity)
+		#print unitDirect[0]
+		#print unitDirect[1]
+		dx = dx + (velocity * unitDirect[0])
+		dy = dy + (velocity * unitDirect[1])
+
 		screen.blit(player, (dx,dy))
-		pygame.display.update()
+		gui.refresh(screen)
 
 	print "Exiting"
 
 def nGame(screen, settingData):
 	print "Starting New Game"
 	print settingData[1]
-	n = NS.server_thread(int(settingData[1]),3)
-	n.start()
+	#n = NS.server_thread(int(settingData[1]),3)
+	#n.start()
+	n = 1
 	pygame.display.set_caption('New Game')
 
 	print "Done"
