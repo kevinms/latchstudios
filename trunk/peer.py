@@ -8,6 +8,7 @@ import net
 import gui
 
 import troop
+import speedster
 
 from vec import *
 import netserver as NS
@@ -47,13 +48,17 @@ def main():
 	directionX = 0
 	directionY = 0
 
-	troopList.append(troop.Troop(0,0))
+	troopList.append(speedster.Speedster(50,50))
+	troopList.append(troop.Troop(100,100))
+	troopList[0].selected = True
+	troopList[1].selected = True
+	
 
 
 	pygame.display.update()
 	done = False
 	while not done:
-		player = pygame.image.load("sprite3.gif").convert()
+		#player = pygame.image.load("sprite3.gif").convert()
 		screen.fill((200, 180,200))
 		#event loop
 		events = pygame.event.get()
@@ -68,44 +73,46 @@ def main():
 					print "Key up"
 					for tro in troopList:
 						if tro.isSelected():
-							tro.locationY = tro.locationY - tro.speed
+							tro.locationY = tro.getLocationY() - tro.getSpeed()
 					
 					
 				elif (e.key == K_DOWN):
 					print "Key down"
 					for tro in troopList:
 						if tro.isSelected():
-							tro.locationY = tro.locationY + tro.speed
+							tro.locationY = tro.getLocationY() + tro.getSpeed()
 
 				elif (e.key == K_RIGHT):
 					print "Key right"
 					for tro in troopList:
 						if tro.isSelected():
-							tro.locationX = tro.locationX + tro.speed
+							tro.locationX = tro.getLocationX() + tro.getSpeed()
 				elif (e.key == K_LEFT):
 					print "Key Left"
 					for tro in troopList:
 						if tro.isSelected():
-							tro.locationX = tro.locationX - tro.speed
+							tro.locationX = tro.getLocationX() - tro.getSpeed()
 
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
+				print e.button
 				for tro in troopList:
 					if tro.isSelected():
 						mouse_position = list(e.pos)
 						tro.moveToTargetX = e.pos[0]
 						tro.moveToTargetY = e.pos[1]
+						
 				
 			else:
 				pass
 
 		#Update Units loop goes here ((once we have a unit class
 		for tro in troopList:
-			unitDirect = unitdir(tx, ty, dx, dy, velocity)
+			unitDirect = unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
-			screen.blit(player, (tro.locationX,tro.locationY))
+			screen.blit(tro.mySprite, (tro.locationX,tro.locationY))
 		
 		#print unitDirect[0]
 		#print unitDirect[1]
@@ -126,12 +133,15 @@ def nGame(screen, settingData):
 
 	print "Done"
 	return n;
-
-
 	
 
 def connectGame():
 	print "Connecting To Game"
+	gui.drawPanels(-1)
+	gui.refresh(screen)
+	
+	while True:
+		pass
 
 def settin():
 	print "Opening Settings"
