@@ -27,7 +27,10 @@ class Unit:
 		self.locationY = locY
 	def isSelected():
 		return self.selected
-	
+	def selectMe():
+		self.selected = True
+	def deselectMe():
+		self.selected = False
 
 '''
 
