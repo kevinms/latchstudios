@@ -14,7 +14,7 @@ class Unit:
 		self.selected = False
 		#Movement
 		self.speed = 1
-		
+
 		self.moveToTargetX = self.locationX
 		self.moveToTargetY = self.locationY
 
@@ -25,27 +25,13 @@ class Unit:
 		self.rotation = 0 #TODO: Math to calculate what rotation it will have after move		
 		self.locationX = locX
 		self.locationY = locY
-	def isSelected():
+
+	def isSelected(self):
 		return self.selected
-	def selectMe():
+
+	def selectMe(self):
 		self.selected = True
-	def deselectMe():
+
+	def deselectMe(self):
 		self.selected = False
 
-'''
-
-
-		if unitType == 'troop':
-			'troop
-		if unitType == 'support':
-			'support
-			self.hugDiameter = 10 '(all units inside the hug diameter will have the benefits the support gives)
-			self.healRate = 3
-			self.addedSpeed = 3
-			self.addedAttackRate = 
-			self.addedAttackRange = 25
-			self.addedAttackDamage
-			self.addedAttackExplosionSize
-			self.addedAttackChanceOfCriticalHit
-			self.addedDamageResistance
-'''
