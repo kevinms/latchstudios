@@ -6,11 +6,11 @@ import pygame
 import math
 
 class Unit:
-	moveToTargetX = -1
-	moveToTargetY = -1
+	moveToTargetX = 50
+	moveToTargetY = 50
 	selected = False
 	maxHealth = 100
-	#mySprite = pygame.image.load("error.gif").convert()
+	#mySprite = pygame.imasige.load("error.gif").convert()
 
 	def __init__(self, spawnLocX, spawnLocY):
 		#Initialization of basic stats
@@ -23,8 +23,8 @@ class Unit:
 		#Movement
 		self.speed = 1
 
-		self.moveToTargetX = -1
-		self.moveToTargetY = -1
+		self.moveToTargetX = spawnLocX
+		self.moveToTargetY = spawnLocY
 
 	def position(self):
 		return self.locationX , self.locationY, self.rotation

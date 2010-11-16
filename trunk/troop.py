@@ -4,9 +4,10 @@ import unit
 import math
 
 class Troop(unit.Unit):
+	size = 10
 	def __init__(self, positionX, positionY):
 		
-		self.mySprite = pygame.image.load("arrow.gif").convert() 
+		self.mySprite = pygame.image.load("arrow.gif") 
 		self.baseSprite = self.mySprite
 		self.unitType = 1		
 		self.locationX = positionX
@@ -43,5 +44,7 @@ class Troop(unit.Unit):
 		self.selected = val
 		if val:
 			self.mySprite = pygame.image.load("arrows.gif").convert()
+			self.baseSprite = self.mySprite
 		else:
-			self.mySprite = pygame.image.load("arrow.gif").convert() 	  				 	 	 	   	 	  	   		  	 
+			self.mySprite = pygame.image.load("arrow.gif").convert()	
+			self.baseSprite = self.mySprite		 	 	 	   	 	  	   		  	 
