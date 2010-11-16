@@ -9,7 +9,7 @@ class Unit:
 	moveToTargetY = -1
 	selected = False
 	maxHealth = 100
-	mySprite = pygame.image.load("error.gif").convert()
+	#mySprite = pygame.image.load("error.gif").convert()
 
 	def __init__(self, spawnLocX, spawnLocY):
 		#Initialization of basic stats

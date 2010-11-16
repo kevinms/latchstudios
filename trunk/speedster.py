@@ -1,7 +1,7 @@
 #This is a test subclass for troop, a test for having different types of troops
 
-import troop
 import pygame
+import troop
 
 class Speedster(troop.Troop):
 	def __init__(self, positionX, positionY):
