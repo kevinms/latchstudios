@@ -3,8 +3,10 @@ import unit
 class Support(unit.Unit):
 	def __init__(self, positionX, positionY):
 
-		self.locationX = positionX;
-		self.locationY = positionY;
+		self.unitType = 2
+		
+		self.locationX = positionX
+		self.locationY = positionY
 		self.rotation = 0
 		self.speed = 10
 		
