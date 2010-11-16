@@ -47,7 +47,7 @@ class packager:
 	step = 0
 	fin = 1
 
-	def pack_minput(self,data):
+	def pack_minput(self,c,data):
 		self.send_queue.put(struct.pack(">h2cc2i",c.cid,chr(self.fin),chr(2),data[0],data[1],data[2]))
 	def unpack_minput(self,c):
 		self.recv_queue.put((c.cid, self.step, 2))
