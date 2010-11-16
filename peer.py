@@ -67,32 +67,32 @@ def main():
 				if (e.key == K_UP):
 					print "Key up"
 					for tro in troopList:
-						if tro.isSelected:
+						if tro.isSelected():
 							tro.locationY = tro.locationY - tro.speed
 					
 					
 				elif (e.key == K_DOWN):
 					print "Key down"
 					for tro in troopList:
-						if tro.isSelected:
+						if tro.isSelected():
 							tro.locationY = tro.locationY + tro.speed
 
 				elif (e.key == K_RIGHT):
 					print "Key right"
 					for tro in troopList:
-						if tro.isSelected:
+						if tro.isSelected():
 							tro.locationX = tro.locationX + tro.speed
 				elif (e.key == K_LEFT):
 					print "Key Left"
 					for tro in troopList:
-						if tro.isSelected:
+						if tro.isSelected():
 							tro.locationX = tro.locationX - tro.speed
 
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
 				for tro in troopList:
-					if tro.isSelected:
+					if tro.isSelected():
 						mouse_position = list(e.pos)
 						tro.moveToTargetX = e.pos[0]
 						tro.moveToTargetY = e.pos[1]
