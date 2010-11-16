@@ -25,10 +25,6 @@ def drawPanels(selectedUnit):
     else:
         gameWindow.fill((0,0,0), rect=rightPanel, special_flags=0)
         gameWindow.fill((0,0,0), rect=topPanel, special_flags=0)
-	newGame = font.render('Create Game', True, selected, (159, 182, 205))
-	joinGame = font.render('Join Game', True, unselected, (159, 182, 205))
-	settings = font.render('Settings', True, unselected, (159, 182, 205))
-	quit = font.render('Quit', True, unselected, (159, 182, 205))
 
 def refresh(screen):
 	pygame.display.update()
