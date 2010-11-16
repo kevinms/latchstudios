@@ -15,8 +15,8 @@ class Unit:
 		#Movement
 		self.speed = 1
 
-		self.moveToTargetX = self.locationX
-		self.moveToTargetY = self.locationY
+		self.moveToTargetX = -1
+		self.moveToTargetY = -1
 
 	def position(self):
 		return self.locationX , self.locationY, self.rotation
