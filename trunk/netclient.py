@@ -12,7 +12,6 @@ class client_thread(threading.Thread,packager):
 	ping = False
 	rtt = 0
 	match = 1
-	tron = 0
 
 	def __init__(self,host,port):
 		threading.Thread.__init__(self)
@@ -48,6 +47,7 @@ class client_thread(threading.Thread,packager):
 		while not self.send_queue.empty():
 			self.s.sendall(self.send_queue.get())
 
+	# connect to the server
 	def connect(self):
 		try:
 			self.s.connect((self.host,self.port))
@@ -65,23 +65,28 @@ class client_thread(threading.Thread,packager):
 		except socket.error, e:
 			print 'could not connect to server'
 
+	# send a new name to the server
 	def name(self,name):
 		if self.connected:
 			self.pack_name(self.info,name)
 
+	# send a chat message to the server
 	def chat(self,data):
 		if self.connected:
 			self.pack_chat(self.info,data)
 
+	# send a ping to the server
 	def ping(self):
 		if self.connected:
 			self.pack_ping(self.info)
 			ping = True
 
+	# send mouse input to the server
 	def minput(self,input_type,x,y):
 		if self.connected:
 			self.pack_minput(self.info,(input_type,x,y))
 
+	# disconnect from a server
 	def disconnect(self):
 		self.pack_disconnect(self.info)
 		self.send()
