@@ -103,7 +103,7 @@ class packager:
 		cid = struct.unpack(">h",data)
 
 		# pack data into tuple and put on the queue
-		p = (c.cid, self.step, 7,   # general info
+		p = (rx_cid, self.step, 7,   # general info
 		     cid,                   # new player cid
 		     self.unpack_string(c)) # new player name
 
@@ -128,7 +128,7 @@ class packager:
 		cid = struct.unpack(">h",data)
 
 		# pack data into tuple and put on the queue
-		p = (c.cid, self.step, 8,   # general info
+		p = (rx_cid, self.step, 8,   # general info
 		     cid)                   # del player cid
 
 		self.recv_queue.put(p)
@@ -142,7 +142,7 @@ class packager:
 	def unpack_ping(self,c,rx_cid):
 		#TODO: in order to calculate the ping accurately as soon as
 		#      this is rx'd we need to send a pong back
-		p = (c.cid, self.step, 0) # general info
+		p = (rx_cid, self.step, 0) # general info
 
 		self.recv_queue.put(p)
 
@@ -157,7 +157,7 @@ class packager:
 
 	def unpack_chat(self,c,rx_cid):
 		print "chat message:"
-		p = (c.cid, self.step, 3,   # general info
+		p = (rx_cid, self.step, 3,   # general info
 		     self.unpack_string(c)) # chat message string
 
 		self.recv_queue.put(p)
@@ -172,7 +172,7 @@ class packager:
 		self.send_queue.put(p)
 
 	def unpack_name(self,c,rx_cid):
-		p = (c.cid, self.step, 5,   # general info
+		p = (rx_cid, self.step, 5,   # general info
 		     self.unpack_string(c)) # name string
 
 		self.recv_queue.put(p)
@@ -187,7 +187,7 @@ class packager:
 		self.send_queue.put(p)
 
 	def unpack_error(self,c,rx_cid):
-		p = (c.cid, self.step, 4,   # general info
+		p = (rx_cid, self.step, 4,   # general info
 		     self.unpack_string(c)) # error string
 
 		self.recv_queue.put(p)
@@ -199,7 +199,7 @@ class packager:
 		self.send_queue.put(p)
 
 	def unpack_nop(self,c,rx_cid):
-		p = (c.cid, self.step, 6) # general info
+		p = (rx_cid, self.step, 6) # general info
 
 		self.recv_queue.put(p)
 
