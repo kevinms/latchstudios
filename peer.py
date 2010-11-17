@@ -48,6 +48,7 @@ def main():
 	
 	done = False
 	while not done:
+		n.send()
 		screen.fill((200, 180,200))
 
 		#event loop
@@ -90,26 +91,28 @@ def main():
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
 				#print e.button
 				if (e.button == 1):
+					print "Sending %d %d %d" % (1, e.pos[0], e.pos[1])
 					n.minput(1, e.pos[0], e.pos[1])
-					for person in playerList:
-						for tro in person.troops:
-							tro.setSelectVal(False)
-						for tro in person.troops:
-							dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
-							print dist
-							if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
-								tro.setSelectVal(True)
-								break
-							else:
-								tro.setSelectVal(False)
+					#for person in playerList:
+					#	for tro in person.troops:
+					#		tro.setSelectVal(False)
+					#	for tro in person.troops:
+					#		dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
+					#		print dist
+					#		if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
+					#			tro.setSelectVal(True)
+					#			break
+					#		else:
+					#			tro.setSelectVal(False)
 				elif (e.button == 3):
+					print "Sending %d %d %d" % (3, e.pos[0], e.pos[1])
 					n.minput(3, e.pos[0], e.pos[1])
-					for person in playerList:
-						for tro in person.troops:
-							if tro.isSelected():
-								mouse_position = list(e.pos)
-								tro.moveToTargetX = e.pos[0]
-								tro.moveToTargetY = e.pos[1]
+					#for person in playerList:
+					#	for tro in person.troops:
+					#		if tro.isSelected():
+					#			mouse_position = list(e.pos)
+					#			tro.moveToTargetX = e.pos[0]
+					#			tro.moveToTargetY = e.pos[1]
 						
 				
 			else:
@@ -117,8 +120,30 @@ def main():
 				pass
 
 
-		
-		
+		n.recv()
+		while not n.recv_queue.empty():
+			tempData = n.recv_queue.get()
+			for person in playerList:
+				if tempData[0] == person.playerID:
+					if tempData[2] == 2:
+						print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
+						if tmpData[3][0] == 1:
+							print "got to 1"
+							for tro in person.troops:
+								tro.setSelectVal(False)
+								dist = vec.subtract(tempData[3][1], tempData[3][2], tro.getLocationX(), tro.getLocationY())
+								print dist
+								if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
+									tro.setSelectVal(True)
+									break
+								else:
+									tro.setSelectVal(False)
+
+						elif tmpData[3][0] == 3:
+							for tro in person.troops:
+								if tro.isSelected():
+									tro.moveToTargetX = tempData[3][1]
+									tro.moveToTargetY = tempData[3][2]
 
 
 
@@ -136,9 +161,9 @@ def main():
 
 
 		gui.drawPanels(-1)
-		n.send()
 
-		n.recv()
+
+
 		gui.refresh(screen)
 
 	print "Exiting"
