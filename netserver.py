@@ -114,6 +114,8 @@ class server_thread(threading.Thread,packager):
 	# Send info to all clients to sync one turn
 	def send(self):
 		logging.debug("Sending all data:")
+		dropped_client_list = []
+
 		while not self.send_queue.empty():
 			data = self.send_queue.get()
 			logging.debug("\tGetting data to send:")
@@ -130,8 +132,13 @@ class server_thread(threading.Thread,packager):
 					client.s.sendall(data)
 				except socket.error, e:
 					print "Detected remote disconnect"
+					dropped_client_list.append(client)
 					self.client_list.remove(client)
 					client.s.close()
+		# Do this outside the loop because we don't want to mess up the
+		# send_queue which has the last packet's fin bit = 1
+		for client in dropped_client_list:
+			self.pack_delplayer(client)
 
 	# Receive info from all clients for a single turn
 	def recv(self):
@@ -157,6 +164,7 @@ class server_thread(threading.Thread,packager):
 		# Client disconnected so remove from the list
 		if type == -1:
 			print "Removing client"
+			self.pack_delplayer(c)
 			c.s.close()
 			self.lock.acquire()
 			self.client_list.remove(c)
@@ -173,6 +181,7 @@ class server_thread(threading.Thread,packager):
 				client.c.send(data)
 			except socket.error, e:
 				print "Detected remote disconnect"
+				self.pack_delplayer(c)
 				self.client_list.remove(client)
 				client.c.close()
 
@@ -207,11 +216,21 @@ class listen_thread(threading.Thread,packager):
 				info._name = self.unpack_string(info)
 				if info._name == None:
 					continue
+
+				# tell new player cid/name of other players
+				client_cid_name_list = []
+				for client in self.client_list:
+					client_cid_name_list.append([client.cid,client._name])
+				self.pack_players(client_cid_name_list)
+
 				self.lock.acquire()
 				self.client_list.append(info)
 				print "connected"
 				self.lock.release()
 				self.power_lock.release()
+
+				# update all players notifying them of a new client
+				self.pack_addplayer(info)
 			else:
 				conn.send(self.pack_error("server full"))
 	def acquire_lock(self):

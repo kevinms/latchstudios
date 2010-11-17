@@ -6,8 +6,10 @@ import time
 import logging
 
 # Enable/Disable Debug prints
-#logging.basicConfig(level=logging.DEBUG)
-logging.basicConfig()
+if False:
+	logging.basicConfig(level=logging.DEBUG)
+else:
+	logging.basicConfig()
 
 # Run server: python net-test.py 0
 # Run client: python net-test.py 1
