@@ -28,6 +28,10 @@ class server_thread(threading.Thread,packager):
 	client_list=[]
 	lock = threading.Lock()
 	power_lock = threading.Lock()
+	
+	# so the server can act like a client
+	psuedo_client = client_info(None,0)
+	psuedo_client._name = "server"
 
 	def __init__(self,port,slots):
 		threading.Thread.__init__(self)
@@ -36,7 +40,7 @@ class server_thread(threading.Thread,packager):
 		self.turn = 0
 
 	def run(self):
-		self.l = listen_thread(self.port,self.slots,self.client_list,self.power_lock,self.lock)
+		self.l = listen_thread(self.port,self.slots,self.client_list,self.psuedo_client,self.power_lock,self.lock)
 		self.l.setDaemon(True)
 		self.l.start()
 
@@ -160,7 +164,7 @@ class server_thread(threading.Thread,packager):
 		cid, fin, type = recv_header(c.s)
 		c.fin = fin
 		c.type = type
-		print "grep: " + str(c.cid)
+		#print "grep: " + str(c.cid)
 
 		# Client disconnected so remove from the list
 		if type == -1:
@@ -189,13 +193,14 @@ class server_thread(threading.Thread,packager):
 # Thread to accept TCP connections from any client
 class listen_thread(threading.Thread,packager):
 	host = ''
-	next_client_id = 2
+	next_client_id = 1
 
-	def __init__(self,port,slots,client_list,power_lock,lock):
+	def __init__(self,port,slots,client_list,psuedo_client,power_lock,lock):
 		threading.Thread.__init__(self)
 		self.port = port
 		self.slots = slots
 		self.client_list = client_list
+		self.psuedo_client = psuedo_client
 		self.power_lock = power_lock
 		self.lock = lock
 		self.s = socket.socket()
@@ -220,9 +225,11 @@ class listen_thread(threading.Thread,packager):
 
 				# tell new player cid/name of other players
 				client_cid_name_list = []
+				print "len(client_list)=%d" % len(self.client_list)
 				for client in self.client_list:
 					client_cid_name_list.append([client.cid,client._name])
-				self.pack_players(client_cid_name_list)
+				p = self.pack_players(self.psuedo_client,client_cid_name_list)
+				info.s.sendall(p)
 
 				self.lock.acquire()
 				self.client_list.append(info)

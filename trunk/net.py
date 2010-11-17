@@ -187,7 +187,7 @@ class packager:
 		self.send_queue.put(p)
 
 	def unpack_error(self,c,rx_cid):
-		p = (rx_cid, self.step, 4,   # general info
+		p = (rx_cid, self.step, 4,  # general info
 		     self.unpack_string(c)) # error string
 
 		self.recv_queue.put(p)
@@ -204,20 +204,61 @@ class packager:
 		self.recv_queue.put(p)
 
 	# data is a list of a list of players (e.g. [[cid,name],[cid,name]])
-	def pack_players(self,data):
-		'''
-		l = len(data)
-		player_str = 
+	def pack_players(self,c,data):
+		player_str = ""
+		print data
 
-		p = struct.pack(">h2ch"+str(l)+"s",         # format string
-		                c.cid,chr(self.fin),chr(7), # header
-		                l,                      # num of players
-		                player_str)                 # packed player str
+		# pack player info into struct (host byte order), append to player_str
+		for player in data:
+			l = len(player[1])
+			s = struct.pack(">2h"+str(l)+"s", # format string
+			                player[0],        # cid of new player
+			                l,                # len of name
+			                player[1])        # name of new player
+			player_str = player_str + s
 
-		self.send_queue.put(p)
-		'''
+		# add the header info
+		l = len(player_str)
+		num = len(data)
+		print "num %d" % num
+		p = struct.pack(">h2ch"+str(l)+"s",          # format string
+		                c.cid,chr(self.fin),chr(10), # header
+		                num,                         # num of players
+		                player_str)                  # packed player str
+		print len(p)
+
+		return p
+		
 	def unpack_players(self,c,rx_cid):
-		pass
+		print "unpack_players"
+		client_cid_name_list = []
+		
+		# recieve the number of players
+		data = c.s.recv(2)
+		if data == "" or len(data) != 2:
+			return None
+		num_players = struct.unpack(">h",data)[0]
+		
+		print "num_players %d" % num_players
+
+		#recieve the string
+		for i in range(num_players):
+			# recieve player cid
+			data = c.s.recv(2)
+			if data == "" or len(data) != 2:
+				return None
+			i_cid = struct.unpack(">h",data)[0]
+			
+			# recv player name
+			i_name = self.unpack_string(c)
+			
+			client_cid_name_list.append([i_cid,i_name])
+
+		# pack data and put on recv_queue
+		#p = (rx_cid, self.step, 10, # general info
+		#     client_cid_name_list)  # all players (e.g. [[cid,name],[cid,name]])
+	
+		return client_cid_name_list
 
 	def pack_string(self,data):
 		return struct.pack(">h"+str(len(data))+"s", # format string
@@ -250,5 +291,6 @@ class packager:
 		6 : unpack_nop,
 		7 : unpack_adduser,
 		8 : unpack_deluser,
-		9 : unpack_namechange
+		9 : unpack_namechange,
+		10: unpack_players
 	}

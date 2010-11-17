@@ -128,8 +128,8 @@ def main():
 				print "Info: %d %d %d" % (tempData[0], tempData[1], tempData[2])
 
 			for person in playerList:
-				if tempData[0] == person.playerID:
-				#if True:
+				#if tempData[0] == person.playerID:
+				if True:
 					if tempData[2] == 2:
 						print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
 						if tempData[3][0] == 1:
