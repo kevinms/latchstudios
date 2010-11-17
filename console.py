@@ -21,6 +21,8 @@ class console(threading.Thread):
 			self.n.disconnect()
 		elif self.check(s,'name'):
 			self.n.name(s[5:])
+		elif self.check(s,'minput'):
+			self.n.minput(1,500,500)
 
 	def check(self,s,token):
 		return s[:len(token)] == token
