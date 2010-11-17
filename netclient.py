@@ -4,6 +4,9 @@ import errno
 from net import *
 import logging
 
+#LOG_FILENAME = 'client.log'
+#logging.basicConfig(filename=LOG_FILENAME,level=logging.DEBUG)
+
 class client_thread(threading.Thread,packager):
 	lock = threading.Lock()
 	peerid = 0;
@@ -37,7 +40,7 @@ class client_thread(threading.Thread,packager):
 			else:
 				# O(1) type lookup
 				#TODO: need to add a try statement incase there is no map entry aka bad type
-				self.unpack_map[type](self,self.info)
+				self.unpack_map[type](self,self.info,cid)
 
 	def send(self):
 		# The client has nothing to send so tell the server that :D

@@ -55,7 +55,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_minput(self,c):
+	def unpack_minput(self,c,rx_cid):
 		print "unpack_minput"
 		# recieve the data
 		data = c.s.recv(9)
@@ -65,7 +65,7 @@ class packager:
 		# unpack the data
 		input_type, x, y = struct.unpack(">c2i",data)
 
-		p = (c.cid, self.step, 2,  # general info
+		p = (rx_cid, self.step, 2,  # general info
 		    (int(ord(input_type)), # input_type
 		    x,                     # x coordinate
 		    y))                    # y coordinate
@@ -74,12 +74,12 @@ class packager:
 
 	def pack_disconnect(self,c):
 		pass
-	def unpack_disconnect(self,c):
+	def unpack_disconnect(self,c,rx_cid):
 		pass
 
 	def pack_namechange(self,c):
 		pass
-	def unpack_namechange(self,c):
+	def unpack_namechange(self,c,rx_cid):
 		pass
 
 	def pack_addplayer(self,c):
@@ -92,7 +92,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_adduser(self,c):
+	def unpack_adduser(self,c,rx_cid):
 		print "unpack_adduser"
 		# recieve the cid
 		data = c.s.recv(2)
@@ -117,7 +117,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_deluser(self,c):
+	def unpack_deluser(self,c,rx_cid):
 		print "unpack_deluser"
 		# recieve the cid
 		data = c.s.recv(2)
@@ -139,7 +139,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_ping(self,c):
+	def unpack_ping(self,c,rx_cid):
 		#TODO: in order to calculate the ping accurately as soon as
 		#      this is rx'd we need to send a pong back
 		p = (c.cid, self.step, 0) # general info
@@ -155,7 +155,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_chat(self,c):
+	def unpack_chat(self,c,rx_cid):
 		print "chat message:"
 		p = (c.cid, self.step, 3,   # general info
 		     self.unpack_string(c)) # chat message string
@@ -171,7 +171,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_name(self,c):
+	def unpack_name(self,c,rx_cid):
 		p = (c.cid, self.step, 5,   # general info
 		     self.unpack_string(c)) # name string
 
@@ -186,7 +186,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_error(self,c):
+	def unpack_error(self,c,rx_cid):
 		p = (c.cid, self.step, 4,   # general info
 		     self.unpack_string(c)) # error string
 
@@ -198,7 +198,7 @@ class packager:
 
 		self.send_queue.put(p)
 
-	def unpack_nop(self,c):
+	def unpack_nop(self,c,rx_cid):
 		p = (c.cid, self.step, 6) # general info
 
 		self.recv_queue.put(p)
@@ -216,7 +216,7 @@ class packager:
 
 		self.send_queue.put(p)
 		'''
-	def unpack_players(self,c):
+	def unpack_players(self,c,rx_cid):
 		pass
 
 	def pack_string(self,data):

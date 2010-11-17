@@ -160,6 +160,7 @@ class server_thread(threading.Thread,packager):
 		cid, fin, type = recv_header(c.s)
 		c.fin = fin
 		c.type = type
+		print "grep: " + str(c.cid)
 
 		# Client disconnected so remove from the list
 		if type == -1:
@@ -173,7 +174,7 @@ class server_thread(threading.Thread,packager):
 		else:
 			# O(1) type lookup
 			#TODO: need to add a try statement incase there is no map entry aka bad type
-			self.unpack_map[type](self,c)
+			self.unpack_map[type](self,c,cid)
 
 	def ping(self):
 		for client in self.client_list:
