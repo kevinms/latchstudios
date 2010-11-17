@@ -127,7 +127,7 @@ def main():
 				if tempData[0] == person.playerID:
 					if tempData[2] == 2:
 						print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
-						if tmpData[3][0] == 1:
+						if tempData[3][0] == 1:
 							print "got to 1"
 							for tro in person.troops:
 								tro.setSelectVal(False)
@@ -139,7 +139,7 @@ def main():
 								else:
 									tro.setSelectVal(False)
 
-						elif tmpData[3][0] == 3:
+						elif tempData[3][0] == 3:
 							for tro in person.troops:
 								if tro.isSelected():
 									tro.moveToTargetX = tempData[3][1]
