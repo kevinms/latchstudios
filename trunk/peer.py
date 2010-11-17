@@ -44,7 +44,7 @@ def main():
 
 	screen.fill((200, 180,200))
 
-        playerList.append(player.Player(123))
+        playerList.append(player.Player(n.info.cid))
 	
 	done = False
 	while not done:
@@ -123,14 +123,19 @@ def main():
 		n.recv()
 		while not n.recv_queue.empty():
 			tempData = n.recv_queue.get()
+			#start debug line
+			if tempData[2] == 2:
+				print "Info: %d %d %d" % (tempData[0], tempData[1], tempData[2])
+
 			for person in playerList:
 				if tempData[0] == person.playerID:
+				#if True:
 					if tempData[2] == 2:
 						print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
 						if tempData[3][0] == 1:
-							print "got to 1"
 							for tro in person.troops:
 								tro.setSelectVal(False)
+							for tro in person.troops:
 								dist = vec.subtract(tempData[3][1], tempData[3][2], tro.getLocationX(), tro.getLocationY())
 								print dist
 								if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
