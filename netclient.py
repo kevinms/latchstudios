@@ -10,6 +10,7 @@ import logging
 class client_thread(threading.Thread,packager):
 	lock = threading.Lock()
 	peerid = 0;
+	peer_list = []
 	_name = "player"  # apparently 'name' is already an instance method name of all classes....
 	connected = False
 	ping = False
@@ -62,6 +63,16 @@ class client_thread(threading.Thread,packager):
 				print "Utter Failure!!!!!!!!!, not connected...."
 				return None
 			self.info.cid = struct.unpack(">h",data)[0]
+
+			cid, fin, type = recv_header(self.s)
+			# Client disconnected so remove from the list
+			if type == -1:
+				print "Disconnected from server"
+				self.s.close()
+				connected = False
+			
+			peer_list = self.unpack_players(self.info,0)
+			print "PeerList: " + str(peer_list)
 
 			self.connected = True;
 			print 'connected'
