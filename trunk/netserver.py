@@ -47,7 +47,7 @@ class server_thread(threading.Thread,packager):
 
 		while True:
 			# Keep the server from eating up CPU cycles
-			if not self.client_list:
+			if (self.client_list) == 0:
 				self.power_lock.release()
 				self.l.acquire_lock()
 				self.power_lock.acquire()
