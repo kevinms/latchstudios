@@ -48,15 +48,16 @@ class packager:
 	fin = 1
 
 	def pack_minput(self,c,data):
-		self.send_queue.put(struct.pack(">h2cc2i",c.cid,chr(self.fin),chr(2),data[0],data[1],data[2]))
+		self.send_queue.put(struct.pack(">h2cc2i",c.cid,chr(self.fin),chr(2),chr(data[0]),data[1],data[2]))
 	def unpack_minput(self,c):
-		self.recv_queue.put((c.cid, self.step, 2))
+		print "unpack_minput"
 		data = c.s.recv(9)
 		if data == "" or len(data) != 9:
 			print "didn't recieve all the data"
 			return
 		input_type, x, y = struct.unpack(">c2i",data)
-		self.recv_queue.put((c.cid, self.step, 2, (input_type,x,y)))
+		test = (c.cid, self.step, 2, (int(ord(input_type)),x,y))
+		self.recv_queue.put(test)
 
 	def pack_disconnect(self):
 		pass

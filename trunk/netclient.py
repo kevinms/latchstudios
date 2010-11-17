@@ -80,7 +80,7 @@ class client_thread(threading.Thread,packager):
 
 	def minput(self,input_type,x,y):
 		if self.connected:
-			self.pack_minput(self.info,(chr(input_type),x,y))
+			self.pack_minput(self.info,(input_type,x,y))
 
 	def disconnect(self):
 		self.pack_disconnect(self.info)
