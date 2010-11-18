@@ -5,9 +5,13 @@ import math
 
 class Troop(unit.Unit):
 	size = 10
-	def __init__(self, positionX, positionY):
+	def __init__(self, positionX, positionY, colorVal):
+
 		
-		self.mySprite = pygame.image.load("arrow.gif") 
+		self.normalSprite = pygame.image.load("arrow.png").convert()
+		self.selectedSprite = pygame.image.load("arrows.png").convert()
+
+		self.mySprite = self.normalSprite
 		self.baseSprite = self.mySprite
 		self.unitType = 1		
 		self.locationX = positionX
@@ -31,6 +35,36 @@ class Troop(unit.Unit):
 
 		#Defensive
 		self.damageResistance = 10
+
+
+		for x in range(self.normalSprite.get_width()):
+			for y in range(self.normalSprite.get_height()):
+				locationOf = (x,y)
+
+
+				newR = self.normalSprite.get_at(locationOf)[0] 
+				newG = self.normalSprite.get_at(locationOf)[1]  
+				newB = self.normalSprite.get_at(locationOf)[2] 
+				newA = self.normalSprite.get_at(locationOf)[3]
+
+				newColor = pygame.Color(newR,newG,newB,newA)
+				#newColor = pygame.Color(0,30,0,newA)
+				self.normalSprite.set_at(locationOf, newColor)
+
+		for x in range(self.selectedSprite.get_width()):
+			for y in range(self.selectedSprite.get_height()):
+				locationOf = (x,y)
+
+
+				newR = self.selectedSprite.get_at(locationOf)[0] 
+				newG = self.selectedSprite.get_at(locationOf)[1]  
+				newB = self.selectedSprite.get_at(locationOf)[2] 
+				newA = self.selectedSprite.get_at(locationOf)[3]
+
+				newColor = pygame.Color(newR,newG,newB,newA)
+				#newColor = pygame.Color(0,30,0,newA)
+				self.selectedSprite.set_at(locationOf, newColor)
+		
 	
 	def setRotation(self, unitDirect):
 		if(unitDirect[1] != 0 and unitDirect[0] != 0):
@@ -46,8 +80,8 @@ class Troop(unit.Unit):
 	def setSelectVal(self, val):
 		self.selected = val
 		if val:
-			self.mySprite = pygame.image.load("arrows.gif").convert()
+			self.mySprite = self.selectedSprite
 			self.baseSprite = self.mySprite
 		else:
-			self.mySprite = pygame.image.load("arrow.gif").convert()	
+			self.mySprite = self.normalSprite	
 			self.baseSprite = self.mySprite		 	 	 	   	 	  	   		  	 
