@@ -21,7 +21,7 @@ class Troop(unit.Unit):
 
 
 		self.moveToTargetX = self.locationX
-		self.moveToTargetY = self.locationY	
+		self.moveToTargetY = self.locationY
 		
 		#Offensive
 		self.attackRate = 0.8
