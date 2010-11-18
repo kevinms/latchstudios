@@ -281,7 +281,7 @@ class packager:
 		return d
 
 	# set of function pointers mapped to the type number
-	unpack_map = {'
+	unpack_map = {
 	                           # Source Of Packet:
 		0 : unpack_ping,       # client/server
 		1 : unpack_disconnect, # client
