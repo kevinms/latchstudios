@@ -238,7 +238,7 @@ class listen_thread(threading.Thread,packager):
 				self.power_lock.release()
 
 				# update all players notifying them of a new client
-				self.pack_addplayer(info)
+				self.pack_adduser(info)
 			else:
 				conn.send(self.pack_error("server full"))
 	def acquire_lock(self):
