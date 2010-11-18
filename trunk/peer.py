@@ -38,8 +38,7 @@ def main():
 	elif action == 2:
 		settin()
 	else:
-		print "Exiting"
-		exit()
+		nExit()
 
 	screen.fill((200, 180,200))
 
@@ -101,8 +100,6 @@ def main():
 									tro.moveToTargetX = tempData[3][1]
 									tro.moveToTargetY = tempData[3][2]
 
-
-
 		#Update Units loop goes here ((once we have a unit class
 		updateUnits(screen, playerList)
 
@@ -118,8 +115,7 @@ def eventLoop(n):
 	for e in events:
 		#quit
 		if(e.type == QUIT):
-			done = True
-			break
+			nExit()
 		#key recognition branch
 		elif(e.type == pygame.KEYDOWN):
 			if (e.key == K_UP):
@@ -163,6 +159,11 @@ def nGame(screen, settingData):
 
 	print "Done"
 	return n;
+
+def nExit():
+	print "Starting Shutdown Process"
+	print "done"
+	sys.exit()
 	
 
 def connectGame(screen, settingData):
