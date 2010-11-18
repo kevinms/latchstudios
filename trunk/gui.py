@@ -115,8 +115,8 @@ def drawRightPanel_Player(currentPlayer):
         maxHealth = 100
         gameWindow.blit(font.render('Health',0, (255,255,255)), (560, 120))
         healthBar = gameWindow.subsurface(530,140,100,15)
-        healthBar.fill((0,255,0), rect=pygame.Rect(0,0,curHealth,15))
-        healthBar.fill((255,0,0), rect=pygame.Rect(maxHealth-curHealth,0,maxHealth-curHealth,15))
+        healthBar.fill((0,255,0), pygame.Rect(0,0,curHealth,15))
+        healthBar.fill((255,0,0), pygame.Rect(maxHealth-curHealth,0,maxHealth-curHealth,15))
         gameWindow.blit(font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (555,140))
 
         # UNIT INFO #
@@ -129,14 +129,14 @@ def drawRightPanel_Player(currentPlayer):
 
     # -- BUILDING -- #
     elif (selectedUnitType == 1):
-        gameWindow.fill((0,0,0), rect=rightPanel, special_flags=0)
-        gameWindow.fill((0,0,0), rect=topPanel, special_flags=0)
+        gameWindow.fill((0,0,0), rightPanel, special_flags=0)
+        gameWindow.fill((0,0,0), topPanel, special_flags=0)
 
 '''
     # -- SUPPORT -- #
     elif (selectedUnit == 2):
-        gameWindow.fill((0,0,0), rect=rightPanel, special_flags=0)
-        gameWindow.fill((0,0,0), rect=topPanel, special_flags=0)
+        gameWindow.fill((0,0,0), rightPanel, special_flags=0)
+        gameWindow.fill((0,0,0), topPanel, special_flags=0)
 '''
 
 def drawTopPanel_Player(currentPlayer):
