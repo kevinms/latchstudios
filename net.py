@@ -100,7 +100,7 @@ class packager:
 			print "didn't recieve all the data"
 			return
 		# unpack the cid
-		cid = struct.unpack(">h",data)
+		cid = struct.unpack(">h",data)[0]
 
 		# pack data into tuple and put on the queue
 		p = (rx_cid, self.step, 7,   # general info
@@ -125,7 +125,7 @@ class packager:
 			print "didn't recieve all the data"
 			return
 		# unpack the cid
-		cid = struct.unpack(">h",data)
+		cid = struct.unpack(">h",data)[0]
 
 		# pack data into tuple and put on the queue
 		p = (rx_cid, self.step, 8,   # general info
@@ -281,16 +281,17 @@ class packager:
 		return d
 
 	# set of function pointers mapped to the type number
-	unpack_map = {
-		0 : unpack_ping,
-		1 : unpack_disconnect,
-		2 : unpack_minput,
-		3 : unpack_chat,
-		4 : unpack_error,
-		5 : unpack_name,
-		6 : unpack_nop,
-		7 : unpack_adduser,
-		8 : unpack_deluser,
-		9 : unpack_namechange,
-		10: unpack_players
+	unpack_map = {'
+	                           # Source Of Packet:
+		0 : unpack_ping,       # client/server
+		1 : unpack_disconnect, # client
+		2 : unpack_minput,     # client
+		3 : unpack_chat,       # client
+		4 : unpack_error,      # client/server
+		5 : unpack_name,       # client
+		6 : unpack_nop,        # client/server
+		7 : unpack_adduser,    # server
+		8 : unpack_deluser,    # server
+		9 : unpack_namechange, # client
+		10: unpack_players     # server
 	}
