@@ -27,7 +27,6 @@ def drawRightPanel(selectedUnit):
         gameWindow.blit(base, (525, 120))
         gameWindow.blit(font.render('Build a Barracks',0, (255,255,255)), (525, 260))
         gameWindow.blit(barracks, (525, 280))
-        pygame.display.update()
 
 def drawTopPanel(selectedUnit):
     font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
@@ -83,7 +82,6 @@ def drawRightPanel_Player(currentPlayer):
         gameWindow.blit(base, (530, 140))
         gameWindow.blit(font.render('Barracks',0, (255,255,255)), (550, 280))
         gameWindow.blit(barracks, (530, 300))
-        pygame.display.update()
 
     # -- TROOP -- #
     elif (selectedUnitType == 0):
