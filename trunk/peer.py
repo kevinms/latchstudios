@@ -27,16 +27,8 @@ def main():
 	settingData = parseSettings()
 	pygame.display.set_caption('Made by: Latch Studios')
 	playerList = []
-
-
 	screen.fill((159, 180,200))
-
-
 	backRect = pygame.Rect(0,36,640-120,480-36)
-
-
-
-
 	action = mainMenu(screen, settingData)
 
 	if action == 0 :
@@ -48,8 +40,6 @@ def main():
 	else:
 		print "Exiting"
 		exit()
-
-	
 
 	screen.fill((200, 180,200))
 
@@ -64,36 +54,7 @@ def main():
 		screen.fill((200, 180,200),backRect)
 
 		#event loop
-		events = pygame.event.get()
-		for e in events:
-			#quit
-			if(e.type == QUIT):
-				done = True
-				break
-			#key recognition branch
-			elif(e.type == pygame.KEYDOWN):
-				if (e.key == K_UP):
-					print "Key up"
-				elif (e.key == K_DOWN):
-					print "Key down"
-				elif (e.key == K_RIGHT):
-					print "Key right"
-				elif (e.key == K_LEFT):
-					print "Key Left"
-				else:
-					pass
-			elif(e.type == pygame.MOUSEBUTTONDOWN):
-				#print e.button
-				if (e.button == 1):
-					#print "Sending %d %d %d" % (1, e.pos[0], e.pos[1])
-					n.minput(1, e.pos[0], e.pos[1])
-				elif (e.button == 3):
-					#print "Sending %d %d %d" % (3, e.pos[0], e.pos[1])
-					n.minput(3, e.pos[0], e.pos[1])
-			else:
-
-				pass
-
+		eventLoop(n)
 
 		n.recv()
 		while not n.recv_queue.empty():
@@ -143,23 +104,54 @@ def main():
 
 
 		#Update Units loop goes here ((once we have a unit class
-		for person in playerList:
-			for tro in person.troops:
-				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-				print unitDirect
-				tro.setRotation(unitDirect)
-				tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
-				tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
-				screen.blit(tro.mySprite, (tro.locationX,tro.locationY))
-		
-		#print unitDirect[0]
-		#print unitDirect[1]
+		updateUnits(screen, playerList)
 
 		gui.drawTopPanel_Player(mySelf)
 
 		gui.refresh(screen)
 
 	print "Exiting"
+
+
+def eventLoop(n):
+	events = pygame.event.get()
+	for e in events:
+		#quit
+		if(e.type == QUIT):
+			done = True
+			break
+		#key recognition branch
+		elif(e.type == pygame.KEYDOWN):
+			if (e.key == K_UP):
+				print "Key up"
+			elif (e.key == K_DOWN):
+				print "Key down"
+			elif (e.key == K_RIGHT):
+				print "Key right"
+			elif (e.key == K_LEFT):
+				print "Key Left"
+			else:
+				pass
+		elif(e.type == pygame.MOUSEBUTTONDOWN):
+			#print e.button
+			if (e.button == 1):
+				#print "Sending %d %d %d" % (1, e.pos[0], e.pos[1])
+				n.minput(1, e.pos[0], e.pos[1])
+			elif (e.button == 3):
+				#print "Sending %d %d %d" % (3, e.pos[0], e.pos[1])
+				n.minput(3, e.pos[0], e.pos[1])
+		else:
+			pass
+
+def updateUnits(screen, playerList):
+	for person in playerList:
+		for tro in person.troops:
+			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+			tro.setRotation(unitDirect)
+			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
+			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
+			screen.blit(tro.mySprite, (tro.locationX,tro.locationY))	
+
 
 def nGame(screen, settingData):
 	print "Starting New Game"
