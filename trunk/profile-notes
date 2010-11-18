@@ -1,0 +1,4 @@
+# Running the server and client with the profiler
+
+python -m profile net-test.py 0 > server-profile
+python -m profile peer.py > client-profile
