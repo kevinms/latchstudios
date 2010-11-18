@@ -82,7 +82,7 @@ class packager:
 	def unpack_namechange(self,c,rx_cid):
 		pass
 
-	def pack_addplayer(self,c):
+	def pack_adduser(self,c):
 		l = len(c._name)
 		p = struct.pack(">h2ch"+"h"+str(l)+"s",     # format string
 		                c.cid,chr(self.fin),chr(7), # header
