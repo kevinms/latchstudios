@@ -92,7 +92,6 @@ def main():
 									break
 								else:
 									tro.setSelectVal(False)
-							gui.drawRightPanel_Player(mySelf)
 
 						elif tempData[3][0] == 3:
 							for tro in person.troops:
@@ -102,7 +101,7 @@ def main():
 
 		#Update Units loop goes here ((once we have a unit class
 		updateUnits(screen, playerList)
-
+		gui.drawRightPanel_Player(mySelf)
 		gui.drawTopPanel_Player(mySelf)
 
 		gui.refresh(screen)
