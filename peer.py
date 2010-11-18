@@ -56,6 +56,9 @@ def main():
 	for peer in n.peer_list:
 		playerList.append(player.Player(peer[0], peer[1]))
 	done = False
+	n.send()
+	n.minput(1, -5000, -5000)
+
 	while not done:
 		n.send()
 		screen.fill((200, 180,200),backRect)
@@ -143,6 +146,7 @@ def main():
 		for person in playerList:
 			for tro in person.troops:
 				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+				print unitDirect
 				tro.setRotation(unitDirect)
 				tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 				tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
