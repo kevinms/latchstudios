@@ -27,7 +27,16 @@ def main():
 	settingData = parseSettings()
 	pygame.display.set_caption('Made by: Latch Studios')
 	playerList = []
+
+
 	screen.fill((159, 180,200))
+
+
+	backRect = pygame.Rect(0,36,640-120,480-36)
+
+
+
+
 	action = mainMenu(screen, settingData)
 
 	if action == 0 :
@@ -49,7 +58,7 @@ def main():
 	done = False
 	while not done:
 		n.send()
-		screen.fill((200, 180,200))
+		screen.fill((200, 180,200),backRect)
 
 		#event loop
 		events = pygame.event.get()
@@ -92,6 +101,9 @@ def main():
 			if tempData[2] == 7:
 				#print "Adding player CID: %d Name: %s" % (tempData[3], tempData[4])
 				playerList.append(player.Player(tempData[3], tempData[4]))
+				for person in playerList:
+					if n.info.cid == person.playerID:
+						mySelf = person
 
 				print len(playerList)
 				for peer in playerList:
@@ -117,6 +129,7 @@ def main():
 									break
 								else:
 									tro.setSelectVal(False)
+							gui.drawRightPanel_Player(mySelf)
 
 						elif tempData[3][0] == 3:
 							for tro in person.troops:
@@ -138,10 +151,7 @@ def main():
 		#print unitDirect[0]
 		#print unitDirect[1]
 
-
-		for person in playerList:
-			if n.info.cid == person.playerID:
-				gui.drawPanels_Player(person)
+		gui.drawTopPanel_Player(mySelf)
 
 		gui.refresh(screen)
 
