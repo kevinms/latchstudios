@@ -69,9 +69,9 @@ def main():
 					if n.info.cid == person.playerID:
 						mySelf = person
 
-				print len(playerList)
-				for peer in playerList:
-					print peer.troops
+				#print len(playerList)
+				#for peer in playerList:
+				#	print peer.troops
 
 			for person in playerList:
 				#if tempData[2] == 2:
