@@ -11,8 +11,9 @@ class Player:
 	mouseY = 50
 	playerID = -1
 
-	def __init__(self, playerName):
+	def __init__(self, cid, playerName):
 		self.troops.append(speedster.Speedster(50,50))
 		self.troops.append(troop.Troop(100,100))
-		self.playerID = playerName
+		self.playerID = cid
+		self.name = playerName
 

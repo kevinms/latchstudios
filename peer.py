@@ -44,8 +44,8 @@ def main():
 
 	screen.fill((200, 180,200))
 
-        playerList.append(player.Player(n.info.cid))
-	
+	for peer in n.peer_list:
+		playerList.append(player.Player(peer[0], peer[1]))
 	done = False
 	while not done:
 		n.send()
@@ -62,30 +62,12 @@ def main():
 			elif(e.type == pygame.KEYDOWN):
 				if (e.key == K_UP):
 					print "Key up"
-					#for tro in troopList:
-					#	if tro.isSelected():
-					#		tro.locationY = tro.getLocationY() - tro.getSpeed()
-					#troopList.append(troop.Troop(100,100))
-					
-					
 				elif (e.key == K_DOWN):
 					print "Key down"
-					#for tro in troopList:
-					#	if tro.isSelected():
-					#		tro.locationY = tro.getLocationY() + tro.getSpeed()
-					#troopList.append(speedster.Speedster(50,50))
-
 				elif (e.key == K_RIGHT):
 					print "Key right"
-					#for tro in troopList:
-					#	if tro.isSelected():
-					#		tro.locationX = tro.getLocationX() + tro.getSpeed()
 				elif (e.key == K_LEFT):
 					print "Key Left"
-					#for tro in troopList:
-					#	if tro.isSelected():
-					#		tro.locationX = tro.getLocationX() - tro.getSpeed()
-
 				else:
 					pass
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
@@ -93,28 +75,9 @@ def main():
 				if (e.button == 1):
 					print "Sending %d %d %d" % (1, e.pos[0], e.pos[1])
 					n.minput(1, e.pos[0], e.pos[1])
-					#for person in playerList:
-					#	for tro in person.troops:
-					#		tro.setSelectVal(False)
-					#	for tro in person.troops:
-					#		dist = vec.subtract(e.pos[0], e.pos[1], tro.getLocationX(), tro.getLocationY())
-					#		print dist
-					#		if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
-					#			tro.setSelectVal(True)
-					#			break
-					#		else:
-					#			tro.setSelectVal(False)
 				elif (e.button == 3):
 					print "Sending %d %d %d" % (3, e.pos[0], e.pos[1])
 					n.minput(3, e.pos[0], e.pos[1])
-					#for person in playerList:
-					#	for tro in person.troops:
-					#		if tro.isSelected():
-					#			mouse_position = list(e.pos)
-					#			tro.moveToTargetX = e.pos[0]
-					#			tro.moveToTargetY = e.pos[1]
-						
-				
 			else:
 
 				pass
@@ -126,10 +89,18 @@ def main():
 			#start debug line
 			if tempData[2] == 2:
 				print "Info: %d %d %d" % (tempData[0], tempData[1], tempData[2])
+			if tempData[2] == 7:
+				print "Adding player CID: %d Name: %s" % (tempData[3], tempData[4])
+				print type(tempData[3])
+				print tempData[3]
+				playerList.append(player.Player(int(tempData[3]), tempData[4]))
 
 			for person in playerList:
-				#if tempData[0] == person.playerID:
-				if True:
+				if tempData[2] == 2:
+					print "playerID: %d" % person.playerID
+					print "tempData[0]: %d" % tempData[0]					
+				if tempData[0] == person.playerID:
+				#if True:
 					if tempData[2] == 2:
 						print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
 						if tempData[3][0] == 1:
@@ -165,7 +136,7 @@ def main():
 		#print unitDirect[1]
 
 
-		gui.drawPanels(-1)
+		#gui.drawPanels(-1)
 
 
 
@@ -217,7 +188,6 @@ def writeConf(Data):
 
 
 def mainMenu(screen, settingData):
-	
 	selec = 0
 	font = pygame.font.Font(None, 60)
 	selected = (255,255, 0)
