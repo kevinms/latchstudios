@@ -72,7 +72,7 @@ class client_thread(threading.Thread,packager):
 				connected = False
 			
 			self.peer_list = self.unpack_players(self.info,0)
-			print "PeerList: " + str(peer_list)
+			print "PeerList: " + str(self.peer_list)
 
 			self.connected = True;
 			print 'connected'
