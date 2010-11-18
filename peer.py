@@ -139,9 +139,9 @@ def main():
 		#print unitDirect[1]
 
 
-		gui.drawPanels(-1)
-
-
+		for person in playerList:
+			if n.info.cid == person.playerID:
+				gui.drawPanels_Player(person)
 
 		gui.refresh(screen)
 
