@@ -139,7 +139,7 @@ def main():
 		#print unitDirect[1]
 
 
-		#gui.drawPanels(-1)
+		gui.drawPanels(-1)
 
 
 
