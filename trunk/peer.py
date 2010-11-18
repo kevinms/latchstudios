@@ -73,10 +73,10 @@ def main():
 			elif(e.type == pygame.MOUSEBUTTONDOWN):
 				#print e.button
 				if (e.button == 1):
-					print "Sending %d %d %d" % (1, e.pos[0], e.pos[1])
+					#print "Sending %d %d %d" % (1, e.pos[0], e.pos[1])
 					n.minput(1, e.pos[0], e.pos[1])
 				elif (e.button == 3):
-					print "Sending %d %d %d" % (3, e.pos[0], e.pos[1])
+					#print "Sending %d %d %d" % (3, e.pos[0], e.pos[1])
 					n.minput(3, e.pos[0], e.pos[1])
 			else:
 
@@ -87,29 +87,32 @@ def main():
 		while not n.recv_queue.empty():
 			tempData = n.recv_queue.get()
 			#start debug line
-			if tempData[2] == 2:
-				print "Info: %d %d %d" % (tempData[0], tempData[1], tempData[2])
+			#if tempData[2] == 2:
+				#print "Info: %d %d %d" % (tempData[0], tempData[1], tempData[2])
 			if tempData[2] == 7:
-				print "Adding player CID: %d Name: %s" % (tempData[3], tempData[4])
-				print type(tempData[3])
-				print tempData[3]
-				playerList.append(player.Player(int(tempData[3]), tempData[4]))
+				#print "Adding player CID: %d Name: %s" % (tempData[3], tempData[4])
+				playerList.append(player.Player(tempData[3], tempData[4]))
+
+				print len(playerList)
+				for peer in playerList:
+					print peer.troops
 
 			for person in playerList:
-				if tempData[2] == 2:
-					print "playerID: %d" % person.playerID
-					print "tempData[0]: %d" % tempData[0]					
+				#if tempData[2] == 2:
+					#print "playerID: %d" % person.playerID
+					#print "tempData[0]: %d" % tempData[0]					
 				if tempData[0] == person.playerID:
 				#if True:
 					if tempData[2] == 2:
-						print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
+						#print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
 						if tempData[3][0] == 1:
 							for tro in person.troops:
 								tro.setSelectVal(False)
 							for tro in person.troops:
 								dist = vec.subtract(tempData[3][1], tempData[3][2], tro.getLocationX(), tro.getLocationY())
-								print dist
+								#print dist
 								if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
+									#print "selected player %d's unit" % person.playerID
 									tro.setSelectVal(True)
 									break
 								else:

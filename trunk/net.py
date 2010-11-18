@@ -56,7 +56,7 @@ class packager:
 		self.send_queue.put(p)
 
 	def unpack_minput(self,c,rx_cid):
-		print "unpack_minput"
+		#print "unpack_minput"
 		# recieve the data
 		data = c.s.recv(9)
 		if data == "" or len(data) != 9:
