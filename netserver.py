@@ -87,33 +87,15 @@ class server_thread(threading.Thread,packager):
 				self.pack_name(info,data[3])
 			elif data[2] == 4:
 				self.pack_error(info,data[3])
-			elif data[2] == 6:
+			elif data[2] == 6: # ignore this :D (optimization)
 				#print "processing nop"
-				self.pack_nop(info)
+				#self.pack_nop(info)
+				pass
 
-			#packed_data = self.send_queue.queue.popleft()
-			#print "str(len(packed_data)) = " + str(len(packed_data))
-			#part = struct.pack(">h",data[0])
-			#whole = struct.pack(str(len(part))+"s"+str(len(packed_data))+"s",part,packed_data)
-			#self.send_queue.put(struct.pack(">"+str(len(packed_data))+"sh",packed_data,data[0]))
-
-		if not self.send_queue.empty():
-			# now we need to change the fin bit of the last one to 1
-			self.fin = 1
-		
-			packed_data = self.send_queue.queue.popleft()
-			logging.debug("len(packed_data)=" + str(len(packed_data)))
-			part = struct.unpack(">hcc",packed_data[0:4])
-			updated_part = struct.pack(">hcc",part[0],chr(self.fin),part[2])
-			
-			logging.debug("len(packed_data)=" + str(len(packed_data)))
-	
-			# the header length
-			if len(packed_data) == 4:
-				self.send_queue.put(updated_part)
-			else:
-				whole = struct.pack(str(len(updated_part))+"s"+str(len(packed_data)-4)+"s",updated_part,packed_data[4:len(packed_data)])
-				self.send_queue.put(whole)
+		# pack up a single nop from the server to let the clients know
+		# the step is over
+		self.fin = 1
+		self.pack_nop(self.psuedo_client)
 
 	# Send info to all clients to sync one turn
 	def send(self):
