@@ -19,8 +19,8 @@ def drawRightPanel(selectedUnit):
         
     
         # SIDE PANEL INFO BAR #
-        base = pygame.image.load('base.jpg')
-        barracks = pygame.image.load('barracks.jpg')
+        base = pygame.image.load('base.jpg').convert()
+        barracks = pygame.image.load('barracks.jpg').convert()
         base.set_clip((0,0), (90,90))
         barracks.set_clip((0,0), (90,90))
         gameWindow.blit(font.render('Build a Base',0, (255,255,255)), (525, 100))
@@ -74,8 +74,8 @@ def drawRightPanel_Player(currentPlayer):
         # BUILDING SELECTION #
         gameWindow.blit(font.render('Building',0, (255,255,255)), (558, 60))
         gameWindow.blit(font.render('Construction',0, (255,255,255)), (540, 80))
-        base = pygame.image.load('base.jpg')
-        barracks = pygame.image.load('barracks.jpg')
+        base = pygame.image.load('base.jpg').convert()
+        barracks = pygame.image.load('barracks.jpg').convert()
         base.set_clip((0,0), (90,90))
         barracks.set_clip((0,0), (90,90))
         gameWindow.blit(font.render('Base',0, (255,255,255)), (565, 120))
