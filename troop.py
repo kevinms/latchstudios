@@ -36,6 +36,7 @@ class Troop(unit.Unit):
 		#Defensive
 		self.damageResistance = 10
 		self.setupColors(colorVal)
+		self.rotation = 0
 
 		
 	
@@ -45,19 +46,21 @@ class Troop(unit.Unit):
 			rise = unitDirect[1]
 			temp = math.atan(rise/run)
 			temp = math.degrees(temp)
-			rotation = 0-temp
+			self.rotation = 0-temp
 			if(run < 0):
-				rotation = 180-temp
-			self.mySprite = pygame.transform.rotate(self.baseSprite, rotation)
+				self.rotation = 180-temp
+			self.mySprite = pygame.transform.rotate(self.baseSprite, self.rotation)
 	
 	def setSelectVal(self, val):
 		self.selected = val
 		if val:
 			self.mySprite = self.selectedSprite
 			self.baseSprite = self.mySprite
+			self.mySprite = pygame.transform.rotate(self.baseSprite, self.rotation)
 		else:
 			self.mySprite = self.normalSprite	
 			self.baseSprite = self.mySprite		
+			self.mySprite = pygame.transform.rotate(self.baseSprite, self.rotation)
 	def setupColors(self, colorVal):
 		for x in range(self.normalSprite.get_width()):
 			for y in range(self.normalSprite.get_height()):
