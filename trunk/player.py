@@ -3,6 +3,7 @@
 import troop
 import speedster
 import building
+import random
 
 class Player:
 	mouseX = 50
@@ -12,8 +13,9 @@ class Player:
 	def __init__(self, cid, playerName):
 		self.troops = []
 		self.buildings = []
-		self.troops.append(speedster.Speedster(50,50))
-		self.troops.append(troop.Troop(100,100, cid*5))
+		self.color = (cid+random.randint(0,480), cid+random.randint(0,480), cid+random.randint(0,480))
+		self.troops.append(speedster.Speedster(50,50, self.color))
+		self.troops.append(troop.Troop(100,100, self.color))
 
 		self.playerID = cid
 		self.name = playerName
