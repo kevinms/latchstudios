@@ -13,6 +13,8 @@ import troop
 import speedster
 import building
 
+import world
+
 import vec
 import netserver as NS
 import netclient as NC
@@ -22,6 +24,9 @@ from pygame.color import THECOLORS
 
 def main():
 	windowSize = 640,480
+	
+	worldMap = world.WorldMap(1000, 1000, 10, 10)
+
 	pygame.init()
 	screen = pygame.display.set_mode(windowSize,0,8)
 	settingData = parseSettings()
@@ -53,7 +58,7 @@ def main():
 		screen.fill((200, 180,200),backRect)
 
 		#event loop
-		eventLoop(n)
+		eventLoop(worldMap, n, backRect, screen, playerList)
 
 		n.recv()
 		while not n.recv_queue.empty():
@@ -101,7 +106,7 @@ def main():
 									tro.moveToTargetY = tempData[3][2]
 
 		#Update Units loop goes here ((once we have a unit class
-		updateUnits(screen, playerList)
+		updateUnits(screen, playerList, worldMap)
 		gui.drawTopPanel_Player(mySelf)
 
 		gui.refresh(screen)
@@ -109,7 +114,7 @@ def main():
 	print "Exiting"
 
 
-def eventLoop(n):
+def eventLoop(worldMap, n, backRect, screen, playerList):
 	events = pygame.event.get()
 	for e in events:
 		#quit
@@ -118,34 +123,63 @@ def eventLoop(n):
 		#key recognition branch
 		elif(e.type == pygame.KEYDOWN):
 			if (e.key == K_UP):
-				print "Key up"
+				#print "Key up"
+				if (worldMap.view.locY - 100 < 0):
+					worldMap.view.locY = 0
+				else:
+					worldMap.view.locY -= 100
+				updateUnits(screen, playerList, worldMap)
 			elif (e.key == K_DOWN):
-				print "Key down"
+				#print "Key down"
+				if (worldMap.view.locY + worldMap.view.sizeY + 100 > worldMap.sizeY):
+					worldMap.view.locY = worldMap.sizeY - worldMap.view.sizeY
+				else:
+					worldMap.view.locY += 100
+				updateUnits(screen, playerList, worldMap)
 			elif (e.key == K_RIGHT):
-				print "Key right"
+				#print "Key right"
+				if (worldMap.view.locX + worldMap.view.sizeX + 100 > worldMap.sizeX):
+					worldMap.view.locX = worldMap.sizeX - worldMap.view.sizeX
+				else:
+					worldMap.view.locX += 100
+				updateUnits(screen, playerList, worldMap)
 			elif (e.key == K_LEFT):
-				print "Key Left"
+				#print "Key Left"
+				if (worldMap.view.locX - 100 < 0):
+					worldMap.view.locX = 0
+				else:
+					worldMap.view.locX -= 100
+				updateUnits(screen, playerList, worldMap)
 			else:
 				pass
 		elif(e.type == pygame.MOUSEBUTTONDOWN):
 			#print e.button
 			if (e.button == 1):
-				#print "Sending %d %d %d" % (1, e.pos[0], e.pos[1])
-				n.minput(1, e.pos[0], e.pos[1])
+				globalX = worldMap.view.locX + e.pos[0]
+				globalY = worldMap.view.locY + e.pos[1]
+				n.minput(1, globalX, globalY)
 			elif (e.button == 3):
-				#print "Sending %d %d %d" % (3, e.pos[0], e.pos[1])
-				n.minput(3, e.pos[0], e.pos[1])
+				globalX = worldMap.view.locX + e.pos[0]
+				globalY = worldMap.view.locY + e.pos[1]
+				n.minput(3, globalX, globalY)
 		else:
 			pass
 
-def updateUnits(screen, playerList):
+def updateUnits(screen, playerList, worldMap):
 	for person in playerList:
 		for tro in person.troops:
 			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
 			tro.setRotation(unitDirect)
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
-			screen.blit(tro.mySprite, (tro.locationX,tro.locationY))	
+			translatedX = tro.locationX - worldMap.view.locX
+			translatedY = tro.locationY - worldMap.view.locY
+			#print translatedX
+			#print translatedY
+			#print worldMap.view.sizeX
+			#print worldMap.view.sizeY
+			if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
+				screen.blit(tro.mySprite, (translatedX,translatedY))	
 
 
 def nGame(screen, settingData):

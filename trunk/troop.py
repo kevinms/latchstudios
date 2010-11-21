@@ -75,7 +75,6 @@ class Troop(unit.Unit):
 					newColor = pygame.Color(0, 0, 0, 0)
 				elif (newR == 255 and newG == 0 and newB == 0):
 					newColor = pygame.Color((newR + colorVal[0])%255,(newG + colorVal[1])%255,(newB + colorVal[2])%255,255)
-					pass
 				self.normalSprite.set_at(locationOf, newColor)
 		self.normalSprite.set_colorkey((0,0,0,0))
 
