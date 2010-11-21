@@ -35,35 +35,8 @@ class Troop(unit.Unit):
 
 		#Defensive
 		self.damageResistance = 10
+		self.setupColors(colorVal)
 
-
-		for x in range(self.normalSprite.get_width()):
-			for y in range(self.normalSprite.get_height()):
-				locationOf = (x,y)
-
-
-				newR = self.normalSprite.get_at(locationOf)[0] 
-				newG = self.normalSprite.get_at(locationOf)[1]  
-				newB = self.normalSprite.get_at(locationOf)[2] 
-				newA = self.normalSprite.get_at(locationOf)[3]
-
-				newColor = pygame.Color(newR,newG,newB,newA)
-				#newColor = pygame.Color(0,30,0,newA)
-				self.normalSprite.set_at(locationOf, newColor)
-
-		for x in range(self.selectedSprite.get_width()):
-			for y in range(self.selectedSprite.get_height()):
-				locationOf = (x,y)
-
-
-				newR = self.selectedSprite.get_at(locationOf)[0] 
-				newG = self.selectedSprite.get_at(locationOf)[1]  
-				newB = self.selectedSprite.get_at(locationOf)[2] 
-				newA = self.selectedSprite.get_at(locationOf)[3]
-
-				newColor = pygame.Color(newR,newG,newB,newA)
-				#newColor = pygame.Color(0,30,0,newA)
-				self.selectedSprite.set_at(locationOf, newColor)
 		
 	
 	def setRotation(self, unitDirect):
@@ -84,4 +57,44 @@ class Troop(unit.Unit):
 			self.baseSprite = self.mySprite
 		else:
 			self.mySprite = self.normalSprite	
-			self.baseSprite = self.mySprite		 	 	 	   	 	  	   		  	 
+			self.baseSprite = self.mySprite		
+	def setupColors(self, colorVal):
+		for x in range(self.normalSprite.get_width()):
+			for y in range(self.normalSprite.get_height()):
+				locationOf = (x,y)
+
+				newR = self.normalSprite.get_at(locationOf)[0] 
+				newG = self.normalSprite.get_at(locationOf)[1]
+				newB = self.normalSprite.get_at(locationOf)[2] 
+				newA = self.normalSprite.get_at(locationOf)[3]
+
+				newColor = pygame.Color(newR,newG,newB,newA)
+
+				colorKey = self.normalSprite.get_colorkey()	
+				if newColor == colorKey:
+					newColor = pygame.Color(0, 0, 0, 0)
+				elif (newR == 255 and newG == 0 and newB == 0):
+					newColor = pygame.Color((newR + colorVal[0])%255,(newG + colorVal[1])%255,(newB + colorVal[2])%255,255)
+					pass
+				self.normalSprite.set_at(locationOf, newColor)
+		self.normalSprite.set_colorkey((0,0,0,0))
+
+		for x in range(self.selectedSprite.get_width()):
+			for y in range(self.selectedSprite.get_height()):
+				locationOf = (x,y)
+
+				newR = self.selectedSprite.get_at(locationOf)[0] 
+				newG = self.selectedSprite.get_at(locationOf)[1]  
+				newB = self.selectedSprite.get_at(locationOf)[2] 
+				newA = self.selectedSprite.get_at(locationOf)[3]
+
+				newColor = pygame.Color(newR,newG,newB,newA)
+
+				colorKey = self.selectedSprite.get_colorkey()	
+				if newColor == colorKey:
+					newColor = pygame.Color(0, 0, 0, 0)
+				elif (newR == 255 and newG == 0 and newB == 0):
+					newColor = pygame.Color((newR + colorVal[0])%255,(newG + colorVal[1])%255,(newB + colorVal[2])%255,255)
+					pass
+				self.selectedSprite.set_at(locationOf, newColor)
+		self.selectedSprite.set_colorkey((0,0,0,0))
