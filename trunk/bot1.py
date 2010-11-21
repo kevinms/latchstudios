@@ -53,9 +53,9 @@ def main():
 		push = random.randint(0,4)
 		
 		if (push == 1):
-			n.minput(1, random.randint(0,640), random.randint(0,480))
+			n.minput(1, random.randint(0,1000), random.randint(0,1000))
 		elif (push == 3):
-			n.minput(3, random.randint(0,640), random.randint(0,480))
+			n.minput(3, random.randint(0,1000), random.randint(0,1000))
 		#/Bot Logic
 		
 		#Game Engine Logic Is Here

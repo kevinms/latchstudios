@@ -89,9 +89,8 @@ def main():
 							for tro in person.troops:
 								tro.setSelectVal(False)
 							for tro in person.troops:
-								dist = vec.subtract(tempData[3][1], tempData[3][2], tro.getLocationX(), tro.getLocationY())
-								#print dist
-								if fabs(dist[0])< tro.size and fabs(dist[1]) < tro.size:
+								touchRect = pygame.Rect(tro.getLocationX()- worldMap.view.locX, tro.getLocationY() - worldMap.view.locY, tro.mySprite.get_rect()[2], tro.mySprite.get_rect()[3])
+								if touchRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):								
 									#print "selected player %d's unit" % person.playerID
 									tro.setSelectVal(True)
 									break
@@ -154,14 +153,15 @@ def eventLoop(worldMap, n, backRect, screen, playerList):
 				pass
 		elif(e.type == pygame.MOUSEBUTTONDOWN):
 			#print e.button
-			if (e.button == 1):
-				globalX = worldMap.view.locX + e.pos[0]
-				globalY = worldMap.view.locY + e.pos[1]
-				n.minput(1, globalX, globalY)
-			elif (e.button == 3):
-				globalX = worldMap.view.locX + e.pos[0]
-				globalY = worldMap.view.locY + e.pos[1]
-				n.minput(3, globalX, globalY)
+			if (backRect.collidepoint(e.pos[0], e.pos[1])):
+				if (e.button == 1):
+					globalX = worldMap.view.locX + e.pos[0]
+					globalY = worldMap.view.locY + e.pos[1]
+					n.minput(1, globalX, globalY)
+				elif (e.button == 3):
+					globalX = worldMap.view.locX + e.pos[0]
+					globalY = worldMap.view.locY + e.pos[1]
+					n.minput(3, globalX, globalY)
 		else:
 			pass
 

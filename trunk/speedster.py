@@ -43,9 +43,11 @@ class Speedster(troop.Troop):
 		if val:
 			self.mySprite = self.selectedSprite
 			self.baseSprite = self.mySprite
+			self.mySprite = pygame.transform.rotate(self.baseSprite, self.rotation)
 		else:
 			self.mySprite = self.normalSprite	
 			self.baseSprite = self.mySprite	
+			self.mySprite = pygame.transform.rotate(self.baseSprite, self.rotation)
 
 	def setupColors(self, colorVal):
 		for x in range(self.normalSprite.get_width()):
