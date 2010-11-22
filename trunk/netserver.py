@@ -66,7 +66,7 @@ class server_thread(threading.Thread,packager):
 		self.fin = 0
 		while not self.recv_queue.empty():
 			data = self.recv_queue.get()
-			#print "process " + str(data[0]) + " " + str(data[1]) + " " + str(data[2])
+			logging.debug("process: " + str(data[0]) + " " + str(data[1]) + " " + str(data[2]))
 			if data[2] == 0:  # ping
 				print "not sending out ping"
 				continue;

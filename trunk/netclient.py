@@ -106,3 +106,9 @@ class client_thread(threading.Thread,packager):
 		self.send()
 		self.s.close()
 		self.connected = False
+
+	# don't use unless you wrote this code or know what your doing.. please.. :D
+	# (hint: wastes bandwidth)
+	def nop(self):
+		if self.connected:
+			self.pack_nop(self.info)
