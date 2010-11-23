@@ -1,0 +1,18 @@
+Bugs:
+  - kevin4::client can only send 1 packet a turn (fin bit problem)
+  - should only be able to place buildings if they are inside the worldMap
+  - unites don't rotate to face enemies within range
+
+Joining Mid-game:
+  - pause everyone
+  - sync new player with everyone else
+
+Combat:
+  - add bullets
+
+Buildings:
+  - create a side panel for when they are selected
+  - be able to click button in side panel to generate new units
+
+AI:
+  - can build, attack, defend
