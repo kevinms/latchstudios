@@ -93,12 +93,5 @@ def main():
 				tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 				tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
 
-		
-	
-
-	
-
-
-
 if __name__ == "__main__":
 	main()
