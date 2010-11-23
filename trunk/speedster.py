@@ -8,8 +8,8 @@ class Speedster(unit.Unit):
 	def __init__(self, positionX, positionY, colorVal):
 		unit.Unit.__init__(self, positionX, positionY)
 
-		self.normalSprite = pygame.image.load("sprite4.png").convert()
-		self.selectedSprite = pygame.image.load("sprite4s.png").convert()
+		self.normalSprite = pygame.image.load("images/sprite4.png").convert()
+		self.selectedSprite = pygame.image.load("images/sprite4s.png").convert()
 
 		self.mySprite = self.normalSprite
 		self.baseSprite = self.mySprite
