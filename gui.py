@@ -1,7 +1,4 @@
 import pygame   
-
-def refresh(screen):
-	pygame.display.update()
    
 class Gui():
     def __init__(self):
@@ -15,6 +12,9 @@ class Gui():
         self.barracks.set_clip((0,0), (90,90))
         self.baseRect = (530,165,90,90)
         self.barracksRect = (530,310,90,90)
+
+    def refresh(screen):
+    	pygame.display.update()
 
     def drawRightPanel_Player(self, currentPlayer):
         font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
