@@ -14,8 +14,8 @@ class Building(unit.Unit):
 		if buildingType == 2:
 			self.mySprite = self.barracks
 
-		self.normalSprite = self.base
-		self.selectedSprite = self.base
+		self.normalSprite = self.mySprite
+		self.selectedSprite = self.mySprite
 
 		self.rect = pygame.Rect(positionX,positionY,90,90)
 		self.unitType = 0
