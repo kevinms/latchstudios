@@ -33,7 +33,7 @@ def main():
 	pygame.display.set_caption('Made by: Latch Studios')
 	playerList = []
 	screen.fill((159, 180,200))
-	backRect = pygame.Rect(0,36,640-120,480-36)
+	backRect = pygame.Rect(0,36,640-125,480-36)
 	action = mainMenu(screen, settingData)
 
 	if action == 0 :
