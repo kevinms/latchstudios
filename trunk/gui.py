@@ -13,7 +13,7 @@ class Gui():
         self.baseRect = (530,165,90,90)
         self.barracksRect = (530,310,90,90)
 
-    def refresh(screen):
+    def refresh(self, screen):
     	pygame.display.update()
 
     def drawRightPanel_Player(self, currentPlayer):
