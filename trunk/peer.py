@@ -89,14 +89,17 @@ def main():
 					if tempData[2] == 2:
 						#print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
 						if tempData[3][0] == 1:
-							# check if the click is on the draw space of the building
-							# world space <- mouse clicks are recieved in world space
-							#TODO:
+							for b in person.buildings:
+								b.setSelectVal(False)
+							for b in person.buildings:
+								if b.rect.collidepoint(tempData[3][1],tempData[3][2]):
+									b.setSelectVal(True)
+									break
 							for tro in person.troops:
 								tro.setSelectVal(False)
 							for tro in person.troops:
 								touchRect = pygame.Rect(tro.getLocationX()- worldMap.view.locX, tro.getLocationY() - worldMap.view.locY, tro.mySprite.get_rect()[2], tro.mySprite.get_rect()[3])
-								if touchRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):								
+								if touchRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
 									#print "selected player %d's unit" % person.playerID
 									tro.setSelectVal(True)
 									break
@@ -171,12 +174,18 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 						n.minput(1, globalX, globalY)
 					elif building_mode:
 						# check if the mouse was clicked in the world
-						n.minput(10+selected_building,(e.pos[0]+worldMap.view.locX),(e.pos[1]+worldMap.view.locY))
-						
-						#for p in playerList:
-						#	if p.playerID == n.info.cid:
-						#		print "appending building"
-						building_mode = 0
+						ground_clear = 1
+						for p in playerList:
+							for b in p.buildings:
+								if b.rect.colliderect(pygame.Rect((e.pos[0]+worldMap.view.locX)-45,(e.pos[1]+worldMap.view.locY)-45,90,90)):
+									ground_clear = 0
+							for t in p.troops:
+								tmpRect = pygame.Rect(t.locationX,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
+								if tmpRect.colliderect(pygame.Rect((e.pos[0]+worldMap.view.locX)-45,(e.pos[1]+worldMap.view.locY)-45,90,90)):
+									ground_clear = 0
+						if ground_clear:
+							n.minput(10+selected_building,(e.pos[0]+worldMap.view.locX),(e.pos[1]+worldMap.view.locY))
+							building_mode = 0
 
 				elif (e.button == 3):
 					building_mode = 0
@@ -218,8 +227,8 @@ def updateUnits(screen, playerList, worldMap, mygui):
 				screen.blit(tro.mySprite, (translatedX,translatedY))
 
 		for b in person.buildings:
-			tro.locationX = b.locationX
-			tro.locationY = b.locationY
+			b.locationX = b.locationX
+			b.locationY = b.locationY
 			translatedX = b.locationX - worldMap.view.locX
 			translatedY = b.locationY - worldMap.view.locY
 			if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
@@ -228,10 +237,10 @@ def updateUnits(screen, playerList, worldMap, mygui):
 	if building_mode:
 		loc = pygame.mouse.get_pos()
 		if selected_building == 1:
-			print "blit base"
+			#print "blit base"
 			screen.blit(mygui.base, (loc[0]-45,loc[1]-45))
 		elif selected_building == 2:
-			print "blit barracks"
+			#print "blit barracks"
 			screen.blit(mygui.barracks, (loc[0]-45,loc[1]-45))
 		
 
