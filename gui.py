@@ -1,6 +1,6 @@
 import pygame   
    
-class Gui():
+class Gui:
     def __init__(self):
         self.base = pygame.image.load('images/base.png').convert()
         self.barracks = pygame.image.load('images/barracks.png').convert()
