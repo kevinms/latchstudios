@@ -13,7 +13,8 @@ class Player:
 	def __init__(self, cid, playerName):
 		self.troops = []
 		self.buildings = []
-		self.color = (cid+random.randint(0,480), cid+random.randint(0,480), cid+random.randint(0,480))
+		random.seed(cid)
+		self.color = (cid+random.randint(0,1000), cid+random.randint(0,1000), cid+random.randint(0,1000))
 		self.troops.append(speedster.Speedster(50,50, self.color))
 		self.troops.append(troop.Troop(100,100, self.color))
 

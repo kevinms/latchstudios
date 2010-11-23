@@ -55,7 +55,7 @@ def main():
 
 	while not done:
 		n.send()
-		screen.fill((200, 180,200),backRect)
+		screen.fill((0, 25, 25),backRect)
 
 		#event loop
 		eventLoop(worldMap, n, backRect, screen, playerList)
