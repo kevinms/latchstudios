@@ -20,7 +20,7 @@ class Troop(unit.Unit):
 
 		self.bulletList = []
 		for bullets in range(10):
-			self.bulletList.append(missile.Missile(-10, -10, colorVal)
+			self.bulletList.append(missile.Missile(-10, -10, colorVal))
 		
 		#Offensive
 		self.attackRate = 0.8
