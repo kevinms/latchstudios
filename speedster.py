@@ -3,6 +3,7 @@
 import pygame
 import troop
 import unit
+import missile
 
 class Speedster(unit.Unit):
 	def __init__(self, positionX, positionY, colorVal):
@@ -19,9 +20,13 @@ class Speedster(unit.Unit):
 		self.rotation = 0
 		self.speed = 1.4
 
+		self.bulletList = []
+		for bullets in range(1):
+			self.bulletList.append(missile.Missile(-10, -10, colorVal))
+
 		#Offensive
 		self.attackRate = 0.2
-		self.attackRange = 8
+		self.attackRange = 50
 		self.attackDamage = 3
 		self.attackExplosionSize = 3
 		self.attackChanceOfCriticalHit = 0.3

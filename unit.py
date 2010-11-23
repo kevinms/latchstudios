@@ -6,6 +6,7 @@ import pygame
 import math
 import weakref
 
+
 class Unit:
 	moveToTargetX = -1
 	moveToTargetY = -1
@@ -21,6 +22,8 @@ class Unit:
 		self.rank = 0
 		self.unitType = -1
 		self.selected = False
+
+		self.lastFired = 0
 
 		self.attacking = False
 		self.attackingTarget = None
@@ -145,5 +148,15 @@ class Unit:
 		print "Attacking"
 		self.attacking = True
 		self.attackingTarget = weakref.ref(t)
-	def fire(self):
-		print "Fire!"
+	def fire(self,currentFrame):
+		if (currentFrame - self.lastFired) > self.attackRate:
+			self.lastFired = currentFrame
+			for b in self.bulletList:
+				if b.isActive == False:
+					b.activate(self.attackingTarget())
+					b.isActive = True
+					b.whenFired = currentFrame
+					b.locationX = self.locationX
+					b.locationY = self.locationY
+					b.moveToTargetX = self.attackingTarget().locationX
+					b.moveToTargetY = self.attackingTarget().locationY
