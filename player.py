@@ -21,3 +21,5 @@ class Player:
 		self.playerID = cid
 		self.name = playerName
 
+		# economy
+		self.cash = 100

@@ -96,7 +96,7 @@ class Gui():
         else:
             gameWindow.blit(self.font.render(str(len(currentPlayer.troops))+'/10', 0, (255,0,0)), (313,18))
         gameWindow.blit(self.font.render('0/200', 0, (0,255,0)), (385, 18))
-        gameWindow.blit(self.font.render('$0', 0, (0,255,0)), (469, 18))
+        gameWindow.blit(self.font.render('$'+str(currentPlayer.cash), 0, (0,255,0)), (469, 18))
     
     def drawPanels_Player(self, currentPlayer):
         self.drawTopPanel_Player(currentPlayer)

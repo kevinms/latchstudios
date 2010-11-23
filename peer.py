@@ -56,13 +56,23 @@ def main():
 	for peer in n.peer_list:
 		playerList.append(player.Player(peer[0], peer[1]))
 	done = False
+	mySelf = None
 	n.send()
 	n.minput(1, -5000, -5000)
+
+	cashRate = 10
+	cashTicks = 0
 
 	mygui = gui.Gui()
 	while not done:
 		n.send()
 		screen.fill((0, 25, 25),backRect)
+
+		# update economy
+		cashTicks += 1
+		if mySelf != None and cashTicks == cashRate:
+			mySelf.cash += 1
+			cashTicks = 0
 
 		#event loop
 		eventLoop(worldMap, n, backRect, screen, playerList,mygui)
@@ -132,6 +142,8 @@ def main():
 										tro.moveToTargetY = tempData[3][2]
 						elif tempData[3][0] == 11 or tempData[3][0] == 12:
 							person.buildings.append(building.Building(tempData[3][1]-45,tempData[3][2]-45,person.color,tempData[3][0]-10))
+							if mySelf.playerID == person.playerID:
+								mySelf.cash -= 100
 
 		#Update Units loop goes here ((once we have a unit class
 		updateUnits(screen, playerList, worldMap,mygui)
@@ -145,6 +157,12 @@ def main():
 
 def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 	global building_mode, selected_building
+	
+	# figure out who I am
+	for p in playerList:
+		if n.info.cid == p.playerID:
+			mySelf = p
+			break
 	
 	events = pygame.event.get()
 	for e in events:
@@ -215,11 +233,11 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 			else: # not in backRect
 				if (e.button == 1 and mygui.selectedUnitType < 0):
 					# if a building was clicked set 'place building mode'
-					if mygui.baseRect.collidepoint(e.pos[0],e.pos[1]):
+					if mygui.baseRect.collidepoint(e.pos[0],e.pos[1]) and mySelf.cash >= building.Building.costBase:
 						print "hit base"
 						building_mode = 1
 						selected_building = 1
-					elif mygui.barracksRect.collidepoint(e.pos[0],e.pos[1]):
+					elif mygui.barracksRect.collidepoint(e.pos[0],e.pos[1]) and mySelf.cash >= building.Building.costBarracks:
 						print "hit barracks"
 						building_mode = 1
 						selected_building = 2

@@ -2,6 +2,10 @@ import pygame
 import unit
 
 class Building(unit.Unit):
+	
+	costBase = 100
+	costBarracks = 100
+	
 	def __init__(self, positionX, positionY, colorVal, buildingType):
 		unit.Unit.__init__(self, positionX, positionY)
 		
