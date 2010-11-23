@@ -4,7 +4,7 @@ def refresh(screen):
 	pygame.display.update()
    
 class Gui():
-    def __init__(self)
+    def __init__(self):
         self.base = pygame.image.load('images/base.jpg').convert()
         self.barracks = pygame.image.load('images/barracks.jpg').convert()
         self.defaultRight = pygame.image.load('images/defaultrightpanel.png').convert()
