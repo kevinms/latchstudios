@@ -25,7 +25,6 @@ class Unit:
 		self.attacking = False
 		self.attackingTarget = None
 
-
 		#Offensive
 		self.attackRate = 0
 		self.attackRange = 0
