@@ -13,6 +13,10 @@ def subtract(x1, y1, x2, y2):
 def length(x, y):
     return float(sqrt(x * x + y * y))
 
+def distance(first, second):
+    x, y = subtract(first[0], first[1], second[0], second[1])
+    return length(x, y)
+
 def unitdir(x1, y1, x2, y2, tol):
     x, y = subtract(x1, y1, x2, y2)
     leng = length(x, y)
