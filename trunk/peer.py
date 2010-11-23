@@ -33,7 +33,7 @@ def main():
 	pygame.display.set_caption('Made by: Latch Studios')
 	playerList = []
 	screen.fill((159, 180,200))
-	backRect = pygame.Rect(0,36,640-125,480-36)
+	backRect = pygame.Rect(0,36,640-120,480-36)
 	action = mainMenu(screen, settingData)
 
 	if action == 0 :
@@ -53,6 +53,7 @@ def main():
 	n.send()
 	n.minput(1, -5000, -5000)
 
+	myGui = gui.Gui()
 	while not done:
 		n.send()
 		screen.fill((0, 25, 25),backRect)
@@ -96,7 +97,6 @@ def main():
 									break
 								else:
 									tro.setSelectVal(False)
-							gui.drawRightPanel_Player(mySelf)
 
 						elif tempData[3][0] == 3:
 							for tro in person.troops:
@@ -106,10 +106,10 @@ def main():
 
 		#Update Units loop goes here ((once we have a unit class
 		updateUnits(screen, playerList, worldMap)
+		myGui.drawRightPanel_Player(mySelf)
+		myGui.drawTopPanel_Player(mySelf)
 
-		gui.drawTopPanel_Player(mySelf)
-
-		gui.refresh(screen)
+		myGui.refresh(screen)
 
 	print "Exiting"
 
@@ -169,7 +169,6 @@ def eventLoop(worldMap, n, backRect, screen, playerList):
 def updateUnits(screen, playerList, worldMap):
 	for person in playerList:
 		for tro in person.troops:
-
 			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
 			tro.setRotation(unitDirect)
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
