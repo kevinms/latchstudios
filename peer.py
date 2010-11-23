@@ -30,6 +30,7 @@ def main():
 	
 	worldMap = world.WorldMap(1000, 1000, 10, 10)
 
+	unitAttacked = 0
 	pygame.init()
 	screen = pygame.display.set_mode(windowSize,0,8)
 	settingData = parseSettings()
@@ -117,14 +118,17 @@ def main():
 											if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
 												if (person.playerID != p.playerID):
 													tro.attack(t)
+													unitAttacked = 1
 											else:
 												pass
 													#tro.attacking = False
 												
 
-
-									tro.moveToTargetX = tempData[3][1]
-									tro.moveToTargetY = tempData[3][2]
+									if (unitAttacked != 1):
+										tro.attacking = False
+										tro.attackingUnit = None
+										tro.moveToTargetX = tempData[3][1]
+										tro.moveToTargetY = tempData[3][2]
 						elif tempData[3][0] == 11 or tempData[3][0] == 12:
 							person.buildings.append(building.Building(tempData[3][1]-45,tempData[3][2]-45,person.color,tempData[3][0]-10))
 
@@ -133,6 +137,7 @@ def main():
 		mygui.drawRightPanel_Player(mySelf)
 		mygui.drawTopPanel_Player(mySelf)
 		mygui.refresh(screen)
+		unitAttacked = 0
 
 	print "Exiting"
 
