@@ -15,8 +15,8 @@ class Player:
 		self.buildings = []
 		random.seed(cid)
 		self.color = (cid+random.randint(0,1000), cid+random.randint(0,1000), cid+random.randint(0,1000))
-		self.troops.append(speedster.Speedster(50,50, self.color))
-		self.troops.append(troop.Troop(100,100, self.color))
+		self.troops.append(speedster.Speedster(cid*50 + 50,50, self.color))
+		self.troops.append(troop.Troop(cid*50 + 100,100, self.color))
 
 		self.playerID = cid
 		self.name = playerName
