@@ -123,8 +123,6 @@ def main():
 											else:
 												pass
 													#tro.attacking = False
-												
-
 									if (unitAttacked == False):
 										tro.attacking = False
 										tro.attackingUnit = None
@@ -248,6 +246,24 @@ def updateUnits(screen, playerList, worldMap, mygui):
 
 			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
 			tro.setRotation(unitDirect)
+
+			newMoveRect = pygame.Rect(tro.locationX + (tro.speed * unitDirect[0]),tro.locationY + (tro.speed * unitDirect[1]),tro.mySprite.get_rect()[2], tro.mySprite.get_rect()[3])
+			for p in playerList:
+				for t in p.troops:
+					if id(tro) != id(t):
+						newRect = pygame.Rect(t.locationX ,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
+						if newMoveRect.colliderect(newRect):
+							tro.moveToTargetX = tro.getLocationX()
+							tro.moveToTargetY = tro.getLocationY()
+				for b in p.buildings:
+					newRect = pygame.Rect(b.locationX ,b.locationY,b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
+					if newMoveRect.colliderect(newRect):
+						tro.moveToTargetX = tro.getLocationX()
+						tro.moveToTargetY = tro.getLocationY()
+
+			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+			tro.setRotation(unitDirect)
+
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
 			translatedX = tro.locationX - worldMap.view.locX
