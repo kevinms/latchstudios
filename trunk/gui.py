@@ -10,8 +10,8 @@ class Gui():
         self.topPanel = pygame.image.load('images/toppanel.png').convert()
         self.base.set_clip((0,0), (90,90))
         self.barracks.set_clip((0,0), (90,90))
-        self.baseRect = (530,165,90,90)
-        self.barracksRect = (530,310,90,90)
+        self.baseRect = pygame.Rect(530,165,90,90)
+        self.barracksRect = pygame.Rect(530,310,90,90)
         self.font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
 
     def refresh(self, screen):

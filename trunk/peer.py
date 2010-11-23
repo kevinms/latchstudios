@@ -21,6 +21,8 @@ import netclient as NC
 from pygame.locals import *
 from pygame.color import THECOLORS
 
+building_mode = 0
+selected_building = 0
 
 def main():
 	windowSize = 640,480
@@ -87,6 +89,9 @@ def main():
 					if tempData[2] == 2:
 						#print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
 						if tempData[3][0] == 1:
+							# check if the click is on the draw space of the building
+							# world space <- mouse clicks are recieved in world space
+							#TODO:
 							for tro in person.troops:
 								tro.setSelectVal(False)
 							for tro in person.troops:
@@ -108,13 +113,14 @@ def main():
 		updateUnits(screen, playerList, worldMap,mygui)
 		mygui.drawRightPanel_Player(mySelf)
 		mygui.drawTopPanel_Player(mySelf)
-
 		mygui.refresh(screen)
 
 	print "Exiting"
 
 
 def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
+	global building_mode, selected_building
+	
 	events = pygame.event.get()
 	for e in events:
 		#quit
@@ -156,17 +162,43 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 			#print e.button
 			if (backRect.collidepoint(e.pos[0], e.pos[1])):
 				if (e.button == 1):
-					globalX = worldMap.view.locX + e.pos[0]
-					globalY = worldMap.view.locY + e.pos[1]
-					n.minput(1, globalX, globalY)
+					if not building_mode:
+						print "not building mode"
+						globalX = worldMap.view.locX + e.pos[0]
+						globalY = worldMap.view.locY + e.pos[1]
+						n.minput(1, globalX, globalY)
+					elif building_mode:
+						# check if the mouse was clicked in the world
+						for p in playerList:
+							if p.playerID == n.info.cid:
+								print "appending building"
+								p.buildings.append(building.Building((e.pos[0]+worldMap.view.locX)-45,(e.pos[1]+worldMap.view.locY)-45,p.color,selected_building))
+						building_mode = 0
+
 				elif (e.button == 3):
+					building_mode = 0
 					globalX = worldMap.view.locX + e.pos[0]
 					globalY = worldMap.view.locY + e.pos[1]
 					n.minput(3, globalX, globalY)
+			else: # not in backRect
+				if (e.button == 1):
+					# if a building was clicked set 'place building mode'
+					if mygui.baseRect.collidepoint(e.pos[0],e.pos[1]):
+						print "hit base"
+						building_mode = 1
+						selected_building = 1
+					elif mygui.barracksRect.collidepoint(e.pos[0],e.pos[1]):
+						print "hit barracks"
+						building_mode = 1
+						selected_building = 2
+				elif (e.button == 3):
+					building_mode = 0
 		else:
 			pass
 
 def updateUnits(screen, playerList, worldMap, mygui):
+	global building_mode, selected_building
+	
 	for person in playerList:
 		for tro in person.troops:
 			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
@@ -180,8 +212,25 @@ def updateUnits(screen, playerList, worldMap, mygui):
 			#print worldMap.view.sizeX
 			#print worldMap.view.sizeY
 			if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
-				screen.blit(tro.mySprite, (translatedX,translatedY))	
+				screen.blit(tro.mySprite, (translatedX,translatedY))
 
+		for b in person.buildings:
+			tro.locationX = b.locationX
+			tro.locationY = b.locationY
+			translatedX = b.locationX - worldMap.view.locX
+			translatedY = b.locationY - worldMap.view.locY
+			if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
+				screen.blit(b.mySprite, (translatedX,translatedY))
+
+	if building_mode:
+		loc = pygame.mouse.get_pos()
+		if selected_building == 1:
+			print "blit base"
+			screen.blit(mygui.base, (loc[0]-45,loc[1]-45))
+		elif selected_building == 2:
+			print "blit barracks"
+			screen.blit(mygui.barracks, (loc[0]-45,loc[1]-45))
+		
 
 def nGame(screen, settingData):
 	print "Starting New Game"
