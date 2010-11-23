@@ -20,6 +20,14 @@ class Unit:
 		self.rank = 0
 		self.unitType = -1
 		self.selected = False
+
+		#Offensive
+		self.attackRate = 0
+		self.attackRange = 0
+		self.attackDamage = 0
+		self.attackExplosionSize = 0
+		self.attackChanceOfCriticalHit = 0.05
+
 		#Movement
 		self.speed = 1
 
@@ -28,6 +36,9 @@ class Unit:
 
 		self.moveToTargetX = spawnLocX
 		self.moveToTargetY = spawnLocY
+
+		#Defense
+		self.damageResistance = 0
 
 	def position(self):
 		return self.locationX , self.locationY, self.rotation

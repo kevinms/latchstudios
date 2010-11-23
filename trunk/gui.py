@@ -34,17 +34,20 @@ def drawRightPanel_Player(currentPlayer):
         gameWindow.blit(base, (530, 165))
         gameWindow.blit(barracks, (530, 310))
 
-    # -- TROOP -- #
+    # -- UNIT -- #
     elif (selectedUnitType == 0):
 
-        # UNIT NAME AND INFO SECTION #
+        # TROOP #
         if (selectedUnit.unitType == 1):
             panel = pygame.image.load('images/troop.png').convert()
+
+		# SPEEDSTER #
         elif (selectedUnit.unitType == 4):
             panel = pygame.image.load('images/speedster.png').convert()
 
-        # UNIT PICTURE #
         gameWindow.blit(panel, (515, 36))
+
+        # UNIT PICTURE #
         gameWindow.blit(selectedUnit.baseSprite, (570, 90))
 
         # HEALTH #
