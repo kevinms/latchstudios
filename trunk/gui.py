@@ -56,9 +56,9 @@ def drawRightPanel_Player(currentPlayer):
         gameWindow.blit(font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (555,165))
 
         # UNIT INFO #
-        gameWindow.blit(font.render(str(selectedUnit.speed),0, (255,255,255)), (605, 220))
-        gameWindow.blit(font.render(str(selectedUnit.attackDamage),0, (255,255,255)), (605, 240))
-        gameWindow.blit(font.render(str(selectedUnit.attackRange),0, (255,255,255)), (605, 270))
+        gameWindow.blit(font.render(str(selectedUnit.speed),0, (255,255,255)), (605, 212))
+        gameWindow.blit(font.render(str(selectedUnit.attackDamage),0, (255,255,255)), (605, 235))
+        gameWindow.blit(font.render(str(selectedUnit.attackRange),0, (255,255,255)), (605, 258))
 
     # -- BUILDING -- #
     elif (selectedUnitType == 1):
