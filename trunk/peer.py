@@ -108,6 +108,8 @@ def main():
 								if tro.isSelected():
 									tro.moveToTargetX = tempData[3][1]
 									tro.moveToTargetY = tempData[3][2]
+						elif tempData[3][0] == 11 or tempData[3][0] == 12:
+							person.buildings.append(building.Building(tempData[3][1]-45,tempData[3][2]-45,person.color,tempData[3][0]-10))
 
 		#Update Units loop goes here ((once we have a unit class
 		updateUnits(screen, playerList, worldMap,mygui)
@@ -169,10 +171,11 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 						n.minput(1, globalX, globalY)
 					elif building_mode:
 						# check if the mouse was clicked in the world
-						for p in playerList:
-							if p.playerID == n.info.cid:
-								print "appending building"
-								p.buildings.append(building.Building((e.pos[0]+worldMap.view.locX)-45,(e.pos[1]+worldMap.view.locY)-45,p.color,selected_building))
+						n.minput(10+selected_building,(e.pos[0]+worldMap.view.locX),(e.pos[1]+worldMap.view.locY))
+						
+						#for p in playerList:
+						#	if p.playerID == n.info.cid:
+						#		print "appending building"
 						building_mode = 0
 
 				elif (e.button == 3):
@@ -181,7 +184,7 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 					globalY = worldMap.view.locY + e.pos[1]
 					n.minput(3, globalX, globalY)
 			else: # not in backRect
-				if (e.button == 1):
+				if (e.button == 1 and mygui.selectedUnitType < 0):
 					# if a building was clicked set 'place building mode'
 					if mygui.baseRect.collidepoint(e.pos[0],e.pos[1]):
 						print "hit base"

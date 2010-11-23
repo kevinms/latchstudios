@@ -13,6 +13,7 @@ class Gui():
         self.baseRect = pygame.Rect(530,165,90,90)
         self.barracksRect = pygame.Rect(530,310,90,90)
         self.font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
+        self.selectedUnitType = -1
 
     def refresh(self, screen):
     	pygame.display.update()
@@ -20,11 +21,11 @@ class Gui():
     def drawRightPanel_Player(self, currentPlayer):
         gameWindow = pygame.display.get_surface()
     
-        selectedUnitType = -1
+        self.selectedUnitType = -1
     
         for unit in currentPlayer.troops:
             if unit.selected == 1:
-                selectedUnitType = 0
+                self.selectedUnitType = 0
                 selectedUnit = unit
     
         for unit in currentPlayer.buildings:
@@ -32,7 +33,7 @@ class Gui():
                 selectedUnit = 1
     
         # -- NOTHING SELECTED -- #
-        if selectedUnitType < 0:
+        if self.selectedUnitType < 0:
     
             # BUILDING SELECTION #
             gameWindow.blit(self.defaultRight, (515, 36))
@@ -40,7 +41,7 @@ class Gui():
             gameWindow.blit(self.barracks, (530, 310))
     
         # -- UNIT -- #
-        elif (selectedUnitType == 0):
+        elif (self.selectedUnitType == 0):
     
             # TROOP #
             if (selectedUnit.unitType == 1):
@@ -67,7 +68,7 @@ class Gui():
             gameWindow.blit(self.font.render(str(selectedUnit.attackRange),0, (255,255,255)), (605, 258))
     
         # -- BUILDING -- #
-        elif (selectedUnitType == 1):
+        elif (self.selectedUnitType == 1):
             gameWindow.fill((0,0,0), rightPanel, special_flags=0)
             gameWindow.fill((0,0,0), topPanel, special_flags=0)
     
