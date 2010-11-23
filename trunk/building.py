@@ -1,7 +1,7 @@
 import unit
 
 class Building(unit.Unit):
-	def __init__(self, positionX, positionY):
+	def __init__(self, positionX, positionY, colorVal):
 
 		self.unitType = 0		
 		self.locationX = positionX
