@@ -25,9 +25,9 @@ def drawRightPanel_Player(currentPlayer):
     if selectedUnitType < 0:
 
         # BUILDING SELECTION #
-        base = pygame.image.load('base.jpg').convert()
-        barracks = pygame.image.load('barracks.jpg').convert()
-        panel = pygame.image.load('defaultrightpanel.png').convert()
+        base = pygame.image.load('images/base.jpg').convert()
+        barracks = pygame.image.load('images/barracks.jpg').convert()
+        panel = pygame.image.load('images/defaultrightpanel.png').convert()
         base.set_clip((0,0), (90,90))
         barracks.set_clip((0,0), (90,90))
         gameWindow.blit(panel, (515, 36))
@@ -39,9 +39,9 @@ def drawRightPanel_Player(currentPlayer):
 
         # UNIT NAME AND INFO SECTION #
         if (selectedUnit.unitType == 1):
-            panel = pygame.image.load('troop.png').convert()
+            panel = pygame.image.load('images/troop.png').convert()
         elif (selectedUnit.unitType == 4):
-            panel = pygame.image.load('speedster.png').convert()
+            panel = pygame.image.load('images/speedster.png').convert()
 
         # UNIT PICTURE #
         gameWindow.blit(panel, (515, 36))
@@ -79,7 +79,7 @@ def drawTopPanel_Player(currentPlayer):
     font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
     gameWindow = pygame.display.get_surface()
 
-    topPanel = pygame.image.load('toppanel.png').convert()
+    topPanel = pygame.image.load('images/toppanel.png').convert()
     gameWindow.blit(topPanel,(0,0))
 
     # TOP PANEL INFO BAR #
