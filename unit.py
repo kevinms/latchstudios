@@ -4,6 +4,7 @@
 
 import pygame
 import math
+import weakref
 
 class Unit:
 	moveToTargetX = -1
@@ -20,6 +21,10 @@ class Unit:
 		self.rank = 0
 		self.unitType = -1
 		self.selected = False
+
+		self.attacking = False
+		self.attackingTarget = None
+
 
 		#Offensive
 		self.attackRate = 0
@@ -136,3 +141,10 @@ class Unit:
 					newColor = pygame.Color((newR + colorVal[0])%255,(newG + colorVal[1])%255,(newB + colorVal[2])%255,255)
 				self.selectedSprite.set_at(locationOf, newColor)
 		self.selectedSprite.set_colorkey((0,0,0,0))
+
+	def attack(self, t):
+		print "Attacking"
+		self.attacking = True
+		self.attackingTarget = weakref.ref(t)
+	def fire(self):
+		print "Fire!"

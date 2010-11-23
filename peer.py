@@ -7,6 +7,7 @@ import string
 import net
 import gui
 import player
+import weakref
 from math import *
 
 import troop
@@ -109,6 +110,18 @@ def main():
 						elif tempData[3][0] == 3:
 							for tro in person.troops:
 								if tro.isSelected():
+		
+									for p in playerList:
+										for t in p.troops:
+											tRect = pygame.Rect(t.getLocationX()- worldMap.view.locX, t.getLocationY() - worldMap.view.locY, t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
+											if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):																			
+												tro.attack(t)
+											else:
+												pass
+													#tro.attacking = False
+												
+
+
 									tro.moveToTargetX = tempData[3][1]
 									tro.moveToTargetY = tempData[3][2]
 						elif tempData[3][0] == 11 or tempData[3][0] == 12:
@@ -213,6 +226,19 @@ def updateUnits(screen, playerList, worldMap, mygui):
 	
 	for person in playerList:
 		for tro in person.troops:
+			if tro.attacking:
+				distanceToTarget = vec.distance((tro.getLocationX() , tro.getLocationY() ) , (tro.attackingTarget().getLocationX() ,tro.attackingTarget().getLocationY() ))
+				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+				tro.setRotation(unitDirect)
+				if distanceToTarget < tro.attackRange:
+					tro.moveToTargetX = tro.getLocationX()
+					tro.moveToTargetY = tro.getLocationY()
+					tro.fire()
+				else:
+					tro.moveToTargetX = tro.attackingTarget().getLocationX()
+					tro.moveToTargetY = tro.attackingTarget().getLocationY()
+
+
 			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
 			tro.setRotation(unitDirect)
 			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
