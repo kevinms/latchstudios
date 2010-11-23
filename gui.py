@@ -4,19 +4,19 @@ def refresh(screen):
 	pygame.display.update()
    
 class Gui():
-    def __init__()
-        base = pygame.image.load('images/base.jpg').convert()
-        barracks = pygame.image.load('images/barracks.jpg').convert()
-        defaultRight = pygame.image.load('images/defaultrightpanel.png').convert()
-        speedsterRight = pygame.image.load('images/speedster.png').convert()
-        troopRight = pygame.image.load('images/troop.png').convert()
-        topPanel = pygame.image.load('images/toppanel.png').convert()
-        base.set_clip((0,0), (90,90))
-        barracks.set_clip((0,0), (90,90))
-        baseRect = (530,165,90,90)
-        barracksRect = (530,310,90,90)
+    def __init__(self)
+        self.base = pygame.image.load('images/base.jpg').convert()
+        self.barracks = pygame.image.load('images/barracks.jpg').convert()
+        self.defaultRight = pygame.image.load('images/defaultrightpanel.png').convert()
+        self.speedsterRight = pygame.image.load('images/speedster.png').convert()
+        self.troopRight = pygame.image.load('images/troop.png').convert()
+        self.topPanel = pygame.image.load('images/toppanel.png').convert()
+        self.base.set_clip((0,0), (90,90))
+        self.barracks.set_clip((0,0), (90,90))
+        self.baseRect = (530,165,90,90)
+        self.barracksRect = (530,310,90,90)
 
-    def drawRightPanel_Player(currentPlayer):
+    def drawRightPanel_Player(self, currentPlayer):
         font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
         ifont = pygame.font.Font(pygame.font.match_font('Courier_New'), 10)
         gameWindow = pygame.display.get_surface()
@@ -36,20 +36,20 @@ class Gui():
         if selectedUnitType < 0:
     
             # BUILDING SELECTION #
-            gameWindow.blit(defaultPanel, (515, 36))
-            gameWindow.blit(base, (530, 165))
-            gameWindow.blit(barracks, (530, 310))
+            gameWindow.blit(self.defaultPanel, (515, 36))
+            gameWindow.blit(self.base, (530, 165))
+            gameWindow.blit(self.barracks, (530, 310))
     
         # -- UNIT -- #
         elif (selectedUnitType == 0):
     
             # TROOP #
             if (selectedUnit.unitType == 1):
-                gameWindow.blit(troopPanel, (515, 36))
+                gameWindow.blit(self.troopPanel, (515, 36))
     
     		# SPEEDSTER #
             elif (selectedUnit.unitType == 4):
-                gameWindow.blit(speedsterPanel, (515, 36))
+                gameWindow.blit(self.speedsterPanel, (515, 36))
     
             # UNIT PICTURE #
             gameWindow.blit(selectedUnit.baseSprite, (570, 90))
@@ -79,15 +79,14 @@ class Gui():
             gameWindow.fill((0,0,0), topPanel, special_flags=0)
     '''
 
-    def drawTopPanel_Player(currentPlayer):
+    def drawTopPanel_Player(self, currentPlayer):
         font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
         gameWindow = pygame.display.get_surface()
     
         font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
         gameWindow = pygame.display.get_surface()
     
-        topPanel = pygame.image.load('images/toppanel.png').convert()
-        gameWindow.blit(topPanel,(0,0))
+        gameWindow.blit(self.topPanel,(0,0))
     
         # TOP PANEL INFO BAR #
         gameWindow.blit(font.render('<Game Name Here>', 0, (255,255,255)), (15, 10))
@@ -99,6 +98,6 @@ class Gui():
         gameWindow.blit(font.render('0/200', 0, (0,255,0)), (385, 18))
         gameWindow.blit(font.render('$0', 0, (0,255,0)), (469, 18))
     
-    def drawPanels_Player(currentPlayer):
-        drawTopPanel_Player(currentPlayer)
-        drawRightPanel_Player(currentPlayer)                    
+    def drawPanels_Player(self, currentPlayer):
+        self.drawTopPanel_Player(currentPlayer)
+        self.drawRightPanel_Player(currentPlayer)                    
