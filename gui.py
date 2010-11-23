@@ -30,7 +30,8 @@ class Gui():
     
         for unit in currentPlayer.buildings:
             if unit.selected == 1:
-                selectedUnit = 1
+                selectedUnit = unit
+                self.selectedUnitType = 1
                 print "building is selected with type: ", unit.buildingType
     
         # -- NOTHING SELECTED -- #
@@ -70,8 +71,10 @@ class Gui():
     
         # -- BUILDING -- #
         elif (self.selectedUnitType == 1):
-            gameWindow.fill((0,0,0), rightPanel, special_flags=0)
-            gameWindow.fill((0,0,0), topPanel, special_flags=0)
+            if (selectedUnit.buildingType == 1):
+                gameWindow.blit(self.base, (515, 36))
+            elif (selectedUnit.buildingType == 2):
+                gameWindow.blit(self.barracks, (515, 36))
     
     '''
         # -- SUPPORT -- #
