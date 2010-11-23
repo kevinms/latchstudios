@@ -36,7 +36,7 @@ class Gui():
         if selectedUnitType < 0:
     
             # BUILDING SELECTION #
-            gameWindow.blit(self.defaultPanel, (515, 36))
+            gameWindow.blit(self.defaultRight, (515, 36))
             gameWindow.blit(self.base, (530, 165))
             gameWindow.blit(self.barracks, (530, 310))
     
@@ -45,11 +45,11 @@ class Gui():
     
             # TROOP #
             if (selectedUnit.unitType == 1):
-                gameWindow.blit(self.troopPanel, (515, 36))
+                gameWindow.blit(self.troopRight, (515, 36))
     
     		# SPEEDSTER #
             elif (selectedUnit.unitType == 4):
-                gameWindow.blit(self.speedsterPanel, (515, 36))
+                gameWindow.blit(self.speedsterRight, (515, 36))
     
             # UNIT PICTURE #
             gameWindow.blit(selectedUnit.baseSprite, (570, 90))
