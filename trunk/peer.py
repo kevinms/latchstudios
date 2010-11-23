@@ -53,13 +53,13 @@ def main():
 	n.send()
 	n.minput(1, -5000, -5000)
 
-	myGui = gui.Gui()
+	mygui = gui.Gui()
 	while not done:
 		n.send()
 		screen.fill((0, 25, 25),backRect)
 
 		#event loop
-		eventLoop(worldMap, n, backRect, screen, playerList)
+		eventLoop(worldMap, n, backRect, screen, playerList,mygui)
 
 		n.recv()
 		while not n.recv_queue.empty():
@@ -105,16 +105,16 @@ def main():
 									tro.moveToTargetY = tempData[3][2]
 
 		#Update Units loop goes here ((once we have a unit class
-		updateUnits(screen, playerList, worldMap)
-		myGui.drawRightPanel_Player(mySelf)
-		myGui.drawTopPanel_Player(mySelf)
+		updateUnits(screen, playerList, worldMap,mygui)
+		mygui.drawRightPanel_Player(mySelf)
+		mygui.drawTopPanel_Player(mySelf)
 
-		myGui.refresh(screen)
+		mygui.refresh(screen)
 
 	print "Exiting"
 
 
-def eventLoop(worldMap, n, backRect, screen, playerList):
+def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 	events = pygame.event.get()
 	for e in events:
 		#quit
@@ -128,28 +128,28 @@ def eventLoop(worldMap, n, backRect, screen, playerList):
 					worldMap.view.locY = 0
 				else:
 					worldMap.view.locY -= 100
-				updateUnits(screen, playerList, worldMap)
+				updateUnits(screen, playerList, worldMap,mygui)
 			elif (e.key == K_DOWN):
 				#print "Key down"
 				if (worldMap.view.locY + worldMap.view.sizeY + 100 > worldMap.sizeY):
 					worldMap.view.locY = worldMap.sizeY - worldMap.view.sizeY
 				else:
 					worldMap.view.locY += 100
-				updateUnits(screen, playerList, worldMap)
+				updateUnits(screen, playerList, worldMap,mygui)
 			elif (e.key == K_RIGHT):
 				#print "Key right"
 				if (worldMap.view.locX + worldMap.view.sizeX + 100 > worldMap.sizeX):
 					worldMap.view.locX = worldMap.sizeX - worldMap.view.sizeX
 				else:
 					worldMap.view.locX += 100
-				updateUnits(screen, playerList, worldMap)
+				updateUnits(screen, playerList, worldMap,mygui)
 			elif (e.key == K_LEFT):
 				#print "Key Left"
 				if (worldMap.view.locX - 100 < 0):
 					worldMap.view.locX = 0
 				else:
 					worldMap.view.locX -= 100
-				updateUnits(screen, playerList, worldMap)
+				updateUnits(screen, playerList, worldMap,mygui)
 			else:
 				pass
 		elif(e.type == pygame.MOUSEBUTTONDOWN):
@@ -166,7 +166,7 @@ def eventLoop(worldMap, n, backRect, screen, playerList):
 		else:
 			pass
 
-def updateUnits(screen, playerList, worldMap):
+def updateUnits(screen, playerList, worldMap, mygui):
 	for person in playerList:
 		for tro in person.troops:
 			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
