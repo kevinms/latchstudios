@@ -2,14 +2,14 @@ import pygame
    
 class Gui():
     def __init__(self):
-        self.base = pygame.image.load('images/base.jpg').convert()
-        self.barracks = pygame.image.load('images/barracks.jpg').convert()
+        self.base = pygame.image.load('images/base.png').convert()
+        self.barracks = pygame.image.load('images/barracks.png').convert()
         self.defaultRight = pygame.image.load('images/defaultrightpanel.png').convert()
         self.speedsterRight = pygame.image.load('images/speedster.png').convert()
         self.troopRight = pygame.image.load('images/troop.png').convert()
         self.topPanel = pygame.image.load('images/toppanel.png').convert()
-        self.base.set_clip((0,0), (90,90))
-        self.barracks.set_clip((0,0), (90,90))
+        #self.base.set_clip((0,0), (90,90))
+        #self.barracks.set_clip((0,0), (90,90))
         self.baseRect = pygame.Rect(530,165,90,90)
         self.barracksRect = pygame.Rect(530,310,90,90)
         self.font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
@@ -31,6 +31,7 @@ class Gui():
         for unit in currentPlayer.buildings:
             if unit.selected == 1:
                 selectedUnit = 1
+                print "building is selected with type: ", unit.buildingType
     
         # -- NOTHING SELECTED -- #
         if self.selectedUnitType < 0:
