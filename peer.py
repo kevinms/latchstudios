@@ -114,8 +114,9 @@ def main():
 									for p in playerList:
 										for t in p.troops:
 											tRect = pygame.Rect(t.getLocationX()- worldMap.view.locX, t.getLocationY() - worldMap.view.locY, t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
-											if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):																			
-												tro.attack(t)
+											if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
+												if (person.playerID != p.playerID):
+													tro.attack(t)
 											else:
 												pass
 													#tro.attacking = False
