@@ -10,10 +10,14 @@ class Gui:
         self.topPanel = pygame.image.load('images/toppanel.png').convert()
         #self.base.set_clip((0,0), (90,90))
         #self.barracks.set_clip((0,0), (90,90))
+        self.basePanel = pygame.image.load('images/baseRight.png').convert()
+        self.barracksPanel = pygame.image.load('images/barracksRight.png').convert()
         self.baseRect = pygame.Rect(530,165,90,90)
         self.barracksRect = pygame.Rect(530,310,90,90)
         self.font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
         self.selectedUnitType = -1
+        self.speedster = pygame.image.load('images/arrow.png').convert()
+        self.troop = pygame.image.load('images/sprite4.png').convert()
 
     def refresh(self, screen):
     	pygame.display.update()
@@ -32,7 +36,6 @@ class Gui:
             if unit.selected == 1:
                 selectedUnit = unit
                 self.selectedUnitType = 1
-                print "building is selected with type: ", unit.buildingType
     
         # -- NOTHING SELECTED -- #
         if self.selectedUnitType < 0:
@@ -48,20 +51,19 @@ class Gui:
             # TROOP #
             if (selectedUnit.unitType == 1):
                 gameWindow.blit(self.troopRight, (515, 36))
+                gameWindow.blit(self.troop, (570, 90))
     
     		# SPEEDSTER #
             elif (selectedUnit.unitType == 4):
                 gameWindow.blit(self.speedsterRight, (515, 36))
-    
-            # UNIT PICTURE #
-            gameWindow.blit(selectedUnit.baseSprite, (570, 90))
+                gameWindow.blit(self.speedster, (570, 90))
     
             # HEALTH #
-            curHealth = 100
-            maxHealth = 100
+            curHealth = selectedUnit.currHealth
+            maxHealth = selectedUnit.maxHealth
             healthBar = gameWindow.subsurface(530,165,100,15)
             healthBar.fill((0,255,0), pygame.Rect(0,0,curHealth,15))
-            healthBar.fill((255,0,0), pygame.Rect(maxHealth-curHealth,0,maxHealth-curHealth,15))
+            healthBar.fill((255,0,0), pygame.Rect(curHealth,0,maxHealth-curHealth,15))
             gameWindow.blit(self.font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (555,165))
     
             # UNIT INFO #
@@ -71,10 +73,26 @@ class Gui:
     
         # -- BUILDING -- #
         elif (self.selectedUnitType == 1):
+
+            # BASE #
             if (selectedUnit.buildingType == 1):
-                gameWindow.blit(self.base, (515, 36))
+                gameWindow.blit(self.basePanel, (515, 36))
+                gameWindow.blit(self.base, (530, 90))
+
+            # BARRACKS #
             elif (selectedUnit.buildingType == 2):
-                gameWindow.blit(self.barracks, (515, 36))
+                gameWindow.blit(self.barracksPanel, (515, 36))
+                gameWindow.blit(self.barracks, (530, 90))
+                gameWindow.blit(self.speedster, (530, 300))
+                gameWindow.blit(self.troop, (580, 300))
+
+            # HEALTH #
+            curHealth = selectedUnit.currHealth
+            maxHealth = selectedUnit.maxHealth
+            healthBar = gameWindow.subsurface(530,215,100,15)
+            healthBar.fill((255,0,0), pygame.Rect(0,0,curHealth,15))
+            healthBar.fill((0,255,0), pygame.Rect(curHealth,0,maxHealth-curHealth,15))            
+            gameWindow.blit(self.font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (545,215))
     
     '''
         # -- SUPPORT -- #
