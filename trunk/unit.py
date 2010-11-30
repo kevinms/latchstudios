@@ -167,5 +167,5 @@ class Unit:
 		print "I'm hit by %d for %d damage" % (source.unitType, amount)
 		self.currHealth = self.currHealth - amount
 		if self.currHealth <= 0:
-			self.isSelected = False
 			self.isAlive = False
+			self.selected = False
