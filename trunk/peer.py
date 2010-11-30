@@ -60,7 +60,7 @@ def main():
 	n.send()
 	n.minput(1, -5000, -5000)
 
-	cashRate = 10
+	cashRate = 100
 	cashTicks = 0
 
 	mygui = gui.Gui()
