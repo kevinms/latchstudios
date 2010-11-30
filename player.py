@@ -17,6 +17,9 @@ class Player:
 		self.color = (cid+random.randint(0,1000), cid+random.randint(0,1000), cid+random.randint(0,1000))
 		self.troops.append(speedster.Speedster(cid*50 + 50,50, self.color))
 		self.troops.append(troop.Troop(cid*50 + 100,100, self.color))
+		self.troops.append(troop.Troop(cid*50 + 125,125, self.color))
+		self.troops.append(troop.Troop(cid*50 + 150,150, self.color))
+		self.troops.append(troop.Troop(cid*50 + 175,175, self.color))
 
 		self.playerID = cid
 		self.name = playerName
