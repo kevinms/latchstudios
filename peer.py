@@ -255,69 +255,77 @@ def updateUnits(screen, playerList, worldMap, mygui):
 	
 	for person in playerList:
 		for tro in person.troops:
-			if tro.attacking:
-				distanceToTarget = vec.distance((tro.getLocationX() , tro.getLocationY() ) , (tro.attackingTarget().getLocationX() ,tro.attackingTarget().getLocationY() ))
-				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-				tro.setRotation(unitDirect)
-				if distanceToTarget < tro.attackRange:
-					tro.moveToTargetX = tro.getLocationX()
-					tro.moveToTargetY = tro.getLocationY()
-					tro.fire(framesPast)
-				else:
-					tro.moveToTargetX = tro.attackingTarget().getLocationX()
-					tro.moveToTargetY = tro.attackingTarget().getLocationY()
+
+			if tro.isAlive:
 
 
-			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-			tro.setRotation(unitDirect)
-
-			newMoveRect = pygame.Rect(tro.locationX + (tro.speed * unitDirect[0]),tro.locationY + (tro.speed * unitDirect[1]),tro.mySprite.get_rect()[2], tro.mySprite.get_rect()[3])
-			for p in playerList:
-				for b in p.buildings:
-					newRect = pygame.Rect(b.locationX ,b.locationY,b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
-					if newMoveRect.colliderect(newRect):
+				if tro.attacking:
+					distanceToTarget = vec.distance((tro.getLocationX() , tro.getLocationY() ) , (tro.attackingTarget().getLocationX() ,tro.attackingTarget().getLocationY() ))
+					unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+					tro.setRotation(unitDirect)
+					if distanceToTarget < tro.attackRange:
 						tro.moveToTargetX = tro.getLocationX()
 						tro.moveToTargetY = tro.getLocationY()
-
-			unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-			tro.setRotation(unitDirect)
-
-			tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
-			tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
-			translatedX = tro.locationX - worldMap.view.locX
-			translatedY = tro.locationY - worldMap.view.locY
-			#print translatedX
-			#print translatedY
-			#print worldMap.view.sizeX
-			#print worldMap.view.sizeY
-			if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
-				screen.blit(tro.mySprite, (translatedX,translatedY))
-
-			for b in tro.bulletList:
-				if b.isActive:
-					if (framesPast - b.whenFired) > b.lifeTime:
-						b.disable()
-					
-					unitDirect = vec.unitdir(b.attackingTarget().locationX, b.attackingTarget().locationY, b.getLocationX(), b.getLocationY(), b.getSpeed())
-					b.setRotation(unitDirect)
-					b.locationX = b.locationX + (b.speed * unitDirect[0])
-					b.locationY = b.locationY + (b.speed * unitDirect[1])
-					translatedX = b.locationX - worldMap.view.locX
-					translatedY = b.locationY - worldMap.view.locY
-					newMoveRect = pygame.Rect(b.locationX,b.locationY,b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
-					for p in playerList:
-						for t in p.troops:
-							if id(tro) != id(t):
-								newRect = pygame.Rect(t.locationX ,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
-								if newMoveRect.colliderect(newRect):
-									b.disable()
-
-
-					if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
-						screen.blit(b.mySprite, (translatedX,translatedY))
-
-
-
+						tro.fire(framesPast)
+					else:
+						tro.moveToTargetX = tro.attackingTarget().getLocationX()
+						tro.moveToTargetY = tro.attackingTarget().getLocationY()
+	
+	
+				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+				tro.setRotation(unitDirect)
+	
+				newMoveRect = pygame.Rect(tro.locationX + (tro.speed * unitDirect[0]),tro.locationY + (tro.speed * unitDirect[1]),tro.mySprite.get_rect()[2], tro.mySprite.get_rect()[3])
+				for p in playerList:
+					for b in p.buildings:
+						newRect = pygame.Rect(b.locationX ,b.locationY,b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
+						if newMoveRect.colliderect(newRect):
+							tro.moveToTargetX = tro.getLocationX()
+							tro.moveToTargetY = tro.getLocationY()
+	
+				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+				tro.setRotation(unitDirect)
+		
+				tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
+				tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
+				translatedX = tro.locationX - worldMap.view.locX
+				translatedY = tro.locationY - worldMap.view.locY
+				#print translatedX
+				#print translatedY
+				#print worldMap.view.sizeX
+				#print worldMap.view.sizeY
+				if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
+					screen.blit(tro.mySprite, (translatedX,translatedY))
+	
+				for b in tro.bulletList:
+					if b.isActive:
+						if (framesPast - b.whenFired) > b.lifeTime:
+							b.disable()
+						
+						unitDirect = vec.unitdir(b.attackingTarget().locationX, b.attackingTarget().locationY, b.getLocationX(), b.getLocationY(), b.getSpeed())
+						b.setRotation(unitDirect)
+						b.locationX = b.locationX + (b.speed * unitDirect[0])
+						b.locationY = b.locationY + (b.speed * unitDirect[1])
+						translatedX = b.locationX - worldMap.view.locX
+						translatedY = b.locationY - worldMap.view.locY
+						newMoveRect = pygame.Rect(b.locationX,b.locationY,b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
+						for p in playerList:
+							for t in p.troops:
+								if id(tro) != id(t):
+									newRect = pygame.Rect(t.locationX ,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
+									if newMoveRect.colliderect(newRect):
+										b.disable()
+										t.takeDamage(tro.attackDamage, tro)
+										if t.isAlive == False:
+											tro.attacking = False
+											tro.attackingTarget = None
+	
+	
+						if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
+							screen.blit(b.mySprite, (translatedX,translatedY))
+	
+	
+	
 		for b in person.buildings:
 			b.locationX = b.locationX
 			b.locationY = b.locationY
