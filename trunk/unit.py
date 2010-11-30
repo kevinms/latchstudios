@@ -22,6 +22,7 @@ class Unit:
 		self.rank = 0
 		self.unitType = -1
 		self.selected = False
+		self.isAlive = True
 
 		self.lastFired = 0
 
@@ -146,8 +147,9 @@ class Unit:
 
 	def attack(self, t):
 		print "Attacking"
-		self.attacking = True
-		self.attackingTarget = weakref.ref(t)
+		if t.isAlive:
+			self.attacking = True
+			self.attackingTarget = weakref.ref(t)
 	def fire(self,currentFrame):
 		if (currentFrame - self.lastFired) > self.attackRate:
 			self.lastFired = currentFrame
@@ -160,3 +162,9 @@ class Unit:
 					b.locationY = self.locationY
 					b.moveToTargetX = self.attackingTarget().locationX
 					b.moveToTargetY = self.attackingTarget().locationY
+
+	def takeDamage(self, amount, source):
+		print "I'm hit by %d for %d damage" % (source.unitType, amount)
+		self.currHealth = self.currHealth - amount
+		if self.currHealth <= 0:
+			self.isAlive = False
