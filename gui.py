@@ -16,8 +16,8 @@ class Gui:
         self.barracksRect = pygame.Rect(530,310,90,90)
         self.font = pygame.font.Font(pygame.font.match_font('Arial'), 14)
         self.selectedUnitType = -1
-        self.speedster = pygame.image.load('images/arrow.png').convert()
-        self.troop = pygame.image.load('images/sprite4.png').convert()
+        self.speedster = pygame.image.load('images/sprite4.png').convert()
+        self.troop = pygame.image.load('images/arrow.png').convert()
 
     def refresh(self, screen):
     	pygame.display.update()
@@ -61,9 +61,10 @@ class Gui:
             # HEALTH #
             curHealth = selectedUnit.currHealth
             maxHealth = selectedUnit.maxHealth
+            ratio = 100 / maxHealth
             healthBar = gameWindow.subsurface(530,165,100,15)
-            healthBar.fill((0,255,0), pygame.Rect(0,0,curHealth,15))
-            healthBar.fill((255,0,0), pygame.Rect(curHealth,0,maxHealth-curHealth,15))
+            healthBar.fill((0,255,0), pygame.Rect(0,0,curHealth*ratio,15))
+            healthBar.fill((255,0,0), pygame.Rect(curHealth*ratio,0,(maxHealth-curHealth)*ratio,15))
             gameWindow.blit(self.font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (555,165))
     
             # UNIT INFO #
@@ -89,9 +90,10 @@ class Gui:
             # HEALTH #
             curHealth = selectedUnit.currHealth
             maxHealth = selectedUnit.maxHealth
+            ratio = 100 / maxHealth
             healthBar = gameWindow.subsurface(530,215,100,15)
-            healthBar.fill((255,0,0), pygame.Rect(0,0,curHealth,15))
-            healthBar.fill((0,255,0), pygame.Rect(curHealth,0,maxHealth-curHealth,15))            
+            healthBar.fill((255,0,0), pygame.Rect(0,0,curHealth*ratio,15))
+            healthBar.fill((0,255,0), pygame.Rect(curHealth*ratio,0,(maxHealth-curHealth)*ratio,15))            
             gameWindow.blit(self.font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (545,215))
     
     '''
