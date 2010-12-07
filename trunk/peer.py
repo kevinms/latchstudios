@@ -312,14 +312,14 @@ def updateUnits(screen, playerList, worldMap, mygui):
 						for p in playerList:
 							for t in p.troops:
 								if id(tro) != id(t):
-									newRect = pygame.Rect(t.locationX ,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
-									if newMoveRect.colliderect(newRect):
-										b.disable()
-										t.takeDamage(tro.attackDamage, tro)
-										if t.isAlive == False:
-											tro.attacking = False
-											tro.attackingTarget = None
-	
+									if t.isAlive:
+										newRect = pygame.Rect(t.locationX ,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
+										if newMoveRect.colliderect(newRect):
+											b.disable()
+											t.takeDamage(tro.attackDamage, tro)
+											if t.isAlive == False:
+												tro.attacking = False
+												tro.attackingTarget = None
 	
 						if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
 							screen.blit(b.mySprite, (translatedX,translatedY))
