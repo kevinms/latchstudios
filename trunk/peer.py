@@ -66,7 +66,7 @@ def main():
 	mygui = gui.Gui()
 	while not done:
 		n.send()
-		screen.fill((0, 25, 25),backRect)
+		screen.fill((80, 110, 80),backRect)
 
 		# update economy
 		cashTicks += 1
@@ -135,6 +135,19 @@ def main():
 											else:
 												pass
 													#tro.attacking = False
+										for b in p.buildings:
+											tRect = pygame.Rect(b.getLocationX()- worldMap.view.locX, b.getLocationY() - worldMap.view.locY, b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
+											if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
+												if (person.playerID != p.playerID):
+													tro.attack(b)
+													unitAttacked = True
+													break
+											else:
+												pass
+													#tro.attacking = False
+
+
+
 									if (unitAttacked == False):
 										tro.attacking = False
 										tro.attackingUnit = None
@@ -199,6 +212,19 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 				else:
 					worldMap.view.locX -= 100
 				updateUnits(screen, playerList, worldMap,mygui)
+
+			elif (e.key == K_INSERT):
+				worldMap.view.locX = 0
+				worldMap.view.locY = 0
+			elif (e.key == K_PAGEUP):
+				worldMap.view.locX = worldMap.sizeX - worldMap.view.sizeX
+				worldMap.view.locY = 0
+			elif (e.key == K_DELETE):
+				worldMap.view.locX = 0
+				worldMap.view.locY = worldMap.sizeY - worldMap.view.sizeY
+			elif (e.key == K_PAGEDOWN):
+				worldMap.view.locX = worldMap.sizeX - worldMap.view.sizeX
+				worldMap.view.locY = worldMap.sizeY - worldMap.view.sizeY
 			else:
 				pass
 		elif(e.type == pygame.MOUSEBUTTONDOWN):
@@ -288,6 +314,8 @@ def updateUnits(screen, playerList, worldMap, mygui):
 		
 				tro.locationX = tro.locationX + (tro.speed * unitDirect[0])
 				tro.locationY = tro.locationY + (tro.speed * unitDirect[1])
+				tro.centerX = tro.locationX + (tro.mySprite.get_rect()[2] / 2)
+				tro.centerY = tro.locationY + (tro.mySprite.get_rect()[3] / 2)
 				translatedX = tro.locationX - worldMap.view.locX
 				translatedY = tro.locationY - worldMap.view.locY
 				#print translatedX
@@ -306,6 +334,8 @@ def updateUnits(screen, playerList, worldMap, mygui):
 						b.setRotation(unitDirect)
 						b.locationX = b.locationX + (b.speed * unitDirect[0])
 						b.locationY = b.locationY + (b.speed * unitDirect[1])
+						b.centerX = b.locationX + (b.mySprite.get_rect()[2] / 2)
+						b.centerY = b.locationY + (b.mySprite.get_rect()[3] / 2)
 						translatedX = b.locationX - worldMap.view.locX
 						translatedY = b.locationY - worldMap.view.locY
 						newMoveRect = pygame.Rect(b.locationX,b.locationY,b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
@@ -327,8 +357,6 @@ def updateUnits(screen, playerList, worldMap, mygui):
 	
 	
 		for b in person.buildings:
-			b.locationX = b.locationX
-			b.locationY = b.locationY
 			translatedX = b.locationX - worldMap.view.locX
 			translatedY = b.locationY - worldMap.view.locY
 			if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
