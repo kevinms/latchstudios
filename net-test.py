@@ -44,5 +44,5 @@ if __name__ == '__main__':
 		client()
 	# Server
 	else:
-		n = NS.server_thread(8888,30)
+		n = NS.server_thread(8888,30,True)
 		n.start()

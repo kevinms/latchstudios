@@ -21,6 +21,8 @@ class Building(unit.Unit):
 		self.normalSprite = self.mySprite
 		self.selectedSprite = self.mySprite
 
+		self.centerX = self.locationX + (self.mySprite.get_rect()[2] / 2)
+		self.centerY = self.locationY + (self.mySprite.get_rect()[3] / 2)
 		self.rect = pygame.Rect(positionX,positionY,90,90)
 		self.unitType = 0
 		self.rotation = 0

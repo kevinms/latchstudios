@@ -5,6 +5,7 @@
 import pygame
 import math
 import weakref
+import vec
 
 
 class Unit:
@@ -23,6 +24,9 @@ class Unit:
 		self.unitType = -1
 		self.selected = False
 		self.isAlive = True
+
+		self.centerX = 0
+		self.centerY = 0
 
 		self.lastFired = 0
 
@@ -153,13 +157,17 @@ class Unit:
 	def fire(self,currentFrame):
 		if (currentFrame - self.lastFired) > self.attackRate:
 			self.lastFired = currentFrame
+			
+			unitDirect = vec.unitdir(self.attackingTarget().locationX, self.attackingTarget().locationY, self.getLocationX(), self.getLocationY(), self.getSpeed())
+			self.setRotation(unitDirect)
+
 			for b in self.bulletList:
 				if b.isActive == False:
 					b.activate(self.attackingTarget())
 					b.isActive = True
 					b.whenFired = currentFrame
-					b.locationX = self.locationX
-					b.locationY = self.locationY
+					b.locationX = self.centerX
+					b.locationY = self.centerY
 					b.moveToTargetX = self.attackingTarget().locationX
 					b.moveToTargetY = self.attackingTarget().locationY
 

@@ -5,6 +5,7 @@ import errno
 import copy
 from net import *
 import logging
+import time
 
 def find_client(client_list,conn):
 	i = 0
@@ -33,11 +34,14 @@ class server_thread(threading.Thread,packager):
 	psuedo_client = client_info(None,0)
 	psuedo_client._name = "server"
 
-	def __init__(self,port,slots):
+	def __init__(self,port,slots,bench):
 		threading.Thread.__init__(self)
 		self.port = port
 		self.slots = slots
 		self.turn = 0
+		self.frames = 0
+		self.lastTime = time.time()
+		self.benchmark = bench
 
 	def run(self):
 		self.l = listen_thread(self.port,self.slots,self.client_list,self.psuedo_client,self.power_lock,self.lock)
@@ -105,6 +109,14 @@ class server_thread(threading.Thread,packager):
 		while not self.send_queue.empty():
 			data = self.send_queue.get()
 			logging.debug("\tGetting data to send:")
+			if self.benchmark:
+				currTime = time.time()
+				if (currTime % 2 > 1.99):
+					average = self.frames / (currTime - self.lastTime)
+					print "FPS average: ", average
+					self.lastTime = currTime
+					self.frames = 0
+				
 			for client in self.client_list:
 				try:
 					logging.debug("\t\tTrying to print data")
@@ -114,7 +126,7 @@ class server_thread(threading.Thread,packager):
 					logging.debug("\t\t" + str(int(ord(data[1]))))
 					logging.debug("\t\t" + str(int(ord(data[2]))))
 					logging.debug("\t\t" + str(int(ord(data[3]))))
-					
+					self.frames = self.frames + 1
 					client.s.sendall(data)
 				except socket.error, e:
 					print "Detected remote disconnect"
@@ -211,6 +223,8 @@ class listen_thread(threading.Thread,packager):
 				for client in self.client_list:
 					client_cid_name_list.append([client.cid,client._name])
 				p = self.pack_players(self.psuedo_client,client_cid_name_list)
+
+
 				info.s.sendall(p)
 
 				self.lock.acquire()
