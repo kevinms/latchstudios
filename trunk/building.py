@@ -10,8 +10,8 @@ class Building(unit.Unit):
 		unit.Unit.__init__(self, positionX, positionY)
 		
 		self.buildingType = buildingType
-		self.base = pygame.image.load('images/base.png').convert()
-		self.barracks = pygame.image.load('images/barracks.png').convert()
+		self.base = pygame.image.load('images/IntranetExploder.png').convert()
+		self.barracks = pygame.image.load('images/Fireblox.png').convert()
 
 		if buildingType == 1:
 			self.mySprite = self.base
