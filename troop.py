@@ -8,8 +8,8 @@ class Troop(unit.Unit):
 	def __init__(self, positionX, positionY, colorVal):
 		unit.Unit.__init__(self, positionX, positionY)
 		
-		self.normalSprite = pygame.image.load("images/arrow.png").convert()
-		self.selectedSprite = pygame.image.load("images/arrows.png").convert()
+		self.normalSprite = pygame.image.load("images/troop.png").convert()
+		self.selectedSprite = pygame.image.load("images/troop_s.png").convert()
 
 		self.mySprite = self.normalSprite
 		self.baseSprite = self.mySprite
