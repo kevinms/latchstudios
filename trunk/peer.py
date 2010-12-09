@@ -79,7 +79,7 @@ def main():
 					if b.buildingType == 1:
 						numBase = numBase + 1
 				if numBase > 0:
-					cashRate = int(80 / numBase)	
+					cashRate = int(40 / numBase)	
 				else:
 					cashRate = 9999999999
 
