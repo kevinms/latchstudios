@@ -309,17 +309,17 @@ def updateUnits(screen, playerList, worldMap, mygui):
 
 
 				if tro.attacking:
-					distanceToTarget = vec.distance((tro.getLocationX() , tro.getLocationY() ) , (tro.attackingTarget().getLocationX() ,tro.attackingTarget().getLocationY() ))
-					unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-					tro.setRotation(unitDirect)
-					if distanceToTarget < tro.attackRange:
-						tro.moveToTargetX = tro.getLocationX()
-						tro.moveToTargetY = tro.getLocationY()
-						tro.fire(framesPast)
-					else:
-						tro.moveToTargetX = tro.attackingTarget().getLocationX()
-						tro.moveToTargetY = tro.attackingTarget().getLocationY()
-	
+					if tro.attackingTarget() != None:
+						distanceToTarget = vec.distance((tro.getLocationX() , tro.getLocationY() ) , (tro.attackingTarget().getLocationX() ,tro.attackingTarget().getLocationY() ))
+						unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+						tro.setRotation(unitDirect)
+						if distanceToTarget < tro.attackRange:
+							tro.moveToTargetX = tro.getLocationX()
+							tro.moveToTargetY = tro.getLocationY()
+							tro.fire(framesPast)
+						else:
+							tro.moveToTargetX = tro.attackingTarget().getLocationX()
+							tro.moveToTargetY = tro.attackingTarget().getLocationY()
 	
 				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
 				tro.setRotation(unitDirect)
