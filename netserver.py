@@ -42,7 +42,6 @@ class server_thread(threading.Thread,packager):
 		self.frames = 0
 		self.timedelta = time.time()
 		self.frametime = 0
-		#self.lastTime = time.time()
 		self.benchmark = bench
 
 	def run(self):
@@ -77,16 +76,6 @@ class server_thread(threading.Thread,packager):
 					print "FPS: " + str(self.frames/self.frametime)
 					self.frametime = 0.0
 					self.frames = 0
-
-			'''
-			if self.benchmark:
-				currTime = time.time()
-				if (currTime % 2 > 1.99):
-					average = self.frames / (currTime - self.lastTime)
-					print "FPS average: ", average
-					self.lastTime = currTime
-					self.frames = 0
-			'''
 
 	# Process all the data and get ready to send to the clients
 	def process(self):
