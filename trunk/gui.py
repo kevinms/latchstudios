@@ -66,7 +66,7 @@ class Gui:
             ratio = 100 / maxHealth
             healthBar = gameWindow.subsurface(530,165,100,15)
             healthBar.fill((0,255,0), pygame.Rect(0,0,curHealth*ratio,15))
-            healthBar.fill((255,0,0), pygame.Rect(curHealth*ratio,0,(maxHealth-curHealth)*ratio,15))
+            healthBar.fill((255,0,0), pygame.Rect(int(curHealth*ratio),0,int((maxHealth-curHealth)*ratio),15))
             gameWindow.blit(self.font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (555,165))
     
             # UNIT INFO #
@@ -92,10 +92,9 @@ class Gui:
             # HEALTH #
             curHealth = selectedUnit.currHealth
             maxHealth = selectedUnit.maxHealth
-            ratio = float(100 / maxHealth)
             healthBar = gameWindow.subsurface(530,215,100,15)
-            healthBar.fill((255,0,0), pygame.Rect(0,0,int(curHealth*ratio),15))
-            healthBar.fill((0,255,0), pygame.Rect(int(curHealth*ratio),0,int((maxHealth-curHealth)*ratio),15))            
+            healthBar.fill((255,0,0), pygame.Rect(0,0,100,15))
+            healthBar.fill((0,255,0), pygame.Rect(0,0,int((curHealth * 100)/maxHealth),15))            
             gameWindow.blit(self.font.render(str(curHealth) + " / " + str(maxHealth), 0, (0,0,0)), (545,215))
     
     '''
@@ -106,15 +105,20 @@ class Gui:
     '''
 
     def drawTopPanel_Player(self, currentPlayer):
+        unitCount = 0
         gameWindow = pygame.display.get_surface()
     
         gameWindow.blit(self.topPanel,(0,0))
+
+        for unit in currentPlayer.buildings:
+            if unit.buildingType == 1:
+                unitCount += 5
     
         # TOP PANEL INFO BAR #
-        if (len(currentPlayer.troops) <= 10):
-            gameWindow.blit(self.font.render(str(len(currentPlayer.troops))+'/10', 0, (0,255,0)), (313,18))
+        if (len(currentPlayer.troops) <= unitCount):
+            gameWindow.blit(self.font.render(str(len(currentPlayer.troops))+'/'+str(unitCount), 0, (0,255,0)), (313,18))
         else:
-            gameWindow.blit(self.font.render(str(len(currentPlayer.troops))+'/10', 0, (255,0,0)), (313,18))
+            gameWindow.blit(self.font.render(str(len(currentPlayer.troops))+'/'+str(unitCount), 0, (255,0,0)), (313,18))
         gameWindow.blit(self.font.render('0/200', 0, (0,255,0)), (385, 18))
         gameWindow.blit(self.font.render('$'+str(currentPlayer.cash), 0, (0,255,0)), (469, 18))
     
