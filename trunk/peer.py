@@ -161,10 +161,12 @@ def main():
 
 						elif tempData[3][0] == 24:
 							person.troops.append(troop.Troop(tempData[3][1],tempData[3][2], person.color))
-							mySelf.cash -= unit.Unit.troopCost
+							if mySelf.playerID == person.playerID:
+								mySelf.cash -= unit.Unit.troopCost
 						elif tempData[3][0] == 25:
 							person.troops.append(speedster.Speedster(tempData[3][1],tempData[3][2], person.color))
-							mySelf.cash -= unit.Unit.speedsterCost
+							if mySelf.playerID == person.playerID:
+								mySelf.cash -= unit.Unit.speedsterCost
 
 		#Update Units loop goes here ((once we have a unit class
 		updateUnits(screen, playerList, worldMap,mygui)
