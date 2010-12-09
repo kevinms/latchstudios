@@ -52,11 +52,11 @@ def main():
 			cashTicks = 0
 
 		#Bot Logic Goes Here
-		push = random.randint(0,100)
+		push = random.randint(0,200)
 		
-		if (push < 25):
+		if (push < 50):
 			n.minput(1, random.randint(0,1000), random.randint(0,1000))
-		elif (push < 50):
+		elif (push > 70):
 			n.minput(3, random.randint(0,1000), random.randint(0,1000))
 		elif (push == 53):
 			n.minput(24, random.randint(0,1000), random.randint(0,1000))
