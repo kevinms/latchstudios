@@ -180,5 +180,6 @@ class Unit:
 		if self.currHealth <= 0:
 			self.isAlive = False
 			self.selected = False
+			source.attacking = False
 			myList.remove(self)
 			
