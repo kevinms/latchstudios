@@ -32,3 +32,4 @@ class Building(unit.Unit):
 
 		self.attackAtX = -1
 		self.attackAtY = -1
+		self.setupColors(colorVal)

@@ -440,6 +440,16 @@ def updateUnits(screen, playerList, worldMap, mygui):
 											if t.isAlive == False:
 												tro.attacking = False
 												tro.attackingTarget = None
+
+							for bild in p.buildings:
+								if bild.isAlive:
+									newRect = pygame.Rect(bild.locationX, bild.locationY, bild.mySprite.get_rect()[2], bild.mySprite.get_rect()[3])
+									if newMoveRect.colliderect(newRect):
+										b.disable()
+										bild.takeDamage(tro.attackDamage, tro, p.buildings, playerList)
+										if bild.isAlive == False:
+											tro.attackingTarget = None
+									
 	
 						if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
 							screen.blit(b.mySprite, (translatedX,translatedY))
@@ -447,10 +457,11 @@ def updateUnits(screen, playerList, worldMap, mygui):
 	
 	
 		for b in person.buildings:
-			translatedX = b.locationX - worldMap.view.locX
-			translatedY = b.locationY - worldMap.view.locY
-			if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
-				screen.blit(b.mySprite, (translatedX,translatedY))
+			if b.isAlive:
+				translatedX = b.locationX - worldMap.view.locX
+				translatedY = b.locationY - worldMap.view.locY
+				if translatedX > 0 and translatedY > 0 and translatedX < worldMap.view.sizeX and translatedY < worldMap.view.sizeY:
+					screen.blit(b.mySprite, (translatedX,translatedY))
 
 	if building_mode:
 		loc = pygame.mouse.get_pos()
