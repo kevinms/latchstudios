@@ -61,7 +61,7 @@ def main():
 	n.send()
 	n.minput(1, -5000, -5000)
 
-	cashRate = 100
+	cashRate = 50
 	cashTicks = 0
 
 	mygui = gui.Gui()
@@ -282,12 +282,12 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 					for b in m.buildings:
 						if b.selected and selected_building == 2:
 							if mygui.troopRect.collidepoint(e.pos[0],e.pos[1]) and mySelf.cash >= unit.Unit.troopCost:
-								n.minput(25,(b.locationX - 50),(b.locationY - 50))
+								n.minput(25,(b.locationX+95),(b.locationY + 50))
 								mySelf.cash -= unit.Unit.troopCost
 								
 							elif mygui.speedsterRect.collidepoint(e.pos[0],e.pos[1]) and mySelf.cash >= unit.Unit.speedsterCost:
 								print "hit speedster"
-								n.minput(24,(b.locationX - 50),(b.locationY - 50))
+								n.minput(24,(b.locationX +95),(b.locationY + 50))
 								mySelf.cash -= unit.Unit.speedsterCost
 
 				elif (e.button == 3):
@@ -369,7 +369,7 @@ def updateUnits(screen, playerList, worldMap, mygui):
 										newRect = pygame.Rect(t.locationX ,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
 										if newMoveRect.colliderect(newRect):
 											b.disable()
-											t.takeDamage(tro.attackDamage, tro)
+											t.takeDamage(tro.attackDamage, tro, p.troops)
 											if t.isAlive == False:
 												tro.attacking = False
 												tro.attackingTarget = None
