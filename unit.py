@@ -13,6 +13,9 @@ class Unit:
 	moveToTargetY = -1
 	selected = False
 	maxHealth = 100
+
+	speedsterCost = 5
+	troopCost = 8
 	#mySprite = pygame.imasige.load("error.gif").convert()
 
 	def __init__(self, spawnLocX, spawnLocY):

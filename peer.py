@@ -14,6 +14,7 @@ import troop
 import speedster
 import building
 import missile
+import unit
 
 import world
 
@@ -158,6 +159,13 @@ def main():
 							if mySelf.playerID == person.playerID:
 								mySelf.cash -= 100
 
+						elif tempData[3][0] == 24:
+							person.troops.append(troop.Troop(tempData[3][1],tempData[3][2], person.color))
+							mySelf.cash -= unit.Unit.troopCost
+						elif tempData[3][0] == 25:
+							person.troops.append(speedster.Speedster(tempData[3][1],tempData[3][2], person.color))
+							mySelf.cash -= unit.Unit.speedsterCost
+
 		#Update Units loop goes here ((once we have a unit class
 		updateUnits(screen, playerList, worldMap,mygui)
 		mygui.drawRightPanel_Player(mySelf)
@@ -267,6 +275,22 @@ def eventLoop(worldMap, n, backRect, screen, playerList, mygui):
 						print "hit barracks"
 						building_mode = 1
 						selected_building = 2
+
+				elif (e.button == 1 and mygui.selectedUnitType == 1):
+					for person in playerList:
+						if n.info.cid == person.playerID:
+							m = person
+
+					for b in m.buildings:
+						if b.selected and selected_building == 2:
+							if mygui.troopRect.collidepoint(e.pos[0],e.pos[1]) and mySelf.cash >= unit.Unit.troopCost:
+								print "hit troop"
+								n.minput(25,(b.locationX - 50),(b.locationY - 50))
+								
+							elif mygui.speedsterRect.collidepoint(e.pos[0],e.pos[1]) and mySelf.cash >= unit.Unit.speedsterCost:
+								print "hit speedster"
+								n.minput(24,(b.locationX - 50),(b.locationY - 50))
+
 				elif (e.button == 3):
 					building_mode = 0
 		else:

@@ -17,6 +17,8 @@ class Troop(unit.Unit):
 		self.rotation = 0
 		self.speed = .5
 
+		self.cost = 8
+
 
 		self.bulletList = []
 		for bullets in range(1):
