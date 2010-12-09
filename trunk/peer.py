@@ -352,6 +352,8 @@ def updateUnits(screen, playerList, worldMap, mygui):
 					if b.isActive:
 						if (framesPast - b.whenFired) > b.lifeTime:
 							b.disable()
+						if b.attackingTarget == None:
+							b.disable()
 						
 						unitDirect = vec.unitdir(b.attackingTarget().locationX, b.attackingTarget().locationY, b.getLocationX(), b.getLocationY(), b.getSpeed())
 						b.setRotation(unitDirect)
