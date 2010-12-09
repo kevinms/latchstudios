@@ -60,7 +60,7 @@ def main():
 	done = False
 	mySelf = None
 	n.send()
-	n.minput(1, -5000, -5000)
+	#n.minput(1, -5000, -5000)
 
 	cashRate = 50
 	cashTicks = 0
@@ -173,22 +173,49 @@ def main():
 			mygui.refresh(screen)
 			unitAttacked = False
 		elif lobby:
+			n.send()
 			screen.blit(pygame.image.load('images/splash.png').convert(),(0,0))
 			mygui.refresh(screen)
 			first = False
 			if len(playerList) == 0:
 				first = True
 			if first:
-				print lobby
 				events = pygame.event.get()
 				for e in events:
+					n.send()
 					if e.type == pygame.KEYDOWN:
 						if e.key == K_RETURN:
+							n.minput(42,1,1)
+							n.send()
+							n.minput(1, -5000, -5000)
 							lobby = False
 							break
 					elif e.type == pygame.MOUSEBUTTONDOWN:
+						n.minput(42,1,1)
+						n.send()
+						n.minput(1, -5000, -5000)
 						lobby = False
 						break
+			else:
+				#n.send()
+				while True:
+					n.recv()
+					while not n.recv_queue.empty():
+						tup = n.recv_queue.get()
+						if tup[2] == 7:
+							#print "Adding player CID: %d Name: %s" % (tempData[3], tempData[4])
+							playerList.append(player.Player(tup[3], tup[4]))
+							for person in playerList:
+								if n.info.cid == person.playerID:
+									mySelf = person
+						if tup[2] == 2:
+							if (tup[3][0] == 42):
+								lobby = False
+								n.minput(1, -5000, -5000)
+								break
+					if lobby == False:
+						break
+					n.send()
 	
 	print "Exiting"
 
