@@ -174,7 +174,7 @@ class Unit:
 					b.moveToTargetX = self.attackingTarget().locationX
 					b.moveToTargetY = self.attackingTarget().locationY
 
-	def takeDamage(self, amount, source, myList):
+	def takeDamage(self, amount, source, myList, bigList):
 		print "I'm hit by %d for %d damage" % (source.unitType, amount)
 		self.currHealth = self.currHealth - amount
 		if self.currHealth <= 0:
