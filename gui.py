@@ -5,8 +5,8 @@ class Gui:
         self.base = pygame.image.load('images/IntranetExploder.png').convert()
         self.barracks = pygame.image.load('images/Fireblox.png').convert()
         self.defaultRight = pygame.image.load('images/defaultrightpanel.png').convert()
-        self.speedsterRight = pygame.image.load('images/speedsterPanel.png').convert()
-        self.troopRight = pygame.image.load('images/troop.png').convert()
+        self.speedsterRight = pygame.image.load('images/speedsterRight.png').convert()
+        self.troopRight = pygame.image.load('images/troopPanel.png').convert()
         self.topPanel = pygame.image.load('images/toppanel.png').convert()
         #self.base.set_clip((0,0), (90,90))
         #self.barracks.set_clip((0,0), (90,90))
@@ -53,12 +53,12 @@ class Gui:
             # TROOP #
             if (selectedUnit.unitType == 1):
                 gameWindow.blit(self.troopRight, (515, 36))
-                gameWindow.blit(self.troop, (570, 95))
+                gameWindow.blit(self.troop, (565, 90))
     
     		# SPEEDSTER #
             elif (selectedUnit.unitType == 4):
-                gameWindow.blit(self.troopRight, (515, 36))
-                gameWindow.blit(self.speedster, (570, 95))
+                gameWindow.blit(self.speedsterRight, (515, 36))
+                gameWindow.blit(self.speedster, (565, 90))
     
             # HEALTH #
             curHealth = selectedUnit.currHealth
