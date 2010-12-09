@@ -174,12 +174,18 @@ class Unit:
 					b.moveToTargetX = self.attackingTarget().locationX
 					b.moveToTargetY = self.attackingTarget().locationY
 
-	def takeDamage(self, amount, source, myList):
+	def takeDamage(self, amount, source, myList, bigList):
 		print "I'm hit by %d for %d damage" % (source.unitType, amount)
 		self.currHealth = self.currHealth - amount
 		if self.currHealth <= 0:
 			self.isAlive = False
 			self.selected = False
 			source.attacking = False
+			for p in bigList:
+				for t in p.troops:
+					if t.attacking:
+						if t.attackingTarget() == self:
+							t.attacking = False
+
+			self.deathCounter = 50
 			myList.remove(self)
-			
