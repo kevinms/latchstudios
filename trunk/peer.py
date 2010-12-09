@@ -33,6 +33,7 @@ def main():
 	
 	worldMap = world.WorldMap(1000, 1000, 10, 10)
 
+	lobby = True
 	unitAttacked = False
 	pygame.init()
 	screen = pygame.display.set_mode(windowSize,0,8)
@@ -66,111 +67,129 @@ def main():
 
 	mygui = gui.Gui()
 	while not done:
-		n.send()
-		screen.fill((80, 110, 80),backRect)
-
-		# update economy
-		cashTicks += 1
-		if mySelf != None and cashTicks == cashRate:
-			mySelf.cash += 1
-			cashTicks = 0
-
-		#event loop
-		eventLoop(worldMap, n, backRect, screen, playerList,mygui)
-
-		n.recv()
-		while not n.recv_queue.empty():
-			tempData = n.recv_queue.get()
-			#start debug line
-			#if tempData[2] == 2:
-				#print "Info: %d %d %d" % (tempData[0], tempData[1], tempData[2])
-			if tempData[2] == 7:
-				#print "Adding player CID: %d Name: %s" % (tempData[3], tempData[4])
-				playerList.append(player.Player(tempData[3], tempData[4]))
-				for person in playerList:
-					if n.info.cid == person.playerID:
-						mySelf = person
-
-				#print len(playerList)
-				#for peer in playerList:
-				#	print peer.troops
-
-			for person in playerList:
+		if not lobby:
+			n.send()
+			screen.fill((80, 110, 80),backRect)
+	
+			# update economy
+			cashTicks += 1
+			if mySelf != None and cashTicks == cashRate:
+				mySelf.cash += 1
+				cashTicks = 0
+	
+			#event loop
+			eventLoop(worldMap, n, backRect, screen, playerList,mygui)
+	
+			n.recv()
+			while not n.recv_queue.empty():
+				tempData = n.recv_queue.get()
+				#start debug line
 				#if tempData[2] == 2:
-					#print "playerID: %d" % person.playerID
-					#print "tempData[0]: %d" % tempData[0]					
-				if tempData[0] == person.playerID:
-				#if True:
-					if tempData[2] == 2:
-						#print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
-						if tempData[3][0] == 1:
-							for b in person.buildings:
-								b.setSelectVal(False)
-							for b in person.buildings:
-								if b.rect.collidepoint(tempData[3][1],tempData[3][2]):
-									b.setSelectVal(True)
-									break
-							for tro in person.troops:
-								tro.setSelectVal(False)
-							for tro in person.troops:
-								touchRect = pygame.Rect(tro.getLocationX()- worldMap.view.locX, tro.getLocationY() - worldMap.view.locY, tro.mySprite.get_rect()[2], tro.mySprite.get_rect()[3])
-								if touchRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
-									#print "selected player %d's unit" % person.playerID
-									tro.setSelectVal(True)
-									break
-								else:
+					#print "Info: %d %d %d" % (tempData[0], tempData[1], tempData[2])
+				if tempData[2] == 7:
+					#print "Adding player CID: %d Name: %s" % (tempData[3], tempData[4])
+					playerList.append(player.Player(tempData[3], tempData[4]))
+					for person in playerList:
+						if n.info.cid == person.playerID:
+							mySelf = person
+	
+					#print len(playerList)
+					#for peer in playerList:
+					#	print peer.troops
+	
+				for person in playerList:
+					#if tempData[2] == 2:
+						#print "playerID: %d" % person.playerID
+						#print "tempData[0]: %d" % tempData[0]					
+					if tempData[0] == person.playerID:
+					#if True:
+						if tempData[2] == 2:
+							#print "Recieved %d %d %d" % (tempData[3][0], tempData[3][1], tempData[3][2])
+							if tempData[3][0] == 1:
+								for b in person.buildings:
+									b.setSelectVal(False)
+								for b in person.buildings:
+									if b.rect.collidepoint(tempData[3][1],tempData[3][2]):
+										b.setSelectVal(True)
+										break
+								for tro in person.troops:
 									tro.setSelectVal(False)
-
-						elif tempData[3][0] == 3:
-							for tro in person.troops:
-								if tro.isSelected():
-		
-									for p in playerList:
-										for t in p.troops:
-											tRect = pygame.Rect(t.getLocationX()- worldMap.view.locX, t.getLocationY() - worldMap.view.locY, t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
-											if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
-												if (person.playerID != p.playerID):
-													tro.attack(t)
-													unitAttacked = True
-													break
-											else:
-												pass
-													#tro.attacking = False
-										for b in p.buildings:
-											tRect = pygame.Rect(b.getLocationX()- worldMap.view.locX, b.getLocationY() - worldMap.view.locY, b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
-											if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
-												if (person.playerID != p.playerID):
-													tro.attack(b)
-													unitAttacked = True
-													break
-											else:
-												pass
-													#tro.attacking = False
-
-
-
-									if (unitAttacked == False):
-										tro.attacking = False
-										tro.attackingUnit = None
-										tro.moveToTargetX = tempData[3][1]
-										tro.moveToTargetY = tempData[3][2]
-						elif tempData[3][0] == 11 or tempData[3][0] == 12:
-							person.buildings.append(building.Building(tempData[3][1]-45,tempData[3][2]-45,person.color,tempData[3][0]-10))
-							if mySelf.playerID == person.playerID:
-								mySelf.cash -= 100
-
-						elif tempData[3][0] == 24:
-							person.troops.append(troop.Troop(tempData[3][1],tempData[3][2], person.color))
-						elif tempData[3][0] == 25:
-							person.troops.append(speedster.Speedster(tempData[3][1],tempData[3][2], person.color))
-
-		#Update Units loop goes here ((once we have a unit class
-		updateUnits(screen, playerList, worldMap,mygui)
-		mygui.drawRightPanel_Player(mySelf)
-		mygui.drawTopPanel_Player(mySelf)
-		mygui.refresh(screen)
-		unitAttacked = False
-
+								for tro in person.troops:
+									touchRect = pygame.Rect(tro.getLocationX()- worldMap.view.locX, tro.getLocationY() - worldMap.view.locY, tro.mySprite.get_rect()[2], tro.mySprite.get_rect()[3])
+									if touchRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
+										#print "selected player %d's unit" % person.playerID
+										tro.setSelectVal(True)
+										break
+									else:
+										tro.setSelectVal(False)
+	
+							elif tempData[3][0] == 3:
+								for tro in person.troops:
+									if tro.isSelected():
+			
+										for p in playerList:
+											for t in p.troops:
+												tRect = pygame.Rect(t.getLocationX()- worldMap.view.locX, t.getLocationY() - worldMap.view.locY, t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
+												if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
+													if (person.playerID != p.playerID):
+														tro.attack(t)
+														unitAttacked = True
+														break
+												else:
+													pass
+														#tro.attacking = False
+											for b in p.buildings:
+												tRect = pygame.Rect(b.getLocationX()- worldMap.view.locX, b.getLocationY() - worldMap.view.locY, b.mySprite.get_rect()[2], b.mySprite.get_rect()[3])
+												if tRect.collidepoint(tempData[3][1] - worldMap.view.locX,tempData[3][2] - worldMap.view.locY):
+													if (person.playerID != p.playerID):
+														tro.attack(b)
+														unitAttacked = True
+														break
+												else:
+													pass
+														#tro.attacking = False
+	
+	
+	
+										if (unitAttacked == False):
+											tro.attacking = False
+											tro.attackingUnit = None
+											tro.moveToTargetX = tempData[3][1]
+											tro.moveToTargetY = tempData[3][2]
+							elif tempData[3][0] == 11 or tempData[3][0] == 12:
+								person.buildings.append(building.Building(tempData[3][1]-45,tempData[3][2]-45,person.color,tempData[3][0]-10))
+								if mySelf.playerID == person.playerID:
+									mySelf.cash -= 100
+	
+							elif tempData[3][0] == 24:
+								person.troops.append(troop.Troop(tempData[3][1],tempData[3][2], person.color))
+							elif tempData[3][0] == 25:
+								person.troops.append(speedster.Speedster(tempData[3][1],tempData[3][2], person.color))
+	
+			#Update Units loop goes here ((once we have a unit class
+			updateUnits(screen, playerList, worldMap,mygui)
+			mygui.drawRightPanel_Player(mySelf)
+			mygui.drawTopPanel_Player(mySelf)
+			mygui.refresh(screen)
+			unitAttacked = False
+		elif lobby:
+			screen.blit(pygame.image.load('images/splash.png').convert(),(0,0))
+			mygui.refresh(screen)
+			first = False
+			if len(playerList) == 0:
+				first = True
+			if first:
+				print lobby
+				events = pygame.event.get()
+				for e in events:
+					if e.type == pygame.KEYDOWN:
+						if e.key == K_RETURN:
+							lobby = False
+							break
+					elif e.type == pygame.MOUSEBUTTONDOWN:
+						lobby = False
+						break
+	
 	print "Exiting"
 
 
@@ -309,17 +328,17 @@ def updateUnits(screen, playerList, worldMap, mygui):
 
 
 				if tro.attacking:
-					if tro.attackingTarget() != None:
-						distanceToTarget = vec.distance((tro.getLocationX() , tro.getLocationY() ) , (tro.attackingTarget().getLocationX() ,tro.attackingTarget().getLocationY() ))
-						unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
-						tro.setRotation(unitDirect)
-						if distanceToTarget < tro.attackRange:
-							tro.moveToTargetX = tro.getLocationX()
-							tro.moveToTargetY = tro.getLocationY()
-							tro.fire(framesPast)
-						else:
-							tro.moveToTargetX = tro.attackingTarget().getLocationX()
-							tro.moveToTargetY = tro.attackingTarget().getLocationY()
+					distanceToTarget = vec.distance((tro.getLocationX() , tro.getLocationY() ) , (tro.attackingTarget().getLocationX() ,tro.attackingTarget().getLocationY() ))
+					unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
+					tro.setRotation(unitDirect)
+					if distanceToTarget < tro.attackRange:
+						tro.moveToTargetX = tro.getLocationX()
+						tro.moveToTargetY = tro.getLocationY()
+						tro.fire(framesPast)
+					else:
+						tro.moveToTargetX = tro.attackingTarget().getLocationX()
+						tro.moveToTargetY = tro.attackingTarget().getLocationY()
+	
 	
 				unitDirect = vec.unitdir(tro.getMoveToTargetX(), tro.getMoveToTargetY(), tro.getLocationX(), tro.getLocationY(), tro.getSpeed())
 				tro.setRotation(unitDirect)
@@ -351,8 +370,6 @@ def updateUnits(screen, playerList, worldMap, mygui):
 				for b in tro.bulletList:
 					if b.isActive:
 						if (framesPast - b.whenFired) > b.lifeTime:
-							b.disable()
-						if b.attackingTarget == None:
 							b.disable()
 						
 						unitDirect = vec.unitdir(b.attackingTarget().locationX, b.attackingTarget().locationY, b.getLocationX(), b.getLocationY(), b.getSpeed())
