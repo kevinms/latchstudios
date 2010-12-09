@@ -174,9 +174,11 @@ class Unit:
 					b.moveToTargetX = self.attackingTarget().locationX
 					b.moveToTargetY = self.attackingTarget().locationY
 
-	def takeDamage(self, amount, source):
+	def takeDamage(self, amount, source, myList):
 		print "I'm hit by %d for %d damage" % (source.unitType, amount)
 		self.currHealth = self.currHealth - amount
 		if self.currHealth <= 0:
 			self.isAlive = False
 			self.selected = False
+			myList.remove(self)
+			
