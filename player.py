@@ -20,4 +20,4 @@ class Player:
 		self.name = playerName
 
 		# economy
-		self.cash = 100
+		self.cash = 300

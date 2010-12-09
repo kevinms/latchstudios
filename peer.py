@@ -62,7 +62,7 @@ def main():
 	n.send()
 	#n.minput(1, -5000, -5000)
 
-	cashRate = 50
+	cashRate = 9999999999
 	cashTicks = 0
 
 	mygui = gui.Gui()
@@ -73,7 +73,18 @@ def main():
 	
 			# update economy
 			cashTicks += 1
-			if mySelf != None and cashTicks == cashRate:
+			if mySelf != None:
+				numBase = 0
+				for b in mySelf.buildings:
+					if b.buildingType == 1:
+						numBase = numBase + 1
+				if numBase > 0:
+					cashRate = int(80 / numBase)	
+				else:
+					cashRate = 9999999999
+
+			if mySelf != None and ((cashTicks % cashRate) == 0):
+				print str(cashTicks) + " " + str(cashRate)
 				mySelf.cash += 1
 				cashTicks = 0
 	
