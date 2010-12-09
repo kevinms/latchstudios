@@ -40,7 +40,9 @@ class server_thread(threading.Thread,packager):
 		self.slots = slots
 		self.turn = 0
 		self.frames = 0
-		self.lastTime = time.time()
+		self.timedelta = time.time()
+		self.frametime = 0
+		#self.lastTime = time.time()
 		self.benchmark = bench
 
 	def run(self):
@@ -60,10 +62,31 @@ class server_thread(threading.Thread,packager):
 				self.l.acquire_lock()
 				self.power_lock.acquire()
 
+			self.timedelta = time.time()
+
 			self.recv()
 			self.step += 1
 			self.process()
 			self.send()
+
+			if self.benchmark:
+				self.frametime += (time.time() - self.timedelta)
+				self.timedelta = time.time()
+				self.frames += 1
+				if self.frametime > 1:
+					print "FPS: " + str(self.frames/self.frametime)
+					self.frametime = 0.0
+					self.frames = 0
+
+			'''
+			if self.benchmark:
+				currTime = time.time()
+				if (currTime % 2 > 1.99):
+					average = self.frames / (currTime - self.lastTime)
+					print "FPS average: ", average
+					self.lastTime = currTime
+					self.frames = 0
+			'''
 
 	# Process all the data and get ready to send to the clients
 	def process(self):
@@ -109,14 +132,6 @@ class server_thread(threading.Thread,packager):
 		while not self.send_queue.empty():
 			data = self.send_queue.get()
 			logging.debug("\tGetting data to send:")
-			if self.benchmark:
-				currTime = time.time()
-				if (currTime % 2 > 1.99):
-					average = self.frames / (currTime - self.lastTime)
-					print "FPS average: ", average
-					self.lastTime = currTime
-					self.frames = 0
-				
 			for client in self.client_list:
 				try:
 					logging.debug("\t\tTrying to print data")
@@ -126,7 +141,6 @@ class server_thread(threading.Thread,packager):
 					logging.debug("\t\t" + str(int(ord(data[1]))))
 					logging.debug("\t\t" + str(int(ord(data[2]))))
 					logging.debug("\t\t" + str(int(ord(data[3]))))
-					self.frames = self.frames + 1
 					client.s.sendall(data)
 				except socket.error, e:
 					print "Detected remote disconnect"
