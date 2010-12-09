@@ -415,7 +415,7 @@ def updateUnits(screen, playerList, worldMap, mygui):
 										newRect = pygame.Rect(t.locationX ,t.locationY,t.mySprite.get_rect()[2], t.mySprite.get_rect()[3])
 										if newMoveRect.colliderect(newRect):
 											b.disable()
-											t.takeDamage(tro.attackDamage, tro, p.troops)
+											t.takeDamage(tro.attackDamage, tro, p.troops, playerList)
 											if t.isAlive == False:
 												tro.attacking = False
 												tro.attackingTarget = None
